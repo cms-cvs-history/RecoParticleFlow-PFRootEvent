@@ -1,6 +1,8 @@
-root file /home/Colin/CMS/CMSSW_0_8_0_pre2/src/RecoParticleFlow/PFClusterProducer/test/pfclusters.root
+#root file /home/Colin/CMS/CMSSW_0_8_0_pre2/src/RecoParticleFlow/PFClusterProducer/test/pfclusters.root
+root file /home/Colin/CMS/CMSSW_0_8_0_pre2/src/RecoParticleFlow/PFProducer/test/test.root
 
-root hits_branch  recoPFRecHits_pf__eflow.obj
+root hits_branch  recoPFRecHits_pfcluster__Demo.obj
+root recTracks_branch  recoPFRecTracks_pf_PFRecTrackCollection_Demo.obj
 
 display algos 1 
 
@@ -11,8 +13,10 @@ clustering thresh_Ecal_Barrel           0.2
 clustering thresh_Seed_Ecal_Barrel      0.3
 clustering thresh_Ecal_Endcap           0.2
 clustering thresh_Seed_Ecal_Endcap      0.9
+clustering neighbours_Ecal		4
 
 clustering thresh_Hcal_Barrel           1.0
 clustering thresh_Seed_Hcal_Barrel      1.4
 clustering thresh_Hcal_Endcap           1.0
 clustering thresh_Seed_Hcal_Endcap      1.4
+clustering neighbours_Hcal		4
