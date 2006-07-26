@@ -8,5 +8,5 @@ ROOT::Cintex::Cintex::Enable();
 
 PFRootEventManager em("pfRootEvent.opt");
 int i=0;
-em.Display(i++);
+em.display(i++);
 }

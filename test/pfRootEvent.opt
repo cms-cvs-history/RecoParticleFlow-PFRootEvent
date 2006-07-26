@@ -9,14 +9,23 @@ display algos 1
 display  viewsize_etaphi 600 400
 display  viewsize_xy     400 400
 
+display  color_clusters		1
+
 clustering thresh_Ecal_Barrel           0.2
 clustering thresh_Seed_Ecal_Barrel      0.3
 clustering thresh_Ecal_Endcap           0.2
 clustering thresh_Seed_Ecal_Endcap      0.9
 clustering neighbours_Ecal		4
 
+clustering depthCor_Mode          1
+clustering depthCor_A 		  0.89
+clustering depthCor_B 		  7.3
+clustering depthCor_A_preshower   0.89
+clustering depthCor_B_preshower   4.0
+
 clustering thresh_Hcal_Barrel           1.0
 clustering thresh_Seed_Hcal_Barrel      1.4
 clustering thresh_Hcal_Endcap           1.0
 clustering thresh_Seed_Hcal_Endcap      1.4
 clustering neighbours_Hcal		4
+
