@@ -1,20 +1,21 @@
-#root file /home/Colin/CMS/CMSSW_0_8_0_pre2/src/RecoParticleFlow/PFClusterProducer/test/pfclusters.root
+// root file /home/Colin/CMS/CMSSW_0_8_0_pre2/src/RecoParticleFlow/PFClusterProducer/test/pfclusters.root
 root file /home/Colin/CMS/CMSSW_0_8_0_pre2/src/RecoParticleFlow/PFProducer/test/test.root
 
 root hits_branch  recoPFRecHits_pfcluster__Demo.obj
 root recTracks_branch  recoPFRecTracks_pf_PFRecTrackCollection_Demo.obj
 
-display algos 1 
+display algos 2
 
 display  viewsize_etaphi 600 400
 display  viewsize_xy     400 400
 
 display  color_clusters		1
+display  zoom_factor		5
 
-clustering thresh_Ecal_Barrel           0.2
-clustering thresh_Seed_Ecal_Barrel      0.3
-clustering thresh_Ecal_Endcap           0.2
-clustering thresh_Seed_Ecal_Endcap      0.9
+clustering thresh_Ecal_Barrel           0.3
+clustering thresh_Seed_Ecal_Barrel      0.8
+clustering thresh_Ecal_Endcap           0.4
+clustering thresh_Seed_Ecal_Endcap      1.0
 clustering neighbours_Ecal		4
 
 clustering depthCor_Mode          1
@@ -29,3 +30,26 @@ clustering thresh_Hcal_Endcap           1.0
 clustering thresh_Seed_Hcal_Endcap      1.4
 clustering neighbours_Hcal		4
 
+
+// ECAL, eta
+particle_flow resolution_map_ECAL_eta 	  resmap_eta.dat
+
+// ECAL, phi
+particle_flow resolution_map_ECAL_phi 	  resmap_phi.dat
+
+// HCAL, eta
+particle_flow resolution_map_HCAL_eta 	  resmap_HCAL_eta.dat
+
+// HCAL, phi
+particle_flow resolution_map_HCAL_phi 	  resmap_HCAL_phi.dat
+
+
+// chi2 limit for ECAL/Track association
+particle_flow chi2_ECAL_Track	50
+// chi2 limit for HCAL/Track association
+particle_flow chi2_HCAL_Track	10
+// chi2 limit for ECAL/HCAL assoiation
+particle_flow chi2_ECAL_HCAL	3
+
+// number of sigmas for neutral energy detection
+particle_flow   nsigma_neutral    3
