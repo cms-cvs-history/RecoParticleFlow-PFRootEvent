@@ -1,5 +1,5 @@
-// root file  /home/Colin/CMS/CMSSW_0_8_0/src/RecoParticleFlow/PFClusterProducer/test/pfclusters.root
-root file  /home/Colin/CMS/CMSSW_0_8_0/src/RecoParticleFlow/PFProducer/test/test.root
+
+root file  ../../PFProducer/test/test.root
 
 root hits_branch  recoPFRecHits_pfcluster__eflow.obj
 root recTracks_branch  recoPFRecTracks_pf_PFRecTrackCollection_eflow.obj
@@ -45,11 +45,11 @@ particle_flow resolution_map_HCAL_phi 	  resmap_HCAL_phi.dat
 
 
 // chi2 limit for ECAL/Track association
-particle_flow chi2_ECAL_Track	50
+particle_flow chi2_ECAL_Track   50
 // chi2 limit for HCAL/Track association
-particle_flow chi2_HCAL_Track	10
+particle_flow chi2_HCAL_Track	50
 // chi2 limit for ECAL/HCAL assoiation
-particle_flow chi2_ECAL_HCAL	3
+particle_flow chi2_ECAL_HCAL	10
 
 // number of sigmas for neutral energy detection
 particle_flow   nsigma_neutral    3
