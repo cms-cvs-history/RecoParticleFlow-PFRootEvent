@@ -1,7 +1,7 @@
 
 root file  ../../PFProducer/test/test.root
 
-root hits_branch  recoPFRecHits_pfcluster__eflow.obj
+root hits_branch       recoPFRecHits_pfcluster__eflow.obj
 root recTracks_branch  recoPFRecTracks_pf_PFRecTrackCollection_eflow.obj
 
 display algos 2
