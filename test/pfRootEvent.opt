@@ -1,5 +1,6 @@
 
-root file  ../../PFProducer/test/test.root
+root file  ../../PFProducer/test/singlegamma_pf.root
+// root file  ../../PFClusterProducer/test/pfclusters.root
 
 root hits_branch       recoPFRecHits_pfcluster__eflow.obj
 root recTracks_branch  recoPFRecTracks_pf_PFRecTrackCollection_eflow.obj
@@ -24,12 +25,14 @@ clustering depthCor_B 		  7.3
 clustering depthCor_A_preshower   0.89
 clustering depthCor_B_preshower   4.0
 
-clustering thresh_Hcal_Barrel           0
+clustering thresh_Hcal_Barrel           0.
 clustering thresh_Seed_Hcal_Barrel      1.4
-clustering thresh_Hcal_Endcap           0
+clustering thresh_Hcal_Endcap           0.
 clustering thresh_Seed_Hcal_Endcap      1.4
 clustering neighbours_Hcal		4
 
+clustering thresh_PS			0.0001
+clustering thresh_Seed_PS		0.0003
 
 // ECAL, eta
 particle_flow resolution_map_ECAL_eta 	  resmap_eta.dat
@@ -53,3 +56,7 @@ particle_flow chi2_ECAL_HCAL	10
 
 // number of sigmas for neutral energy detection
 particle_flow   nsigma_neutral    3
+
+print rechits  1
+print clusters 1
+print PFBs     0
