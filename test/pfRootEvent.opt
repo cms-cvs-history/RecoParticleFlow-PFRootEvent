@@ -1,9 +1,10 @@
 
 // root file  ../../PFProducer/test/singlegamma_pf.root
 root file  ../../PFProducer/test/singlepi_pf.root
+// root file  ../../PFClusterProducer/test/pfclusters.root
 
-root hits_branch       recoPFRecHits_pfcluster__eflow.obj
-root recTracks_branch  recoPFRecTracks_pf_PFRecTrackCollection_eflow.obj
+root hits_branch       recoPFRecHits_particleFlowCluster__USER.obj
+root recTracks_branch  recoPFRecTracks_particleFlow__USER.obj
 
 display algos 2
 
@@ -31,7 +32,7 @@ clustering thresh_Hcal_Endcap           0.
 clustering thresh_Seed_Hcal_Endcap      1.4
 clustering neighbours_Hcal		4
 
-clustering thresh_PS			0.0001
+clustering thresh_PS			0.00005
 clustering thresh_Seed_PS		0.0003
 
 // ECAL, eta
