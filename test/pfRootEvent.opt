@@ -1,7 +1,7 @@
 
 // root file  ../../PFProducer/test/singlegamma_pf.root
-root file  ../../PFProducer/test/singlepi_pf.root
-// root file  ../../PFClusterProducer/test/pfclusters.root
+// root file  ../../PFProducer/test/singlepi_pf.root
+root file  ../../PFClusterProducer/test/pfclusters.root
 
 root hits_branch       recoPFRecHits_particleFlowCluster__USER.obj
 root recTracks_branch  recoPFRecTracks_particleFlow__USER.obj
