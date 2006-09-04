@@ -9,5 +9,5 @@ ROOT::Cintex::Cintex::Enable();
 PFRootEventManager em("pfRootEvent.opt");
 int i=0;
 em.display(i++);
-em.lookForMaxRecHit(true);
+// em.lookForMaxRecHit(true);
 }

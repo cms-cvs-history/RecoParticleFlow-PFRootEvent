@@ -3,8 +3,13 @@
 // root file  ../../PFProducer/test/singlepi_pf.root
 root file  ../../PFClusterProducer/test/pfclusters.root
 
-root hits_branch       recoPFRecHits_particleFlowCluster__USER.obj
-root recTracks_branch  recoPFRecTracks_particleFlow__USER.obj
+root hits_branch           recoPFRecHits_particleFlowCluster__USER.obj
+
+root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER.obj
+root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER.obj
+root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER.obj
+
+root recTracks_branch      recoPFRecTracks_particleFlow__USER.obj
 
 display algos 2
 
@@ -13,6 +18,9 @@ display  viewsize_xy     400 400
 
 display  color_clusters		1
 display  zoom_factor		5
+
+
+clustering on/off 0
 
 clustering thresh_Ecal_Barrel           0.
 clustering thresh_Seed_Ecal_Barrel      0.8
