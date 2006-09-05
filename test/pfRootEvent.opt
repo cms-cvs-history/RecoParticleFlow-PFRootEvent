@@ -3,7 +3,11 @@
 // root file  ../../PFProducer/test/singlepi_pf.root
 root file  ../../PFClusterProducer/test/pfclusters.root
 
-root hits_branch           recoPFRecHits_particleFlowCluster__USER.obj
+// root hits_branch           recoPFRecHits_particleFlowCluster__USER.obj
+
+root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_USER.obj
+root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_USER.obj
+root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_USER.obj
 
 root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER.obj
 root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER.obj
