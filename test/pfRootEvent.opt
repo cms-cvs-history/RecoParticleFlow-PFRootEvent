@@ -1,6 +1,6 @@
 
-// root file  ../../PFProducer/test/singlegamma_pf.root
-root file  ../../PFProducer/test/singlepi_pf.root
+root file  ../../PFProducer/test/singlegamma_pf.root
+// root file  ../../PFProducer/test/singlepi_pf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
 
 // root hits_branch           recoPFRecHits_particleFlowCluster__USER.obj
@@ -47,8 +47,8 @@ clustering thresh_Hcal_Endcap           0.
 clustering thresh_Seed_Hcal_Endcap      1.4
 clustering neighbours_Hcal		4
 
-clustering thresh_PS			0.00005
-clustering thresh_Seed_PS		0.0003
+clustering thresh_PS			0.00007
+clustering thresh_Seed_PS		0.001
 
 // ECAL, eta
 particle_flow resolution_map_ECAL_eta 	  resmap_eta.dat
