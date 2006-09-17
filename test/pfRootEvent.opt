@@ -1,6 +1,6 @@
 
-root file  ../../PFProducer/test/singlegamma_pf.root
-// root file  ../../PFProducer/test/singlepi_pf.root
+// root file  ../../PFProducer/test/singlegamma_pf.root
+root file  ../../PFProducer/test/singlepi_pf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
 
 // root hits_branch           recoPFRecHits_particleFlowCluster__USER.obj
@@ -16,7 +16,7 @@ root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER.obj
 root recTracks_branch      recoPFRecTracks_particleFlow__USER.obj
 root trueParticles_branch  recoPFParticles_particleFlow__USER.obj
 
-display algos 2
+display  cluster_algos 2
 
 display  viewsize_etaphi 600 400
 display  viewsize_xy     400 400
@@ -27,7 +27,11 @@ display  zoom_factor		5
 display  rectracks              1
 display  particles              1              
 
-clustering on/off 0
+display  x/y      1
+display  eta/phi  1
+display  r/z      1
+
+clustering on/off 1
 
 clustering thresh_Ecal_Barrel           0.
 clustering thresh_Seed_Ecal_Barrel      0.8
