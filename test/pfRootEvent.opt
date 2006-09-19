@@ -31,7 +31,7 @@ display  x/y      1
 display  eta/phi  1
 display  r/z      1
 
-clustering on/off 1
+clustering on/off 0
 
 clustering thresh_Ecal_Barrel           0.
 clustering thresh_Seed_Ecal_Barrel      0.8
@@ -55,16 +55,16 @@ clustering thresh_PS			0.00007
 clustering thresh_Seed_PS		0.001
 
 // ECAL, eta
-particle_flow resolution_map_ECAL_eta 	  resmap_eta.dat
+particle_flow resolution_map_ECAL_eta 	  ../../PFProducer/data/resmap_ECAL_eta.dat
 
 // ECAL, phi
-particle_flow resolution_map_ECAL_phi 	  resmap_phi.dat
+particle_flow resolution_map_ECAL_phi 	  ../../PFProducer/data/resmap_ECAL_phi.dat
 
 // HCAL, eta
-particle_flow resolution_map_HCAL_eta 	  resmap_HCAL_eta.dat
+particle_flow resolution_map_HCAL_eta 	  ../../PFProducer/data/resmap_HCAL_eta.dat
 
 // HCAL, phi
-particle_flow resolution_map_HCAL_phi 	  resmap_HCAL_phi.dat
+particle_flow resolution_map_HCAL_phi 	  ../../PFProducer/data/resmap_HCAL_phi.dat
 
 
 // chi2 limit for ECAL/Track association
