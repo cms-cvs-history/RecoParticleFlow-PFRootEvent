@@ -71,17 +71,17 @@ display  r/z      1
 clustering on/off 1
 
 // print debug printouts from the clustering algorithm
-clustering debug 1
+clustering debug 0
 
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/pFDefaults.cff
-clustering thresh_Ecal_Barrel           0.5
+clustering thresh_Ecal_Barrel           0.1
 
 // seed threshold for ECAL barrel rechits
 clustering thresh_Seed_Ecal_Barrel      0.15
 
 // threshold on ECAL endcap rechits.
-clustering thresh_Ecal_Endcap           0.
+clustering thresh_Ecal_Endcap           0.3
 
 // seed threshold for ECAL endcap rechits
 clustering thresh_Seed_Ecal_Endcap      0.8
