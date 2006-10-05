@@ -3,12 +3,25 @@
 
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_pf.root. 
-root file  ../../PFProducer/test/singletau_pf.root
+// root file  ../../PFProducer/test/singletau_pf.root
 
 // root file  ../../PFProducer/test/singlegamma_pf.root
 // root file  ../../PFProducer/test/singlepi_pf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
 
+
+root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_0_9_2/SingleGammas_4/singlegamma_pf_3.root
+
+// root file singlegamma_pf_1.root
+
+
+// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_data_20_30GeV_35_new.root
+
+// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_simulation_4_20GeV_35_new.root
+
+// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_simulation_20GeV_35_new.root
+
+// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_data_20GeV_35_new.root
 
 // name of the branches of the input TTree. 
 
@@ -75,10 +88,11 @@ clustering debug 0
 
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/pFDefaults.cff
+
 clustering thresh_Ecal_Barrel           0.1
 
 // seed threshold for ECAL barrel rechits
-clustering thresh_Seed_Ecal_Barrel      0.15
+clustering thresh_Seed_Ecal_Barrel      0.2
 
 // threshold on ECAL endcap rechits.
 clustering thresh_Ecal_Endcap           0.3
@@ -92,6 +106,8 @@ clustering thresh_Seed_Ecal_Endcap      0.8
 // If set to 8, it is also checked that the diagonal neighbours have a 
 // lower energy.
 clustering neighbours_Ecal		4
+
+clustering shower_Sigma_Ecal		3
 
 // depth correction flag. 0:off, 1:e/gamma mode 2:hadron mode
 // depth correction is only active in ECAL, which has non pointing cells
@@ -122,9 +138,9 @@ clustering thresh_Seed_Hcal_Endcap      1.4
 clustering neighbours_Hcal		4
 
 // threshold on preshower rechits
-clustering thresh_PS			0.00007
+clustering thresh_PS			0.0001
 // seed threshold for preshower rechits
-clustering thresh_Seed_PS		0.001
+clustering thresh_Seed_PS		0.0005
 
 
 // particle flow parameters ----------------------------------------------
