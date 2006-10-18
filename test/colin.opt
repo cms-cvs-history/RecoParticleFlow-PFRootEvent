@@ -1,0 +1,201 @@
+
+root outfile  out.root
+
+// source root file, generated in src/RecoParticleFlow/PFProducer/test
+// with the command: cmsRun singletau_pf.root. 
+// root file  ../../PFProducer/test/singletau_pf.root
+
+// root file  ../../PFProducer/test/singlegamma_pf.root
+// root file  ../../PFProducer/test/singlepi_pf.root
+// root file  ../../PFClusterProducer/test/pfclusters.root
+// root file  ../../PFProducer/test/singlegamma_pf_1_pfonly_unconverted.root
+
+
+// root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_0_9_2/SingleGammas_5/singlegamma_pf_3.root
+
+// root file singlegamma_pf_1.root
+
+
+root file xtal_248_data_4-20GeV_last.root
+// root file xtal_248_data_4GeV_last.root
+// root file xtal_248_simulation_4GeV_last.root
+
+// root file ../../PFProducer/test/b_singlegamma_pf_22.root
+
+// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_data_4GeV_last.root 
+
+// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_simulation_4_20GeV_35_new.root
+
+// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_simulation_20GeV_35_new.root
+
+
+// name of the branches of the input TTree. 
+
+// ECAL rechits branch
+root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_USER2.obj
+// HCAL rechits branch
+root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_USER2.obj
+// PS rechits branch
+root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_USER2.obj
+
+// ECAL clusters branch
+root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER2.obj
+// HCAL clusters branch
+root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER2.obj
+// PS clusters branch
+root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER2.obj
+
+
+root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_USER2.obj
+
+// reconstructed tracks branch
+root recTracks_branch      recoPFRecTracks_particleFlow__USER2.obj
+
+// true particles branch
+root trueParticles_branch  recoPFParticles_particleFlow__USER2.obj
+
+
+// display parameters ----------------------------------------------------
+
+// display clusters of type 2 (particle flow clusters)
+display  cluster_algos 2 4
+
+// size of the eta/phi canvas 
+display  viewsize_etaphi 600 400
+// size of the x/y canvas  
+display  viewsize_xy     400 400
+
+// display the color of the clusters yes/no
+// if yes, the color is equal to the type (type 2 -> red)
+display  color_clusters		1
+
+// when the function PFRootEventManager::lookForMaxRecHit is used
+// the eta/phi display zooms to the rechit with maximum energy. 
+// display/zoom_factor roughly gives the size of the view around this rechit
+// in number of ecal cells	
+display  zoom_factor		5
+
+// display reconstructed tracks yes/no
+display  rectracks              1
+// display true particles yes/no
+display  particles              1              
+
+// display x/y view yes/no
+display  x/y      1
+// display eta/phi view yes/no
+display  eta/phi  1
+// display r/z view yes/no
+display  r/z      0
+
+// clustering parameters ---------------------------------------------------
+
+// perform clustering yes/no. If no, clusters are read from the TTree
+clustering on/off 1
+
+// print debug printouts from the clustering algorithm
+clustering debug 0
+
+// threshold on ECAL barrel rechits. Note that a threshold might have
+// been applied already, see RecoParticleFlow/PFProducer/data/pFDefaults.cff
+
+clustering thresh_Ecal_Barrel           0.07
+
+// seed threshold for ECAL barrel rechits
+clustering thresh_Seed_Ecal_Barrel      0.23
+
+// threshold on ECAL endcap rechits.
+clustering thresh_Ecal_Endcap           0.3
+
+// seed threshold for ECAL endcap rechits
+clustering thresh_Seed_Ecal_Endcap      0.8
+
+// number of neighbours to be considered for seed finding in ECAL. 
+// 4 means that it is checked that the 4 direct neighbours 
+// have a lower energy than the seed. 
+// If set to 8, it is also checked that the diagonal neighbours have a 
+// lower energy.
+clustering neighbours_Ecal		8
+
+// number of crystals around the seed used in the position calculation
+// can be -1 (all crystals), 5, 9
+clustering nCrystals_PosCalc_Ecal      -1
+
+
+// width of shower in ecal, cm
+clustering shower_Sigma_Ecal		5
+
+
+
+// depth correction flag. 0:off, 1:e/gamma mode 2:hadron mode
+// depth correction is only active in ECAL, which has non pointing cells
+// in mode 1, depth = A * (B + log(E))
+// in mode 2, depth = A (to be set correctly !!)
+clustering depthCor_Mode          1
+clustering depthCor_A 		  0.89
+clustering depthCor_B 		  7.4
+// depth correction parameters under the preshower
+clustering depthCor_A_preshower   0.89
+clustering depthCor_B_preshower   4.0
+
+// threshold on HCAL barrel rechits
+clustering thresh_Hcal_Barrel           0.
+// seed threshold for HCAL barrel rechits
+clustering thresh_Seed_Hcal_Barrel      1.4
+// threshold on HCAL endcap rechits
+clustering thresh_Hcal_Endcap           0.
+// seed threshold for HCAL endcap rechits
+clustering thresh_Seed_Hcal_Endcap      1.4
+
+
+// number of neighbours to be considered for seed finding in HCAL. 
+// 4 means that it is checked that the 4 direct neighbours 
+// have a lower energy than the seed. The other possibility is 8. 
+// If set to 8, it is also checked that the diagonal neighbours have a 
+// lower energy.
+clustering neighbours_Hcal		4
+
+// threshold on preshower rechits
+clustering thresh_PS			0.0001
+// seed threshold for preshower rechits
+clustering thresh_Seed_PS		0.0005
+
+
+// particle flow parameters ----------------------------------------------
+
+// ECAL resolution in eta, vs (eta,E)
+particle_flow resolution_map_ECAL_eta 	  ../../PFProducer/data/resmap_ECAL_eta.dat
+
+// ECAL resolution in phi, vs (eta,E)
+particle_flow resolution_map_ECAL_phi 	  ../../PFProducer/data/resmap_ECAL_phi.dat
+
+// HCAL resolution in eta, vs (eta,E)
+particle_flow resolution_map_HCAL_eta 	  ../../PFProducer/data/resmap_HCAL_eta.dat
+
+// HCAL resolution in phi, vs (eta,E)
+particle_flow resolution_map_HCAL_phi 	  ../../PFProducer/data/resmap_HCAL_phi.dat
+
+
+// chi2 maximum limit for ECAL/Track association
+particle_flow chi2_ECAL_Track   50
+// chi2 maximum limit for HCAL/Track association
+particle_flow chi2_HCAL_Track	50
+// chi2 maximum limit for ECAL/HCAL assoiation
+particle_flow chi2_ECAL_HCAL	10
+
+// number of sigmas for neutral energy detection
+particle_flow   nsigma_neutral    3
+
+// print flags ------------------------------------------------------------
+// for PFRootEventManager::print()
+
+// print rechits yes/no
+print rechits  1
+// print clusters yes/no
+print clusters 1
+// print particle flow blocks yes/no
+print PFBs     0
+// print true particles yes/no
+print true_particles     0
+
+// verbosity 
+print verbosity 0
