@@ -3,14 +3,14 @@
 
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_pf.root. 
-// root file  ../../PFProducer/test/singletau_pf.root
+root file  ../../PFProducer/test/singletau_pf.root
 
 // root file  ../../PFProducer/test/singlegamma_pf.root
 // root file  ../../PFProducer/test/singlepi_pf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
 
 
-root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_0_9_2/SingleGammas_4/singlegamma_pf_3.root
+// root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_0_9_2/SingleGammas_4/singlegamma_pf_3.root
 
 // root file singlegamma_pf_1.root
 
@@ -89,13 +89,13 @@ clustering debug 0
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/pFDefaults.cff
 
-clustering thresh_Ecal_Barrel           0.1
+clustering thresh_Ecal_Barrel           0.05
 
 // seed threshold for ECAL barrel rechits
-clustering thresh_Seed_Ecal_Barrel      0.2
+clustering thresh_Seed_Ecal_Barrel      0.23
 
 // threshold on ECAL endcap rechits.
-clustering thresh_Ecal_Endcap           0.3
+clustering thresh_Ecal_Endcap           0.05
 
 // seed threshold for ECAL endcap rechits
 clustering thresh_Seed_Ecal_Endcap      0.8
@@ -105,9 +105,9 @@ clustering thresh_Seed_Ecal_Endcap      0.8
 // have a lower energy than the seed. 
 // If set to 8, it is also checked that the diagonal neighbours have a 
 // lower energy.
-clustering neighbours_Ecal		4
+clustering neighbours_Ecal		8
 
-clustering shower_Sigma_Ecal		3
+clustering shower_Sigma_Ecal		5
 
 // depth correction flag. 0:off, 1:e/gamma mode 2:hadron mode
 // depth correction is only active in ECAL, which has non pointing cells
@@ -115,7 +115,7 @@ clustering shower_Sigma_Ecal		3
 // in mode 2, depth = A (to be set correctly !!)
 clustering depthCor_Mode          1
 clustering depthCor_A 		  0.89
-clustering depthCor_B 		  7.3
+clustering depthCor_B 		  7.4
 // depth correction parameters under the preshower
 clustering depthCor_A_preshower   0.89
 clustering depthCor_B_preshower   4.0
