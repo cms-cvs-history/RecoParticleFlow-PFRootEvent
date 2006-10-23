@@ -1,55 +1,62 @@
 
-
+// root outfile  out.root
 
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_pf.root. 
 root file  ../../PFProducer/test/singletau_pf_bad.root
 
-// root file  ../../PFProducer/test/singlegamma_pf.root
 // root file  ../../PFProducer/test/singlepi_pf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
+// root file  ../../PFProducer/test/singlegamma_pf_1_pfonly_unconverted.root
 
 
-// root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_0_9_2/SingleGammas_4/singlegamma_pf_3.root
 
 // root file singlegamma_pf_1.root
 
 
-// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_data_20_30GeV_35_new.root
+// root file xtal_248_data_4-20GeV_last.root
+// root file xtal_248_data_4GeV_last.root
+// root file xtal_248_simulation_4GeV_last.root
+
+// root file ../../PFProducer/test/b_singlegamma_pf_22.root
+
+// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_data_4GeV_last.root 
 
 // root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_simulation_4_20GeV_35_new.root
 
 // root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_simulation_20GeV_35_new.root
 
-// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_data_20GeV_35_new.root
 
 // name of the branches of the input TTree. 
 
 // ECAL rechits branch
-root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_USER.obj
+root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_USER2.obj
 // HCAL rechits branch
-root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_USER.obj
+root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_USER2.obj
 // PS rechits branch
-root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_USER.obj
+root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_USER2.obj
 
 // ECAL clusters branch
-root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER.obj
+root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER2.obj
 // HCAL clusters branch
-root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER.obj
+root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER2.obj
 // PS clusters branch
-root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER.obj
+root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER2.obj
+
+
+root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_USER2.obj
 
 // reconstructed tracks branch
-root recTracks_branch      recoPFRecTracks_particleFlow__USER.obj
+root recTracks_branch      recoPFRecTracks_particleFlow__USER2.obj
 
 // true particles branch
-root trueParticles_branch  recoPFParticles_particleFlow__USER.obj
+root trueParticles_branch  recoPFParticles_particleFlow__USER2.obj
 
 
 // display parameters ----------------------------------------------------
 
 // display clusters of type 2 (particle flow clusters)
-display  cluster_algos 2
+display  cluster_algos 2 4
 
 // size of the eta/phi canvas 
 display  viewsize_etaphi 600 400
@@ -76,7 +83,7 @@ display  x/y      1
 // display eta/phi view yes/no
 display  eta/phi  1
 // display r/z view yes/no
-display  r/z      1
+display  r/z      0
 
 // clustering parameters ---------------------------------------------------
 
@@ -89,7 +96,7 @@ clustering debug 0
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/pFDefaults.cff
 
-clustering thresh_Ecal_Barrel           0.05
+clustering thresh_Ecal_Barrel           0.07
 
 // seed threshold for ECAL barrel rechits
 clustering thresh_Seed_Ecal_Barrel      0.23
@@ -107,7 +114,15 @@ clustering thresh_Seed_Ecal_Endcap      0.8
 // lower energy.
 clustering neighbours_Ecal		8
 
+// number of crystals around the seed used in the position calculation
+// can be -1 (all crystals), 5, 9
+clustering nCrystals_PosCalc_Ecal      -1
+
+
+// width of shower in ecal, cm
 clustering shower_Sigma_Ecal		5
+
+
 
 // depth correction flag. 0:off, 1:e/gamma mode 2:hadron mode
 // depth correction is only active in ECAL, which has non pointing cells
@@ -176,6 +191,9 @@ print rechits  1
 // print clusters yes/no
 print clusters 1
 // print particle flow blocks yes/no
-print PFBs     1
+print PFBs     0
 // print true particles yes/no
-print true_particles     1
+print true_particles     0
+
+// verbosity 
+print verbosity 0
