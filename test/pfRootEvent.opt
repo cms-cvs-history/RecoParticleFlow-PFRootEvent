@@ -3,9 +3,9 @@
 
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_pf.root. 
-root file  ../../PFProducer/test/singletau_pf.root
+// root file  ../../PFProducer/test/singletau_pf.root
 
-// root file  ../../PFProducer/test/singlegamma_pf.root
+root file  ../../PFProducer/test/singlegamma_pf.root
 // root file  ../../PFProducer/test/singlepi_pf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
 
@@ -13,24 +13,24 @@ root file  ../../PFProducer/test/singletau_pf.root
 // name of the branches of the input TTree. 
 
 // ECAL rechits branch
-root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_USER.obj
+root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_USER2.obj
 // HCAL rechits branch
-root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_USER.obj
+root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_USER2.obj
 // PS rechits branch
-root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_USER.obj
+root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_USER2.obj
 
 // ECAL clusters branch
-root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER.obj
+root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER2.obj
 // HCAL clusters branch
-root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER.obj
+root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER2.obj
 // PS clusters branch
-root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER.obj
+root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER2.obj
 
 // reconstructed tracks branch
-root recTracks_branch      recoPFRecTracks_particleFlow__USER.obj
+root recTracks_branch      recoPFRecTracks_particleFlow__USER2.obj
 
 // true particles branch
-root trueParticles_branch  recoPFParticles_particleFlow__USER.obj
+root trueParticles_branch  recoPFParticles_particleFlow__USER2.obj
 
 
 // display parameters ----------------------------------------------------
@@ -75,7 +75,7 @@ clustering debug 1
 
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/pFDefaults.cff
-clustering thresh_Ecal_Barrel           0.5
+clustering thresh_Ecal_Barrel           0.
 
 // seed threshold for ECAL barrel rechits
 clustering thresh_Seed_Ecal_Barrel      0.15
