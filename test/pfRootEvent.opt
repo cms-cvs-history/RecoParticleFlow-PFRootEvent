@@ -30,27 +30,27 @@ root file  ../../PFProducer/test/singlegamma_pf.root
 // name of the branches of the input TTree. 
 
 // ECAL rechits branch
-root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_USER2.obj
+root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_USER.obj
 // HCAL rechits branch
-root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_USER2.obj
+root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_USER.obj
 // PS rechits branch
-root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_USER2.obj
+root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_USER.obj
 
 // ECAL clusters branch
-root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER2.obj
+root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER.obj
 // HCAL clusters branch
-root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER2.obj
+root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER.obj
 // PS clusters branch
-root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER2.obj
+root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER.obj
 
 
-root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_USER2.obj
+root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_USER.obj
 
 // reconstructed tracks branch
-root recTracks_branch      recoPFRecTracks_particleFlow__USER2.obj
+root recTracks_branch      recoPFRecTracks_particleFlow__USER.obj
 
 // true particles branch
-root trueParticles_branch  recoPFParticles_particleFlow__USER2.obj
+root trueParticles_branch  recoPFParticles_particleFlow__USER.obj
 
 
 // display parameters ----------------------------------------------------
