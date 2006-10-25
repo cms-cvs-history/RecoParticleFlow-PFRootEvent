@@ -3,7 +3,7 @@
 
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_pf.root. 
-root file  ../../PFProducer/test/singlegamma_pf.root
+root file  ../../PFProducer/test/singletau_pf.root
 
 // root file  ../../PFProducer/test/singlepi_pf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
