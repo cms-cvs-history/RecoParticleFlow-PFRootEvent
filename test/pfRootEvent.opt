@@ -1,17 +1,19 @@
 
-// root outfile  out.root
+root outfile  out.root
 
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_pf.root. 
-root file  ../../PFProducer/test/singletau_pf.root
+// root file  ../../PFProducer/test/singletau_pf.root
 
 // root file  ../../PFProducer/test/singlepi_pf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
 // root file  ../../PFProducer/test/singlegamma_pf_1_pfonly_unconverted.root
 
+// root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_0_6/SingleGammas_4/singlegamma_pf_3.root
 
 
-// root file singlegamma_pf_1.root
+// root file singlegamma_pf_3.root
+root file ../../PFProducer/test/singlegamma_pfonly_3.root
 
 
 // root file xtal_248_data_4-20GeV_last.root
@@ -84,6 +86,12 @@ display  x/y      1
 display  eta/phi  1
 // display r/z view yes/no
 display  r/z      0
+
+// filter ------------------------------------------------------------
+
+filter   nparticles  1
+
+
 
 // clustering parameters ---------------------------------------------------
 
