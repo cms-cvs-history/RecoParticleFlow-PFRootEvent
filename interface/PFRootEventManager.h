@@ -1,5 +1,5 @@
-#ifndef Demo_PFRootEvent_PFRootEventManager_h
-#define Demo_PFRootEvent_PFRootEventManager_h
+#ifndef RecoParticleFlow_PFRootEvent_PFRootEventManager_h
+#define RecoParticleFlow_PFRootEvent_PFRootEventManager_h
 
 #include "DataFormats/ParticleFlowReco/interface/PFRecHit.h"
 #include "DataFormats/ParticleFlowReco/interface/PFCluster.h"

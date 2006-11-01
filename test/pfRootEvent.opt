@@ -122,11 +122,10 @@ clustering thresh_Seed_Ecal_Endcap      0.8
 // If set to 8, it is also checked that the diagonal neighbours have a 
 // lower energy.
 clustering neighbours_Ecal		8
-clustering nCrystals_PosCalc_Ecal	9
 
 // number of crystals around the seed used in the position calculation
 // can be -1 (all crystals), 5, 9
-clustering nCrystals_PosCalc_Ecal      9
+clustering nCrystals_PosCalc_Ecal      -1
 
 
 // width of shower in ecal, cm
