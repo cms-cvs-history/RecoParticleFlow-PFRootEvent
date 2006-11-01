@@ -100,7 +100,7 @@ foreach my $rootfile (@rootfiles) {
 	    }
 	}
 	if(! $doNotSubmit) {
-	    `root -b tmpprocess.C`;
+	    `nice -n 5 root -b tmpprocess.C`;
 	    my $outrootfile = "out_$rootfile";
 	    `mv out.root $outrootfile`;
 	}
@@ -147,7 +147,7 @@ foreach my $rootfile (@rootfiles) {
 		}
 	    }
 	    if(! $doNotSubmit) {
-		`root -b tmpprocess.C`;
+		`nice -n 5 root -b tmpprocess.C`;
 		my $outrootname = "$tag1\_$tag2\_$val.root";
 		`mv out.root out_$outrootname`;
 	    }
