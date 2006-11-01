@@ -14,7 +14,7 @@ root file  ../../PFProducer/test/singletau_pf.root
 
 
 // root file singlegamma_pf_3.root
-root file ../../PFProducer/test/singlegamma_pfonly_3.root
+// root file ../../PFProducer/test/singlegamma_pfonly_3.root
 
 
 // root file xtal_248_data_4-20GeV_last.root
@@ -59,7 +59,7 @@ root trueParticles_branch  recoPFParticles_particleFlow__USER.obj
 // display parameters ----------------------------------------------------
 
 // display clusters of type 2 (particle flow clusters)
-display  cluster_algos 2 4
+display  cluster_algos 2 
 
 // size of the eta/phi canvas 
 display  viewsize_etaphi 600 400
@@ -90,7 +90,7 @@ display  r/z      0
 
 // filter ------------------------------------------------------------
 
-filter   nparticles  1
+filter   nparticles  0
 
 
 
