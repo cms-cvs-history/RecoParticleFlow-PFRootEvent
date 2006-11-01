@@ -3,7 +3,8 @@ root outfile  out.root
 
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_pf.root. 
-// root file  ../../PFProducer/test/singletau_pf.root
+// root file  ../../PFProducer/test/singlegamma_pf.root
+root file  ../../PFProducer/test/singletau_pf.root
 
 // root file  ../../PFProducer/test/singlepi_pf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
@@ -125,7 +126,7 @@ clustering nCrystals_PosCalc_Ecal	9
 
 // number of crystals around the seed used in the position calculation
 // can be -1 (all crystals), 5, 9
-clustering nCrystals_PosCalc_Ecal      -1
+clustering nCrystals_PosCalc_Ecal      9
 
 
 // width of shower in ecal, cm
