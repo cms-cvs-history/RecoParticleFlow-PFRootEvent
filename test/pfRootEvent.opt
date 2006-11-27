@@ -4,7 +4,7 @@ root outfile  out.root
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_pf.root. 
 // root file  ../../PFProducer/test/singlegamma_pf.root
-root file  ../../PFProducer/test/singletau_pf.root
+root file  ../../PFProducer/test/singletau_repf.root
 
 // root file  ../../PFProducer/test/singlepi_pf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
@@ -33,36 +33,37 @@ root file  ../../PFProducer/test/singletau_pf.root
 // name of the branches of the input TTree. 
 
 // ECAL rechits branch
-root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_USER.obj
+root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_USER2.obj
 // HCAL rechits branch
-root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_USER.obj
+root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_USER2.obj
 // PS rechits branch
-root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_USER.obj
+root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_USER2.obj
 
 // ECAL clusters branch
-root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER.obj
+root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER2.obj
 // HCAL clusters branch
-root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER.obj
+root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER2.obj
 // PS clusters branch
-root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER.obj
+root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER2.obj
 
 
-root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_USER.obj
+root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_USER2.obj
 
 // reconstructed tracks branch
-root recTracks_branch      recoPFRecTracks_particleFlow__USER.obj
+root recTracks_branch      recoPFRecTracks_particleFlow__USER2.obj
 
 // true particles branch
-root trueParticles_branch  recoPFParticles_particleFlow__USER.obj
+root trueParticles_branch  recoPFParticles_particleFlow__USER2.obj
 
 
 // display parameters ----------------------------------------------------
 
 // display clusters of type 2 (particle flow clusters)
-display  cluster_algos 2 
+display  cluster_algos 4
+display  cluster_lines 1
 
 // size of the eta/phi canvas 
-display  viewsize_etaphi 600 400
+display  viewsize_etaphi 400 200
 // size of the x/y canvas  
 display  viewsize_xy     400 400
 
