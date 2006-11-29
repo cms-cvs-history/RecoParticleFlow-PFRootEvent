@@ -4,30 +4,22 @@ root outfile  out.root
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_pf.root. 
 // root file  ../../PFProducer/test/singlegamma_pf.root
-root file  ../../PFProducer/test/singletau_pf.root
+// root file  ../../PFProducer/test/singletau_pf.root
+// root file  /afs/cern.ch/user/c/cbern/scratch0/CMS/CMSSW_1_0_6/src/RecoParticleFlow/PFProducer/test/singletau_pf.root
 
 // root file  ../../PFProducer/test/singlepi_pf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
 // root file  ../../PFProducer/test/singlegamma_pf_1_pfonly_unconverted.root
 
-// root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_0_6/SingleGammas_4/singlegamma_pf_3.root
+// root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_0_6/SingleTaus/singletau_pf_2.root
 
 
 // root file singlegamma_pf_3.root
-root file ../../PFProducer/test/singlegamma_pfonly_3.root
+// root file ../../PFProducer/test/singlegamma_pfonly_3.root
 
 
-// root file xtal_248_data_4-20GeV_last.root
-// root file xtal_248_data_4GeV_last.root
-// root file xtal_248_simulation_4GeV_last.root
-
-// root file ../../PFProducer/test/b_singlegamma_pf_22.root
-
-// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_data_4GeV_last.root 
-
-// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_simulation_4_20GeV_35_new.root
-
-// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_simulation_20GeV_35_new.root
+root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_data_4-20GeV_last.root
+// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_simulation_4-20GeV_last.root
 
 
 // name of the branches of the input TTree. 
@@ -74,7 +66,7 @@ display  color_clusters		1
 // the eta/phi display zooms to the rechit with maximum energy. 
 // display/zoom_factor roughly gives the size of the view around this rechit
 // in number of ecal cells	
-display  zoom_factor		15
+display  zoom_factor		5
 
 // display reconstructed tracks yes/no
 display  rectracks              1
@@ -90,7 +82,7 @@ display  r/z      0
 
 // filter ------------------------------------------------------------
 
-filter   nparticles  1
+filter   nparticles  0
 
 
 
@@ -125,11 +117,11 @@ clustering neighbours_Ecal		8
 
 // number of crystals around the seed used in the position calculation
 // can be -1 (all crystals), 5, 9
-clustering nCrystals_PosCalc_Ecal      -1
+clustering nCrystals_PosCalc_Ecal      9
 
 
 // width of shower in ecal, cm
-clustering shower_Sigma_Ecal		5
+clustering shower_Sigma_Ecal	3.5
 
 
 
