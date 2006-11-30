@@ -142,6 +142,7 @@ void ResidualFitter::ShowFit(TH2* histo2d, double x, double y) {
 
   canvas_->Modified();
   canvas_->Update();
+  canvas_->cd();
 }
 
 
