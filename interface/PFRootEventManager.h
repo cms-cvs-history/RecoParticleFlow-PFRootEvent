@@ -129,7 +129,8 @@ class PFRootEventManager {
   /// performs particle flow
   void particleFlow();
 
-  /// display one entry 
+
+  /// process and display one entry 
   void display(int ientry);
 
 /*   void displayXY(); */
@@ -142,7 +143,11 @@ class PFRootEventManager {
 /*   void displayEtaPhiE(); */
 /*   void displayEtaPhiH(); */
   
- 
+  /// display next selected entry. if init, restart from i=0
+  void displayNext(bool init);
+
+  /// display current entry
+  void display();
 
   /// display x/y or r/z
   void displayView(unsigned viewType);

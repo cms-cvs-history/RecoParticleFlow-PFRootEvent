@@ -542,6 +542,8 @@ bool PFRootEventManager::processEntry(int entry) {
 
   particleFlow();
 
+  if(trueParticles_.size() != 1 ) return false;
+
   return true;
 }
 
@@ -950,14 +952,34 @@ void PFRootEventManager::particleFlow() {
 void PFRootEventManager::display(int ientry) {
   
   processEntry(ientry);
+  display();
+}
+
+
+
+void PFRootEventManager::displayNext(bool init) {
+
+  static int ientry=0;
+  if( init ) ientry=0; // restarting from 0
+
+  bool ok = false;
+  while(!ok && ientry<tree_->GetEntries() ) {
+    ok = processEntry(ientry);
+    // iCurrentEntry_=ientry;
+    ientry++;
+  }
+  display();
+}
+
+
+void PFRootEventManager::display() {
   if(displayRZ_) displayView(RZ);
   if(displayXY_) displayView(XY);
   if(displayEtaPhi_) { 
     displayView(EPE);
     displayView(EPH);
-  }
+  }  
 }
-
 
 
 void PFRootEventManager::displayView(unsigned viewType) {
