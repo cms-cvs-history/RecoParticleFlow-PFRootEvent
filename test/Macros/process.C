@@ -1,6 +1,7 @@
 {
 // initialize the core of the framework, and load the PFRootEvent 
 // library, which contains the ROOT interface
+
 gSystem->Load("libFWCoreFWLite.so");
 gSystem->Load("libRecoParticleFlowPFRootEvent.so");
 AutoLibraryLoader::enable();
@@ -11,7 +12,7 @@ ROOT::Cintex::Cintex::Enable();
 PFRootEventManagerColin em("pfRootEvent.opt");
 
 int n =  em.tree_->GetEntries();
-// int n = 100;
+// int n = 40;
 for(unsigned i=0; i<n; i++) {
   em.processEntry(i);
 }

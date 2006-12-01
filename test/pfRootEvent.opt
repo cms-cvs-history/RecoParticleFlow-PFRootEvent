@@ -18,9 +18,11 @@ root outfile  out.root
 // root file ../../PFProducer/test/singlegamma_pfonly_3.root
 
 
-root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_data_4-20GeV_last.root
+// root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_data_4-20GeV_last.root
 // root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_simulation_4-20GeV_last.root
 
+
+root file b_singlegamma_pf_100.root
 
 // name of the branches of the input TTree. 
 
@@ -51,7 +53,7 @@ root trueParticles_branch  recoPFParticles_particleFlow__USER.obj
 // display parameters ----------------------------------------------------
 
 // display clusters of type 2 (particle flow clusters)
-display  cluster_algos 2 4
+display  cluster_algos 4
 
 // size of the eta/phi canvas 
 display  viewsize_etaphi 600 400
@@ -74,7 +76,7 @@ display  rectracks              1
 display  particles              1              
 
 // display x/y view yes/no
-display  x/y      1
+display  x/y      0
 // display eta/phi view yes/no
 display  eta/phi  1
 // display r/z view yes/no
