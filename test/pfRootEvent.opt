@@ -4,9 +4,10 @@ root outfile  out.root
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_pf.root. 
 // root file  ../../PFProducer/test/singlegamma_pf.root
-root file  ../../PFProducer/test/singletau_repf.root
 
-// root file  ../../PFProducer/test/singlepi_pf.root
+root file  alex.root
+
+// root file  ../../PFProducer/test/singlegamma_repf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
 // root file  ../../PFProducer/test/singlegamma_pf_1_pfonly_unconverted.root
 
@@ -49,6 +50,8 @@ root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER2.obj
 
 root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_USER2.obj
 
+root caloTowers_branch     CaloTowersSorted_towerMaker__USER2.obj
+
 // reconstructed tracks branch
 root recTracks_branch      recoPFRecTracks_particleFlow__USER2.obj
 
@@ -59,8 +62,8 @@ root trueParticles_branch  recoPFParticles_particleFlow__USER2.obj
 // display parameters ----------------------------------------------------
 
 // display clusters of type 2 (particle flow clusters)
-display  cluster_algos 4
-display  cluster_lines 1
+display  cluster_algos 2
+display  cluster_lines 0
 
 // size of the eta/phi canvas 
 display  viewsize_etaphi 400 200
@@ -75,7 +78,7 @@ display  color_clusters		1
 // the eta/phi display zooms to the rechit with maximum energy. 
 // display/zoom_factor roughly gives the size of the view around this rechit
 // in number of ecal cells	
-display  zoom_factor		15
+display  zoom_factor		20
 
 // display reconstructed tracks yes/no
 display  rectracks              1
@@ -87,7 +90,7 @@ display  x/y      1
 // display eta/phi view yes/no
 display  eta/phi  1
 // display r/z view yes/no
-display  r/z      0
+display  r/z      1
 
 // filter ------------------------------------------------------------
 
@@ -122,12 +125,11 @@ clustering thresh_Seed_Ecal_Endcap      0.8
 // have a lower energy than the seed. 
 // If set to 8, it is also checked that the diagonal neighbours have a 
 // lower energy.
-clustering neighbours_Ecal		8
-clustering nCrystals_PosCalc_Ecal	9
+clustering neighbours_Ecal		4
 
 // number of crystals around the seed used in the position calculation
 // can be -1 (all crystals), 5, 9
-clustering nCrystals_PosCalc_Ecal      9
+clustering nCrystals_PosCalc_Ecal      5
 
 
 // width of shower in ecal, cm

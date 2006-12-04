@@ -9,6 +9,7 @@ ROOT::Cintex::Cintex::Enable();
 
 // create a PFRootEventManager
 PFRootEventManager em("pfRootEvent.opt");
+// em.readOptions("pfRootEvent.opt");
 
 // display entry number 2
 int i=0;
