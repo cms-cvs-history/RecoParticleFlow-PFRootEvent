@@ -11,7 +11,7 @@ ROOT::Cintex::Cintex::Enable();
 PFRootEventManager em("pfRootEvent.opt");
 
 // display entry number 2
-int i=0;
+int i=1126;
 em.display(i++);
 
 // look for ECAL rechit with maximum energy

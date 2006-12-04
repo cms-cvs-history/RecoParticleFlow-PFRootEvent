@@ -22,7 +22,7 @@ root outfile  out.root
 // root file /afs/cern.ch/user/c/cbern/scratch0/Logbook_CMS/Analysis/EFLOW/ECAL_clustering/RealData/xtal_248_simulation_4-20GeV_last.root
 
 
-root file b_singlegamma_pf_100.root
+root file b_singlegamma_pf_114.root
 
 // name of the branches of the input TTree. 
 
@@ -99,13 +99,13 @@ clustering debug 0
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/pFDefaults.cff
 
-clustering thresh_Ecal_Barrel           0.07
+clustering thresh_Ecal_Barrel           0.08
 
 // seed threshold for ECAL barrel rechits
 clustering thresh_Seed_Ecal_Barrel      0.23
 
 // threshold on ECAL endcap rechits.
-clustering thresh_Ecal_Endcap           0.05
+clustering thresh_Ecal_Endcap           0.15
 
 // seed threshold for ECAL endcap rechits
 clustering thresh_Seed_Ecal_Endcap      0.8
