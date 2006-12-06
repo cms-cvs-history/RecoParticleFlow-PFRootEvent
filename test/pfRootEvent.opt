@@ -5,13 +5,12 @@ root outfile  out.root
 // with the command: cmsRun singletau_pf.root. 
 // root file  ../../PFProducer/test/singlegamma_pf.root
 
-root file  alex.root
 
 // root file  ../../PFProducer/test/singlegamma_repf.root
 // root file  ../../PFClusterProducer/test/pfclusters.root
 // root file  ../../PFProducer/test/singlegamma_pf_1_pfonly_unconverted.root
 
-// root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_0_6/SingleGammas_4/singlegamma_pf_3.root
+root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_1_1/SingleGammas_2/singlegamma_repf_99.root
 
 
 // root file singlegamma_pf_3.root
@@ -109,13 +108,13 @@ clustering debug 0
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/pFDefaults.cff
 
-clustering thresh_Ecal_Barrel           0.07
+clustering thresh_Ecal_Barrel           0.08
 
 // seed threshold for ECAL barrel rechits
-clustering thresh_Seed_Ecal_Barrel      0.23
+clustering thresh_Seed_Ecal_Barrel      0.15
 
 // threshold on ECAL endcap rechits.
-clustering thresh_Ecal_Endcap           0.05
+clustering thresh_Ecal_Endcap           0.15
 
 // seed threshold for ECAL endcap rechits
 clustering thresh_Seed_Ecal_Endcap      0.8
@@ -129,7 +128,7 @@ clustering neighbours_Ecal		4
 
 // number of crystals around the seed used in the position calculation
 // can be -1 (all crystals), 5, 9
-clustering nCrystals_PosCalc_Ecal      5
+clustering nCrystals_PosCalc_Ecal      -1
 
 
 // width of shower in ecal, cm
@@ -174,17 +173,21 @@ clustering thresh_Seed_PS		0.0005
 // particle flow parameters ----------------------------------------------
 
 // ECAL resolution in eta, vs (eta,E)
-particle_flow resolution_map_ECAL_eta 	  ../../PFProducer/data/resmap_ECAL_eta.dat
+//particle_flow resolution_map_ECAL_eta 	  ../../PFProducer/data/resmap_ECAL_eta.dat
 
 // ECAL resolution in phi, vs (eta,E)
-particle_flow resolution_map_ECAL_phi 	  ../../PFProducer/data/resmap_ECAL_phi.dat
+//particle_flow resolution_map_ECAL_phi 	  ../../PFProducer/data/resmap_ECAL_phi.dat
 
 // HCAL resolution in eta, vs (eta,E)
-particle_flow resolution_map_HCAL_eta 	  ../../PFProducer/data/resmap_HCAL_eta.dat
+//particle_flow resolution_map_HCAL_eta 	  ../../PFProducer/data/resmap_HCAL_eta.dat
 
 // HCAL resolution in phi, vs (eta,E)
-particle_flow resolution_map_HCAL_phi 	  ../../PFProducer/data/resmap_HCAL_phi.dat
+//particle_flow resolution_map_HCAL_phi 	  ../../PFProducer/data/resmap_HCAL_phi.dat
 
+particle_flow resolution_map_ECAL_eta m1
+particle_flow resolution_map_ECAL_phi m2
+particle_flow resolution_map_HCAL_eta m3
+particle_flow resolution_map_HCAL_phi m4
 
 // chi2 maximum limit for ECAL/Track association
 particle_flow chi2_ECAL_Track   50
