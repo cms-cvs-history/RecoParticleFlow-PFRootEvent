@@ -99,7 +99,7 @@ clustering thresh_Seed_Ecal_Endcap      0.8
 // have a lower energy than the seed. 
 // If set to 8, it is also checked that the diagonal neighbours have a 
 // lower energy.
-clustering neighbours_Ecal		4
+clustering neighbours_Ecal		8
 
 // number of crystals around the seed used in the position calculation
 // can be -1 (all crystals), 5, 9
