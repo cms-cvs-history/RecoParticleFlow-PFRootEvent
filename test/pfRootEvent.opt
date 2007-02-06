@@ -3,6 +3,7 @@ root outfile  out.root
 
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_repf.cfg 
+// root file  /castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_2_0_pre1/SingleGammas_1/singlegamma_pf_10.root
 root file  ../../PFProducer/test/singletau_repf.root
 
 // name of the branches of the input TTree. 
@@ -52,7 +53,7 @@ display  color_clusters		1
 // the eta/phi display zooms to the rechit with maximum energy. 
 // display/zoom_factor roughly gives the size of the view around this rechit
 // in number of ecal cells	
-display  zoom_factor		20
+display  zoom_factor		15
 
 // display reconstructed tracks yes/no
 display  rectracks              1
@@ -79,11 +80,12 @@ clustering on/off 1
 
 // print debug printouts from the clustering algorithm
 clustering debug 0
+rootevent debug 0
 
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/pFDefaults.cff
 
-clustering thresh_Ecal_Barrel           0.08
+clustering thresh_Ecal_Barrel           0.04
 
 // seed threshold for ECAL barrel rechits
 clustering thresh_Seed_Ecal_Barrel      0.2
@@ -103,7 +105,8 @@ clustering neighbours_Ecal		8
 
 // number of crystals around the seed used in the position calculation
 // can be -1 (all crystals), 5, 9
-clustering nCrystals_PosCalc_Ecal      9
+clustering posCalc_nCrystal_Ecal      9
+clustering posCalc_p1_Ecal            -1
 
 
 // width of shower in ecal, cm
@@ -123,11 +126,11 @@ clustering depthCor_A_preshower   0.89
 clustering depthCor_B_preshower   4.0
 
 // threshold on HCAL barrel rechits
-clustering thresh_Hcal_Barrel           0.
+clustering thresh_Hcal_Barrel           0.5
 // seed threshold for HCAL barrel rechits
 clustering thresh_Seed_Hcal_Barrel      1.4
 // threshold on HCAL endcap rechits
-clustering thresh_Hcal_Endcap           0.
+clustering thresh_Hcal_Endcap           0.5
 // seed threshold for HCAL endcap rechits
 clustering thresh_Seed_Hcal_Endcap      1.4
 
@@ -138,12 +141,14 @@ clustering thresh_Seed_Hcal_Endcap      1.4
 // If set to 8, it is also checked that the diagonal neighbours have a 
 // lower energy.
 clustering neighbours_Hcal		4
+clustering posCalc_p1_Hcal              0
 
 // threshold on preshower rechits
 clustering thresh_PS			0.0001
 // seed threshold for preshower rechits
 clustering thresh_Seed_PS		0.0005
 
+clustering posCalc_p1_PS                0
 
 // particle flow parameters ----------------------------------------------
 
@@ -178,7 +183,7 @@ particle_flow   nsigma_neutral    3
 // for PFRootEventManager::print()
 
 // print rechits yes/no
-print rechits  1
+print rechits  0
 // print clusters yes/no
 print clusters 1
 // print particle flow blocks yes/no

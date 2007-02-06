@@ -12,7 +12,7 @@ PFRootEventManager em("pfRootEvent.opt");
 // em.readOptions("pfRootEvent.opt");
 
 // display entry number 2
-int i=0;
+int i=2;
 em.display(i++);
 
 // look for ECAL rechit with maximum energy
