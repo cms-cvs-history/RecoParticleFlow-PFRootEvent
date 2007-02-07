@@ -8,11 +8,12 @@ gSystem->Load("libCintex.so");
 ROOT::Cintex::Cintex::Enable();
 
 // create a PFRootEventManager
-PFRootEventManager em("pfRootEvent.opt");
+// PFRootEventManager em("pfRootEvent.opt");
+PFRootEventManager em("readClusters.opt");
 // em.readOptions("pfRootEvent.opt");
 
 // display entry number 2
-int i=2;
+int i=0;
 em.display(i++);
 
 // look for ECAL rechit with maximum energy
