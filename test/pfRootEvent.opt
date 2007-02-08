@@ -85,7 +85,7 @@ rootevent debug 0
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/pFDefaults.cff
 
-clustering thresh_Ecal_Barrel           0.04
+clustering thresh_Ecal_Barrel           0.06
 
 // seed threshold for ECAL barrel rechits
 clustering thresh_Seed_Ecal_Barrel      0.2
