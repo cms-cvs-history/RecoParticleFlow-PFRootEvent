@@ -31,7 +31,7 @@ root caloTowers_branch     CaloTowersSorted_towerMaker__USER2.obj
 root recTracks_branch      recoPFRecTracks_particleFlow__USER2.obj
 
 // true particles branch
-root trueParticles_branch  recoPFParticles_particleFlow__USER2.obj
+root trueParticles_branch  recoPFSimParticles_particleFlow__USER2.obj
 
 
 // display parameters ----------------------------------------------------
@@ -85,10 +85,10 @@ rootevent debug 0
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/pFDefaults.cff
 
-clustering thresh_Ecal_Barrel           0.06
+clustering thresh_Ecal_Barrel           0.08
 
 // seed threshold for ECAL barrel rechits
-clustering thresh_Seed_Ecal_Barrel      0.2
+clustering thresh_Seed_Ecal_Barrel     	0.2
 
 // threshold on ECAL endcap rechits.
 clustering thresh_Ecal_Endcap           0.15
