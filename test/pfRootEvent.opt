@@ -4,35 +4,36 @@ root outfile  out.root
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_repf.cfg 
 // root file  /castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_2_0_pre1/SingleGammas_1/singlegamma_pf_10.root
-root file  ../../PFProducer/test/singletau_repf.root
+// root file  ../../PFProducer/test/singletau_repf.root
+// root file /tmp/azabi/CMSSW_1_2_0_SL4/src/RecoParticleFlow/PFProducer/test/singletau_pf.root
+root file /castor/cern.ch/user/a/azabi/CRABOUT/CMSSW120/TAU/TEST/singletau_pf_2.root
 
 // name of the branches of the input TTree. 
 
 // ECAL rechits branch
-root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_USER2.obj
+root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_USER.obj
 // HCAL rechits branch
-root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_USER2.obj
+root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_USER.obj
 // PS rechits branch
-root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_USER2.obj
+root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_USER.obj
 
 // ECAL clusters branch
-root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER2.obj
+root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER.obj
 // HCAL clusters branch
-root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER2.obj
+root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER.obj
 // PS clusters branch
-root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER2.obj
+root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER.obj
 
 
-root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_USER2.obj
+root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_USER.obj
 
-root caloTowers_branch     CaloTowersSorted_towerMaker__USER2.obj
+root caloTowers_branch     CaloTowersSorted_towerMaker__USER.obj
 
 // reconstructed tracks branch
-root recTracks_branch      recoPFRecTracks_particleFlow__USER2.obj
+root recTracks_branch      recoPFRecTracks_particleFlow__USER.obj
 
 // true particles branch
-root trueParticles_branch  recoPFSimParticles_particleFlow__USER2.obj
-
+root trueParticles_branch  recoPFSimParticles_particleFlow__USER.obj
 
 // display parameters ----------------------------------------------------
 
@@ -71,8 +72,6 @@ display  r/z      1
 
 filter   nparticles  0
 
-
-
 // clustering parameters ---------------------------------------------------
 
 // perform clustering yes/no. If no, clusters are read from the TTree
@@ -88,7 +87,7 @@ rootevent debug 0
 clustering thresh_Ecal_Barrel           0.08
 
 // seed threshold for ECAL barrel rechits
-clustering thresh_Seed_Ecal_Barrel     	0.2
+clustering thresh_Seed_Ecal_Barrel     	0.20
 
 // threshold on ECAL endcap rechits.
 clustering thresh_Ecal_Endcap           0.15
@@ -179,6 +178,9 @@ particle_flow chi2_ECAL_HCAL	10
 // number of sigmas for neutral energy detection
 particle_flow   nsigma_neutral    3
 
+//calibration
+particle_flow   ecalib 0.11 1.07
+
 // print flags ------------------------------------------------------------
 // for PFRootEventManager::print()
 
@@ -193,3 +195,19 @@ print true_particles     0
 
 // verbosity 
 print verbosity 0
+
+//Jet Algorithm options ---------------------------------------------------
+//making jets from PF objects yes/no
+jets dojets 1
+
+//cone size
+jets cone_angle 0.5
+
+//Et threshold
+jets seed_et 0.4
+
+//distance threshold for merging jets
+jets cone_merge 100
+
+//debug yes/no
+jets jets_debug 1
