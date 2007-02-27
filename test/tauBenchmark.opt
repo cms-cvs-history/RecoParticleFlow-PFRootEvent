@@ -159,14 +159,10 @@ clustering posCalc_p1_PS                0
 // HCAL resolution in phi, vs (eta,E)
 //particle_flow resolution_map_HCAL_phi 	  ../../PFProducer/data/resmap_HCAL_phi.dat
 
-//particle_flow resolution_map_ECAL_eta ../../PFProducer/data/resmap_ECAL_eta.dat
-particle_flow resolution_map_ECAL_eta /afs/cern.ch/user/a/azabi/scratch0/CMSSW_1_2_0_SL4_PROD/src/RecoParticleFlow/PFProducer/data/resmap_ECAL_eta.dat
-//particle_flow resolution_map_ECAL_phi ../../PFProducer/data/resmap_ECAL_phi.dat
-particle_flow resolution_map_ECAL_phi /afs/cern.ch/user/a/azabi/scratch0/CMSSW_1_2_0_SL4_PROD/src/RecoParticleFlow/PFProducer/data/resmap_ECAL_phi.dat
-//particle_flow resolution_map_HCAL_eta ../../PFProducer/data/resmap_HCAL_eta.dat
-particle_flow resolution_map_HCAL_eta /afs/cern.ch/user/a/azabi/scratch0/CMSSW_1_2_0_SL4_PROD/src/RecoParticleFlow/PFProducer/data/resmap_HCAL_eta.dat
-//particle_flow resolution_map_HCAL_phi ../../PFProducer/data/resmap_HCAL_phi.dat
-particle_flow resolution_map_HCAL_phi /afs/cern.ch/user/a/azabi/scratch0/CMSSW_1_2_0_SL4_PROD/src/RecoParticleFlow/PFProducer/data/resmap_HCAL_phi.dat
+particle_flow resolution_map_ECAL_eta ../../PFProducer/data/resmap_ECAL_eta.dat
+particle_flow resolution_map_ECAL_phi ../../PFProducer/data/resmap_ECAL_phi.dat
+particle_flow resolution_map_HCAL_eta ../../PFProducer/data/resmap_HCAL_eta.dat
+particle_flow resolution_map_HCAL_phi ../../PFProducer/data/resmap_HCAL_phi.dat
 
 // chi2 maximum limit for ECAL/Track association
 particle_flow chi2_ECAL_Track   50
