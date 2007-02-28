@@ -22,8 +22,8 @@ root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_USER.obj
 root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_USER.obj
 // PS clusters branch
 root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_USER.obj
-//ECAL island clusters
-root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_USER.obj
+//ECAL island clusters //not working in 1_3_0_pre3 
+//root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_USER.obj
 
 // CaloTowers
 root caloTowers_branch     CaloTowersSorted_towerMaker__USER.obj
@@ -81,7 +81,7 @@ clustering debug 0
 rootevent debug 0
 
 // threshold on ECAL barrel rechits. Note that a threshold might have
-// been applied already, see RecoParticleFlow/PFProducer/data/pFDefaults.cff
+// been applied already, see RecoParticleFlow/PFProducer/data/particleFlow.cff
 
 clustering thresh_Ecal_Barrel           0.07
 
