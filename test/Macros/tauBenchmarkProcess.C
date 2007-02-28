@@ -9,7 +9,7 @@ gSystem->Load("libCintex.so");
 ROOT::Cintex::Cintex::Enable();
 
 // create a PFRootEventManager
-PFRootEventManagerColin em("pfRootEvent.opt");
+PFRootEventManager em("tauBenchmark.opt");
 
 if(em.tree_) {
   int n =  em.tree_->GetEntries();
