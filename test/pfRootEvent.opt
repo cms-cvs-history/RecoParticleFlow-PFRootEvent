@@ -7,6 +7,7 @@ root outfile  out.root
 // root file /castor/cern.ch/user/a/azabi/EFLOW/TAU/CMSSW120/NEW/singletau_pf_20.root
 // root file /castor/cern.ch/user/a/azabi/CRABOUT/CMSSW120/TAU/TEST/singletau_pf_8.root 
 root file  ../../PFProducer/test/singletau_repf.root
+// root file  ../../PFClusterProducer/test/pfclusters.root
 
 // name of the branches of the input TTree. 
 
