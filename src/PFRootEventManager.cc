@@ -30,6 +30,7 @@
 
 #include <iostream>
 #include <vector>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -335,6 +336,12 @@ void PFRootEventManager::readOptions(const char* file,
   options_->GetOpt("particle_flow", "resolution_map_HCAL_eta", map_HCAL_eta);
   string map_HCAL_phi;
   options_->GetOpt("particle_flow", "resolution_map_HCAL_phi", map_HCAL_phi);
+
+  //getting resolution maps
+  getMap(map_ECAL_eta);
+  getMap(map_ECAL_phi);
+  getMap(map_HCAL_eta);
+  getMap(map_HCAL_phi);
 
   try{
     PFBlock::setResMaps(map_ECAL_eta,
@@ -2120,7 +2127,34 @@ double PFRootEventManager::getMaxEHcal() {
   return maxERecHitHcal_;
 }
 
+void PFRootEventManager::getMap(string& map) {
 
+  string dollar = "$";
+  string slash  = "/";
+  int    lengh  = map.find(slash,0) - map.find(dollar,0) + 1;
+  string env_variable =
+    map.substr( ( map.find(dollar,0) + 1 ), lengh -2);
+  //cout << "var=" << env_variable << endl;
+
+  const char* name = env_variable.c_str();
+  string directory;
+  try{
+    directory = getenv(name);
+    directory += "/";
+  }
+  catch( const string& err ) {
+    cout<<err<<endl;
+    cout << "ERROR: YOU SHOULD SET THE VARIABLE "
+         << env_variable << endl;
+  }
+
+  map.replace( 0, lengh , directory);
+
+  if (verbosity_ == VERBOSE ) {
+    cout << "Looking for resolution " << map << endl;
+    cout << map << endl;
+  }
+}
 
 void  PFRootEventManager::print() const {
 
