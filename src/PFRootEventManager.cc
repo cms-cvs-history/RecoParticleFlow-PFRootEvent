@@ -460,7 +460,7 @@ void PFRootEventManager::connect( const char* infilename ) {
 
 
   // retrieve CMSSW version 
-
+  /*
   releaseVersion_ = "UNKNOWN";
   TTree* metadata = (TTree*) file_->Get("MetaData");
   if( metadata ) {
@@ -483,7 +483,7 @@ void PFRootEventManager::connect( const char* infilename ) {
     cerr<<"MetaData TTree Events not found in file "<<inFileName_<<endl;
   }
   delete metadata; 
-
+  */
 
   tree_ = (TTree*) file_->Get("Events");  
   if(!tree_) {
@@ -493,8 +493,6 @@ void PFRootEventManager::connect( const char* infilename ) {
     return; 
   }
     
-
-  
   // hits branches ----------------------------------------------
 
   string rechitsECALbranchname;
