@@ -4,9 +4,11 @@ root outfile  tauBenchmark.root
 // source root file, generated in src/RecoParticleFlow/PFProducer/test
 // with the command: cmsRun singletau_all.cfg 
 
-root file /castor/cern.ch/user/a/azabi/EFLOW/TAU/CMSSW120/NEW/singletau_pf_20.root
-// root file  ../../PFProducer/test/singletau_repf.root
-// root file /castor/cern.ch/user/a/azabi/EFLOW/TAU/CMSSW130PRE4/singletau_pf_1.root
+//root file /castor/cern.ch/user/a/azabi/EFLOW/TAU/CMSSW120/NEW/singletau_pf_20.root
+//root file  ../../PFProducer/test/singletau_repf.root
+root file /castor/cern.ch/user/a/azabi/EFLOW/TAU/CMSSW130PRE4/singletau_pf_1.root
+
+root outtree 0
 
 // name of the branches of the input TTree. 
 
@@ -75,16 +77,21 @@ filter   nparticles  0
 // clustering parameters ---------------------------------------------------
 
 // perform clustering yes/no. If no, clusters are read from the TTree
-clustering on/off 1
+clustering on/off 1 
 
 // print debug printouts from the clustering algorithm
 clustering debug 0
 rootevent debug 0
 
+//Find RecHits neighbours: Need to be set to false if using 
+//a version of the clustering using indexes (i.e. after revision 1.20
+//of PFClusterAlgo).
+clustering findRecHitNeighbours 1 
+
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/particleFlow.cff
 
-clustering thresh_Ecal_Barrel           0.07
+clustering thresh_Ecal_Barrel           0.08
 
 // seed threshold for ECAL barrel rechits
 clustering thresh_Seed_Ecal_Barrel     	0.23
@@ -104,8 +111,8 @@ clustering neighbours_Ecal		8
 
 // number of crystals around the seed used in the position calculation
 // can be -1 (all crystals), 5, 9
-clustering posCalc_nCrystal_Ecal      9
-clustering posCalc_p1_Ecal            -1
+clustering posCalc_nCrystal_Ecal        9
+clustering posCalc_p1_Ecal              -1
 
 // width of shower in ecal, cm
 clustering shower_Sigma_Ecal		5
@@ -137,7 +144,11 @@ clustering thresh_Seed_Hcal_Endcap      1.4
 // If set to 8, it is also checked that the diagonal neighbours have a 
 // lower energy.
 clustering neighbours_Hcal		4
-clustering posCalc_p1_Hcal              0
+clustering posCalc_p1_Hcal              0 
+clustering posCalc_nCrystal_Hcal       -1
+
+// width of shower in Hcal, cm
+clustering shower_Sigma_Hcal	        5 
 
 // threshold on preshower rechits
 clustering thresh_PS			0.0001
