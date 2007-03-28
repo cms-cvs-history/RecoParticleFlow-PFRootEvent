@@ -2109,16 +2109,23 @@ void PFRootEventManager::getMap(string& map) {
 
   string dollar = "$";
   string slash  = "/";
+  
+  // protection necessary or segv !!
+  int dollarPos = map.find(dollar,0);
+  if( dollarPos == -1 ) return;
+
   int    lengh  = map.find(slash,0) - map.find(dollar,0) + 1;
   string env_variable =
     map.substr( ( map.find(dollar,0) + 1 ), lengh -2);
-  //cout << "var=" << env_variable << endl;
+  //  cout << "var=" << env_variable << endl;
 
   const char* name = env_variable.c_str();
   string directory;
   try{
+    // cout<<"call getenv"<<endl;
     directory = getenv(name);
     directory += "/";
+    cout<<directory<<endl;
   }
   catch( const string& err ) {
     cout<<err<<endl;
