@@ -82,6 +82,9 @@ clustering on/off 1
 clustering debug 0
 rootevent debug 0
 
+
+clustering  findRecHitNeighbours  0
+
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/particleFlow.cff
 
@@ -192,7 +195,7 @@ print PFBs     0
 print true_particles     0
 
 // verbosity 
-print verbosity 0
+print verbosity 1
 
 //Jet Algorithm options ---------------------------------------------------
 //making jets from PF objects yes/no
