@@ -144,11 +144,11 @@ clustering thresh_Seed_Hcal_Endcap      1.4
 // If set to 8, it is also checked that the diagonal neighbours have a 
 // lower energy.
 clustering neighbours_Hcal		4
-clustering posCalc_p1_Hcal              0 
-clustering posCalc_nCrystal_Hcal       -1
+clustering posCalc_p1_Hcal            1.0 
+clustering posCalc_nCrystal_Hcal        5
 
 // width of shower in Hcal, cm
-clustering shower_Sigma_Hcal	        5 
+clustering shower_Sigma_Hcal	       10
 
 // threshold on preshower rechits
 clustering thresh_PS			0.0001
