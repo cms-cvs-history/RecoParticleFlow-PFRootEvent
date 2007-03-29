@@ -177,7 +177,7 @@ particle_flow chi2_ECAL_HCAL	10
 particle_flow   nsigma_neutral    3
 
 //calibration
-particle_flow   ecalib 0.11 1.07
+particle_flow   ecalib 0. 1.
 
 // print flags ------------------------------------------------------------
 // for PFRootEventManager::print()
