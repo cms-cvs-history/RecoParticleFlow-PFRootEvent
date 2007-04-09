@@ -144,11 +144,11 @@ clustering thresh_Seed_Hcal_Endcap      1.4
 // If set to 8, it is also checked that the diagonal neighbours have a 
 // lower energy.
 clustering neighbours_Hcal		4
-clustering posCalc_p1_Hcal              0 
-clustering posCalc_nCrystal_Hcal       -1
+clustering posCalc_p1_Hcal            1.0 
+clustering posCalc_nCrystal_Hcal        5
 
 // width of shower in Hcal, cm
-clustering shower_Sigma_Hcal	        5 
+clustering shower_Sigma_Hcal	       10
 
 // threshold on preshower rechits
 clustering thresh_PS			0.0001
@@ -187,7 +187,7 @@ particle_flow chi2_ECAL_HCAL	10
 particle_flow   nsigma_neutral    3
 
 //calibration
-particle_flow   ecalib 0. 1.
+particle_flow   ecalib 0.11 1.07
 
 // print flags ------------------------------------------------------------
 // for PFRootEventManager::print()
@@ -218,4 +218,4 @@ jets seed_et 0.4
 jets cone_merge 100
 
 //debug yes/no
-jets jets_debug 0
+jets jets_debug 0	
