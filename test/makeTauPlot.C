@@ -6,8 +6,9 @@
 
 TFile *f = new TFile("tauall.root");
 
-h_deltaETvisible_MCPF->SetStats(0); 
+h_deltaETvisible_MCPF->SetStats(1); 
 h_deltaETvisible_MCPF->GetXaxis()->SetTitle("#DeltaE_{T} (GeV)");
+h_deltaETvisible_MCPF->SetTitle("Tau Benchmark, E_{T}(rec)-E_{T}(true)");
 h_deltaETvisible_MCPF->SetLineColor(2);
 h_deltaETvisible_MCPF->Draw();
 h_deltaETvisible_MCEHT->Draw("same");
