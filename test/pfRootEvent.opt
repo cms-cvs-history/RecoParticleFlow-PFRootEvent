@@ -2,13 +2,8 @@
 root outfile  out.root
 
 
-<<<<<<< pfRootEvent.opt
-
-root file  ../../PFProducer/test/ditau_read_block.root
-=======
 
 root file  ../../PFProducer/test/candidates.root
->>>>>>> 1.45
 
 // name of the branches of the input TTree. 
 
@@ -32,19 +27,13 @@ root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_BLOCK.obj
 // root caloTowers_branch     CaloTowersSorted_towerMaker__BLOCK.obj
 
 // reconstructed tracks branch
-<<<<<<< pfRootEvent.opt
-root recTracks_branch      recoPFRecTracks_particleFlowTrack__BLOCK.obj
-=======
+
 root recTracks_branch      recoPFRecTracks_elecpreid__BLOCK.obj
 root stdTracks_branch      recoTracks_trackRefitter__BLOCK.obj
->>>>>>> 1.45
 
 // true particles branch
-<<<<<<< pfRootEvent.opt
-root trueParticles_branch  recoPFSimParticles_particleFlowTrack__BLOCK.obj
-=======
+
 root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__BLOCK.obj
->>>>>>> 1.45
 
 // display parameters ----------------------------------------------------
 
@@ -167,17 +156,10 @@ clustering posCalc_p1_PS                0
 // particle flow parameters ----------------------------------------------
 
 
-<<<<<<< pfRootEvent.opt
-particle_flow resolution_map_ECAL_eta $CMSSW_BASE/src/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
-particle_flow resolution_map_ECAL_phi $CMSSW_BASE/src/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
-particle_flow resolution_map_HCAL_eta $CMSSW_BASE/src/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
-particle_flow resolution_map_HCAL_phi $CMSSW_BASE/src/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
-=======
 particle_flow resolution_map_ECAL_eta $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
 particle_flow resolution_map_ECAL_phi $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
 particle_flow resolution_map_HCAL_eta $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
 particle_flow resolution_map_HCAL_phi $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
->>>>>>> 1.45
 
 // chi2 maximum limit for ECAL/Track association
 particle_flow chi2_ECAL_Track   50
