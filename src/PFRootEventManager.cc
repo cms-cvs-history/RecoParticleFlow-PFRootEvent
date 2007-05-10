@@ -6,6 +6,7 @@
 #include "DataFormats/Provenance/interface/ProductID.h"
 
 
+
 #include "DataFormats/Math/interface/Point3D.h"
 
 #include "DataFormats/ParticleFlowReco/interface/PFLayer.h"
@@ -28,6 +29,8 @@
 #include "RecoParticleFlow/PFRootEvent/interface/EventColin.h" 
 #include "RecoParticleFlow/PFClusterTools/interface/PFEnergyCalibration.h"
 #include "RecoParticleFlow/PFClusterTools/interface/PFEnergyResolution.h"
+
+#include "FWCore/FWLite/interface/AutoLibraryLoader.h"
 
 #include <TFile.h>
 #include <TTree.h>
@@ -110,16 +113,17 @@ PFRootEventManager::PFRootEventManager(const char* file)
 void PFRootEventManager::reset() { 
   maxERecHitEcal_ = -1;
   maxERecHitHcal_ = -1;  
-  rechitsECAL_.clear();
-  rechitsHCAL_.clear();
-  rechitsPS_.clear();
-  recTracks_.clear();
-  stdTracks_.clear();
-  clustersECAL_->clear();
-  clustersHCAL_->clear();
-  clustersPS_->clear();
-  clustersIslandBarrel_.clear();
-  trueParticles_.clear();
+
+//   rechitsECAL_.clear();
+//   rechitsHCAL_.clear();
+//   rechitsPS_.clear();
+//   recTracks_.clear();
+//   stdTracks_.clear();
+//   clustersECAL_->clear();
+//   clustersHCAL_->clear();
+//   clustersPS_->clear();
+//   clustersIslandBarrel_.clear();
+//   trueParticles_.clear();
 
 
   if(outEvent_) outEvent_->reset();
@@ -228,6 +232,9 @@ void PFRootEventManager::readOptions(const char* file,
     viewSize_.push_back(600); 
   }
 
+
+  // display parametes ------------------------------------
+
   displayXY_ = true;
   options_->GetOpt("display", "x/y", displayXY_);
   
@@ -250,6 +257,15 @@ void PFRootEventManager::readOptions(const char* file,
   displayZoomFactor_ = 10;  
   options_->GetOpt("display", "zoom_factor", displayZoomFactor_);
 
+  displayJetColors_ = false;
+  options_->GetOpt("display", "jet_colors", displayJetColors_);
+  
+
+  displayTrueParticlesPtMin_ = -1;
+  options_->GetOpt("display", "particles_ptmin", displayTrueParticlesPtMin_);
+  
+  displayRecTracksPtMin_ = -1;
+  options_->GetOpt("display", "rectracks_ptmin", displayRecTracksPtMin_);
 
   // filter --------------------------------------------------------------
 
@@ -519,9 +535,6 @@ void PFRootEventManager::readOptions(const char* file,
 
   pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL );
 
-  displayJetColors_ = false;
-  options_->GetOpt("display", "jet_colors", displayJetColors_);
-  
 
   // print flags -------------
 
@@ -590,6 +603,7 @@ void PFRootEventManager::connect( const char* infilename ) {
   
   file_ = TFile::Open(inFileName_.c_str() );
 
+
   if(!file_ ) return;
   else if(file_->IsZombie() ) {
     return;
@@ -598,6 +612,8 @@ void PFRootEventManager::connect( const char* infilename ) {
     cout<<"rootfile "<<inFileName_
 	<<" opened"<<endl;
 
+  AutoLibraryLoader::enable();
+
   tree_ = (TTree*) file_->Get("Events");  
   if(!tree_) {
     cerr<<"PFRootEventManager::ReadOptions :";
@@ -605,6 +621,7 @@ void PFRootEventManager::connect( const char* infilename ) {
 	<<inFileName_<<endl;
     return; 
   }
+  tree_->GetEntry();
     
   // hits branches ----------------------------------------------
 
@@ -638,33 +655,42 @@ void PFRootEventManager::connect( const char* infilename ) {
 
   // clusters branches ----------------------------------------------
 
-  string clustersECALbranchname;
-  options_->GetOpt("root","clusters_ECAL_branch", clustersECALbranchname);
-
-  clustersECALBranch_ = tree_->GetBranch(clustersECALbranchname.c_str());
-  if(!clustersECALBranch_) {
-    cerr <<"PFRootEventManager::ReadOptions : clusters_ECAL_branch not found:"
-	 <<clustersECALbranchname<<endl;
-  }
   
-  string clustersHCALbranchname;
-  options_->GetOpt("root","clusters_HCAL_branch", clustersHCALbranchname);
+  clustersECALBranch_ = 0;
+  clustersHCALBranch_ = 0;
+  clustersPSBranch_ = 0;
 
-  clustersHCALBranch_ = tree_->GetBranch(clustersHCALbranchname.c_str());
-  if(!clustersHCALBranch_) {
-    cerr<<"PFRootEventManager::ReadOptions : clusters_HCAL_branch not found : "
-        <<clustersHCALbranchname<<endl;
-  }
-  
-  string clustersPSbranchname;
-  options_->GetOpt("root","clusters_PS_branch", clustersPSbranchname);
 
-  clustersPSBranch_ = tree_->GetBranch(clustersPSbranchname.c_str());
-  if(!clustersPSBranch_) {
-    cerr<<"PFRootEventManager::ReadOptions : clusters_PS_branch not found : "
-	<<clustersPSbranchname<<endl;
-  }
+  if( !clusteringIsOn_ ) {
+    string clustersECALbranchname;
+    options_->GetOpt("root","clusters_ECAL_branch", clustersECALbranchname);
+    
+    clustersECALBranch_ = tree_->GetBranch(clustersECALbranchname.c_str());
+    if(!clustersECALBranch_) {
+      cerr <<"PFRootEventManager::ReadOptions : clusters_ECAL_branch not found:"
+	   <<clustersECALbranchname<<endl;
+    }
   
+
+    string clustersHCALbranchname;
+    options_->GetOpt("root","clusters_HCAL_branch", clustersHCALbranchname);
+    
+    clustersHCALBranch_ = tree_->GetBranch(clustersHCALbranchname.c_str());
+    if(!clustersHCALBranch_) {
+      cerr<<"PFRootEventManager::ReadOptions : clusters_HCAL_branch not found : "
+	  <<clustersHCALbranchname<<endl;
+    }
+  
+    string clustersPSbranchname;
+    options_->GetOpt("root","clusters_PS_branch", clustersPSbranchname);
+
+    clustersPSBranch_ = tree_->GetBranch(clustersPSbranchname.c_str());
+    if(!clustersPSBranch_) {
+      cerr<<"PFRootEventManager::ReadOptions : clusters_PS_branch not found : "
+	  <<clustersPSbranchname<<endl;
+    }
+  }
+
   // other branches ----------------------------------------------
   
   
@@ -729,6 +755,8 @@ void PFRootEventManager::connect( const char* infilename ) {
       caloTowersBranch_->SetAddress(&caloTowers_);
     }           
   }    
+
+  setAddresses();
 } 
 
 
@@ -802,8 +830,7 @@ bool PFRootEventManager::processEntry(int entry) {
 //     if(! readFromSimulation(entry) ) return false;
 //   } 
 
-  if(! readFromSimulation(entry) ) return false;
-
+  bool goodevent =  readFromSimulation(entry);
 
   if(verbosity_ == VERBOSE ) {
     cout<<"number of recTracks      : "<<recTracks_.size()<<endl;
@@ -831,7 +858,7 @@ bool PFRootEventManager::processEntry(int entry) {
   }
 
   particleFlow();
-  if (doJets_) 
+  if( goodevent && doJets_) 
     makeJets(); 
   
   if(outTree_) outTree_->Fill();
@@ -849,67 +876,81 @@ bool PFRootEventManager::readFromSimulation(int entry) {
   if(!tree_) return false;
   
 
-  setAddresses();
+  // setAddresses();
 
   if(trueParticlesBranch_ ) {
     trueParticlesBranch_->GetEntry(entry);
-    // this is a filter to select single particle events.
-    // usually not active
-    if(filterNParticles_ && 
-       trueParticles_.size() != filterNParticles_ ) {
-      cout << "PFRootEventManager : event discarded Nparticles="
-	   <<filterNParticles_<< endl; 
-      return false;
-    }
-    if(filterHadronicTaus_ && !isHadronicTau() ) {
-      cout << "PFRootEventManager : leptonic tau discarded " << endl; 
-      return false;
-    }
   }
   if(rechitsECALBranch_) {
     rechitsECALBranch_->GetEntry(entry);
-    PreprocessRecHits( rechitsECAL_ , findRecHitNeighbours_);
   }
   if(rechitsHCALBranch_) {
     rechitsHCALBranch_->GetEntry(entry);
-    PreprocessRecHits( rechitsHCAL_ , findRecHitNeighbours_);
   }
   if(rechitsPSBranch_) {
     rechitsPSBranch_->GetEntry(entry);  
-    PreprocessRecHits( rechitsPS_ , findRecHitNeighbours_);
   }
   if(clustersECALBranch_ && !clusteringIsOn_) {
     clustersECALBranch_->GetEntry(entry);
-    for(unsigned i=0; i<clustersECAL_->size(); i++) 
-      (*clustersECAL_)[i].calculatePositionREP();
   }
   if(clustersHCALBranch_ && !clusteringIsOn_) {
     clustersHCALBranch_->GetEntry(entry);
-    for(unsigned i=0; i<clustersHCAL_->size(); i++) 
-      (*clustersHCAL_)[i].calculatePositionREP();    
   }
   if(clustersPSBranch_ && !clusteringIsOn_) {
     clustersPSBranch_->GetEntry(entry);
-    for(unsigned i=0; i<clustersPS_->size(); i++) 
-      (*clustersPS_)[i].calculatePositionREP();    
   }
   if(clustersIslandBarrelBranch_) {
     clustersIslandBarrelBranch_->GetEntry(entry);
   }
   if(caloTowersBranch_) {
     caloTowersBranch_->GetEntry(entry);
-    if(verbosity_ == VERBOSE )
-      cout<<"number of calotowers :"<<caloTowers_.size()<<endl;
-  }
-    
-  
+  } 
   if(recTracksBranch_) recTracksBranch_->GetEntry(entry);
   if(stdTracksBranch_) stdTracksBranch_->GetEntry(entry);
   
+  tree_->GetEntry( entry, 0 );
 
-  tree_->GetEntry( entry );
+  // now can use the tree
 
-  return true;
+  bool goodevent = true;
+  if(trueParticlesBranch_ ) {
+    // this is a filter to select single particle events.
+    // usually not active
+    if(filterNParticles_ && 
+       trueParticles_.size() != filterNParticles_ ) {
+
+      cout << "PFRootEventManager : event discarded Nparticles="
+	   <<filterNParticles_<< endl; 
+      goodevent = false;
+    }
+    if(filterHadronicTaus_ && !isHadronicTau() ) {
+      cout << "PFRootEventManager : leptonic tau discarded " << endl; 
+      goodevent =  false;
+    }
+  }
+  if(rechitsECALBranch_) {
+    PreprocessRecHits( rechitsECAL_ , findRecHitNeighbours_);
+  }
+  if(rechitsHCALBranch_) {
+    PreprocessRecHits( rechitsHCAL_ , findRecHitNeighbours_);
+  }
+  if(rechitsPSBranch_) {
+    PreprocessRecHits( rechitsPS_ , findRecHitNeighbours_);
+  }
+  if(clustersECALBranch_ && !clusteringIsOn_) {
+    for(unsigned i=0; i<clustersECAL_->size(); i++) 
+      (*clustersECAL_)[i].calculatePositionREP();
+  }
+  if(clustersHCALBranch_ && !clusteringIsOn_) {
+    for(unsigned i=0; i<clustersHCAL_->size(); i++) 
+      (*clustersHCAL_)[i].calculatePositionREP();    
+  }
+  if(clustersPSBranch_ && !clusteringIsOn_) {
+    for(unsigned i=0; i<clustersPS_->size(); i++) 
+      (*clustersPS_)[i].calculatePositionREP();    
+  }
+
+  return goodevent;
 }
 
 
@@ -1000,7 +1041,9 @@ void PFRootEventManager::clustering() {
   
   // ECAL clustering -------------------------------------------
 
-  clusterAlgoECAL_.doClustering( rechitsECAL_ );
+  edm::OrphanHandle< reco::PFRecHitCollection > rechitsHandleECAL( &rechitsECAL_, edm::ProductID(10001) );
+  clusterAlgoECAL_.doClustering( rechitsHandleECAL );
+  //clusterAlgoECAL_.doClustering( rechitsECAL_ );
   clustersECAL_ = clusterAlgoECAL_.clusters();
 
   assert(clustersECAL_.get() );
@@ -1009,15 +1052,18 @@ void PFRootEventManager::clustering() {
 
   // HCAL clustering -------------------------------------------
 
-
-  clusterAlgoHCAL_.doClustering( rechitsHCAL_ );
+  edm::OrphanHandle< reco::PFRecHitCollection > rechitsHandleHCAL( &rechitsHCAL_, edm::ProductID(10002) );
+  clusterAlgoHCAL_.doClustering( rechitsHandleHCAL );
+  //clusterAlgoHCAL_.doClustering( rechitsHCAL_ );
   clustersHCAL_ = clusterAlgoHCAL_.clusters();
 
   fillOutEventWithClusters( *clustersHCAL_ );
 
   // PS clustering -------------------------------------------
 
-  clusterAlgoPS_.doClustering( rechitsPS_ );
+  edm::OrphanHandle< reco::PFRecHitCollection > rechitsHandlePS( &rechitsPS_, edm::ProductID(10003) );
+  clusterAlgoPS_.doClustering( rechitsHandlePS );
+  //clusterAlgoPS_.doClustering( rechitsPS_ );
   clustersPS_ = clusterAlgoPS_.clusters();
 
   fillOutEventWithClusters( *clustersPS_ );
@@ -1912,6 +1958,11 @@ void PFRootEventManager::displayRecTracks(unsigned viewType, double phi0) {
 
     double sign = 1.;
 
+    const reco::PFTrajectoryPoint& tpinitial 
+      = itRecTrack->extrapolatedPoint(reco::PFTrajectoryPoint::ClosestApproach);
+    double pt = tpinitial.momentum().Pt();
+    if( pt<displayRecTracksPtMin_ ) continue;
+
     const reco::PFTrajectoryPoint& tpatecal 
       = itRecTrack->trajectoryPoint(itRecTrack->nTrajectoryMeasurements() +
 				    reco::PFTrajectoryPoint::ECALEntrance );
@@ -1940,6 +1991,11 @@ void PFRootEventManager::displayTrueParticles(unsigned viewType, double phi0) {
     
     const reco::PFSimParticle& ptc = trueParticles_[i];
     
+    const reco::PFTrajectoryPoint& tpinitial 
+      = ptc.extrapolatedPoint( reco::PFTrajectoryPoint::ClosestApproach );
+    
+    double pt = tpinitial.momentum().Pt();
+    if( pt<displayTrueParticlesPtMin_ ) continue;
 
     double sign = 1.;
     
@@ -2293,6 +2349,7 @@ void  PFRootEventManager::print() const {
   }
   if(printPFCandidates_) {
     cout<<"Particle Flow Candidates =================================="<<endl;
+    cout<<pfAlgo_<<endl;
     for(unsigned i=0; i<pfCandidates_->size(); i++) {
       cout<<(*pfCandidates_)[i]<<endl;
     }    
@@ -2301,9 +2358,10 @@ void  PFRootEventManager::print() const {
   if( printTrueParticles_ ) {
     cout<<"True Particles  ==========================================="<<endl;
     for(unsigned i=0; i<trueParticles_.size(); i++) {
-      if( trackInsideGCut( &(trueParticles_[i]) ) )
-	cout<<"\t"<<trueParticles_[i]<<endl;
-    }    
+       if( trackInsideGCut( &(trueParticles_[i]) ) )
+	 cout<<"\t"<<trueParticles_[i]<<endl;
+     }    
+ 
   }
   
 
