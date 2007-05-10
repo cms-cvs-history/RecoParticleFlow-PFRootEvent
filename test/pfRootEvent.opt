@@ -79,8 +79,10 @@ clustering on/off 1
 clustering debug 0
 rootevent debug 0
 
-
-clustering  findRecHitNeighbours  0
+//Find RecHits neighbours: Need to be set to false if using 
+//a version of the clustering using indexes (i.e. after revision 1.20
+//of PFClusterAlgo).
+clustering findRecHitNeighbours 0
 
 // threshold on ECAL barrel rechits. Note that a threshold might have
 // been applied already, see RecoParticleFlow/PFProducer/data/particleFlow.cff
@@ -91,7 +93,7 @@ clustering thresh_Ecal_Barrel           0.08
 clustering thresh_Seed_Ecal_Barrel     	0.23
 
 // threshold on ECAL endcap rechits.
-clustering thresh_Ecal_Endcap           0.05
+clustering thresh_Ecal_Endcap           0.3
 
 // seed threshold for ECAL endcap rechits
 clustering thresh_Seed_Ecal_Endcap      0.8
