@@ -11,13 +11,14 @@
   //PFRootEventManager em("pfRootEvent.opt");
   PFRootEventManager em("tauBenchmark.opt");
 
-  for(int i=0; i < em.tree_->GetEntries(); ++i)
-    em.processEntry(i);
-  
-  //writing output 
-  em.write();
-  
-  //closing root session
-  gROOT->ProcessLine(".q");
-  
+
+  if(em.tree() ) {
+    int n =  em.tree()->GetEntries();
+    for(unsigned i=0; i<n; i++) {
+      em.processEntry(i);
+      //em.print();
+    }
+    em.write();
+  }
+  gApplication->Terminate(); 
 }//RunAlex
