@@ -1,3 +1,4 @@
+#!/bin/sh
 echo "Merging file"
 
 hadd tauall.root $1/out_singletau_*
