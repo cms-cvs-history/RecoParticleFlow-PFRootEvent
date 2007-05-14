@@ -29,7 +29,7 @@ root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_FLOW.obj
 //root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_FLOW.obj
 
 // CaloTowers
-root caloTowers_branch     CaloTowersSorted_towerMaker__FLOW.obj
+root caloTowers_branch     CaloTowersSorted_towerMaker__Rec.obj
 
 // reconstructed tracks branch
 root recTracks_branch      recoPFRecTracks_elecpreid__FLOW.obj

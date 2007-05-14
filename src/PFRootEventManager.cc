@@ -596,11 +596,24 @@ void PFRootEventManager::connect( const char* infilename ) {
   if( fname.empty() ) 
     fname = inFileName_;
 
+
   
   cout<<"opening input root file"<<endl;
 
   options_->GetOpt("root","file", inFileName_);
   
+
+
+  try {
+    AutoLibraryLoader::enable();
+  }
+  catch(string& err) {
+    cout<<err<<endl;
+  }
+
+
+
+
   file_ = TFile::Open(inFileName_.c_str() );
 
 
@@ -612,7 +625,7 @@ void PFRootEventManager::connect( const char* infilename ) {
     cout<<"rootfile "<<inFileName_
 	<<" opened"<<endl;
 
-  AutoLibraryLoader::enable();
+  
 
   tree_ = (TTree*) file_->Get("Events");  
   if(!tree_) {
@@ -621,8 +634,10 @@ void PFRootEventManager::connect( const char* infilename ) {
 	<<inFileName_<<endl;
     return; 
   }
+
   tree_->GetEntry();
-    
+   
+  
   // hits branches ----------------------------------------------
 
   string rechitsECALbranchname;
@@ -756,7 +771,9 @@ void PFRootEventManager::connect( const char* infilename ) {
     }           
   }    
 
+  cout<<"tree retrieved"<<endl;
   setAddresses();
+  cout<<"set address done"<<endl;
 } 
 
 
