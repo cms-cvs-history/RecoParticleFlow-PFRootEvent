@@ -158,10 +158,15 @@ clustering posCalc_p1_PS                0
 // particle flow parameters ----------------------------------------------
 
 
-particle_flow resolution_map_ECAL_eta $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
-particle_flow resolution_map_ECAL_phi $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
-particle_flow resolution_map_HCAL_eta $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
-particle_flow resolution_map_HCAL_phi $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
+//particle_flow resolution_map_ECAL_eta $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
+//particle_flow resolution_map_ECAL_phi $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
+//particle_flow resolution_map_HCAL_eta $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
+//particle_flow resolution_map_HCAL_phi $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
+
+particle_flow resolution_map_ECAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
+particle_flow resolution_map_ECAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
+particle_flow resolution_map_HCAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
+particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
 
 // chi2 maximum limit for ECAL/Track association
 particle_flow chi2_ECAL_Track   50
