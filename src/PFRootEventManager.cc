@@ -796,12 +796,14 @@ void PFRootEventManager::setAddresses() {
 
 PFRootEventManager::~PFRootEventManager() {
 
+
   if(outFile_) {
     outFile_->Close();
   }
 
   if(outEvent_) delete outEvent_;
-  if(outTree_)  delete outTree_;
+
+
 
   for( unsigned i=0; i<displayView_.size(); i++) {
     if(displayView_[i]) delete displayView_[i];
@@ -932,7 +934,6 @@ bool PFRootEventManager::readFromSimulation(int entry) {
   bool goodevent = true;
   if(trueParticlesBranch_ ) {
     // this is a filter to select single particle events.
-    // usually not active
     if(filterNParticles_ && 
        trueParticles_.size() != filterNParticles_ ) {
 
@@ -944,6 +945,9 @@ bool PFRootEventManager::readFromSimulation(int entry) {
       cout << "PFRootEventManager : leptonic tau discarded " << endl; 
       goodevent =  false;
     }
+    if(goodevent)
+      fillOutEventWithSimParticles( trueParticles_ );
+
   }
   if(rechitsECALBranch_) {
     PreprocessRecHits( rechitsECAL_ , findRecHitNeighbours_);
@@ -1088,6 +1092,7 @@ void PFRootEventManager::clustering() {
 }
 
 
+
 void 
 PFRootEventManager::fillOutEventWithClusters(const reco::PFClusterCollection& 
 					     clusters) {
@@ -1105,6 +1110,31 @@ PFRootEventManager::fillOutEventWithClusters(const reco::PFClusterCollection&
   }   
 
 }
+
+
+
+void 
+PFRootEventManager::fillOutEventWithSimParticles(const reco::PFSimParticleCollection& trueParticles ) {
+
+  if(!outEvent_) return;
+  
+  for ( unsigned i=0;  i < trueParticles_.size(); i++) {
+    
+    const reco::PFSimParticle& ptc = trueParticles_[i];
+    const reco::PFTrajectoryPoint& tpatecal 
+      = ptc.trajectoryPoint(1);
+    
+    // cout<<tpatecal<<endl;
+    
+    EventColin::Particle outptc;
+    outptc.eta = tpatecal.positionXYZ().Eta();
+    outptc.phi = tpatecal.positionXYZ().Phi();    
+    outptc.e = tpatecal.momentum().E();
+    
+    outEvent_->addParticle(outptc);
+  }   
+}
+
 
 
 void PFRootEventManager::particleFlow() {
