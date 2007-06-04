@@ -2,7 +2,6 @@
 root outfile  out.root
 
 
-
 root file  ../../PFProducer/test/candidates.root
 
 // name of the branches of the input TTree. 
@@ -20,6 +19,8 @@ root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_BLOCK.obj
 root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_BLOCK.obj
 // PS clusters branch
 root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_BLOCK.obj
+// HepMCProduct branch
+root MCTruth_branch  edmHepMCProduct_VtxSmeared__Rec.obj
 
 
 // root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_BLOCK.obj
@@ -180,11 +181,13 @@ particle_flow   ecalib 0.11 1.07
 // print rechits yes/no
 print rechits  0
 // print clusters yes/no
-print clusters 1
+print clusters 0
 // print particle flow blocks yes/no
 print PFBs     0
 // print true particles yes/no
-print true_particles     0
+print true_particles     1
+// print MC Truth
+print MC_truth 1
 
 // verbosity 
 print verbosity 0
