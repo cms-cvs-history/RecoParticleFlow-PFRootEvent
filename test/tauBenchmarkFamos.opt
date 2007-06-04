@@ -5,38 +5,38 @@ root outfile  tauBenchmark.root
 // with the command: cmsRun singletau_all.cfg 
 
 //root file /castor/cern.ch/user/a/azabi/EFLOW/TAU/CMSSW120/NEW/singletau_pf_20.root
-//root file  ../../PFProducer/test/singletau_repf.root
-root file /castor/cern.ch/user/a/azabi/EFLOW2/TAU/CMSSW131/singletau_pf_1.root
+root file  ../../PFBlockProducer/test/famosTaus.root
+// root file /castor/cern.ch/user/a/azabi/EFLOW2/TAU/CMSSW131/singletau_pf_1.root
 
 root outtree 0
 
 // name of the branches of the input TTree. 
 
 // ECAL rechits branch
-root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_FLOW.obj
+root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_PROD.obj
 // HCAL rechits branch
-root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_FLOW.obj
+root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_PROD.obj
 // PS rechits branch
-root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_FLOW.obj
+root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_PROD.obj
 
 // ECAL clusters branch
-root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_FLOW.obj
+root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_PROD.obj
 // HCAL clusters branch
-root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_FLOW.obj
+root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_PROD.obj
 // PS clusters branch
-root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_FLOW.obj
+root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_PROD.obj
 //ECAL island clusters //not working in 1_3_0_pre3 
-//root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_FLOW.obj
+//root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_PROD.obj
 
 // CaloTowers
-root caloTowers_branch     CaloTowersSorted_towerMaker__Rec.obj
+root caloTowers_branch     CaloTowersSorted_towerMaker__PROD.obj
 
 // reconstructed tracks branch
-root recTracks_branch      recoPFRecTracks_elecpreid__FLOW.obj
-root stdTracks_branch      recoTracks_trackRefitter__FLOW.obj
+root recTracks_branch      recoPFRecTracks_elecpreid__PROD.obj
+root stdTracks_branch      recoTracks_gsWithMaterialTracks__PROD.obj
 
 // true particles branch
-root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__FLOW.obj
+root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__PROD.obj
 
 // display parameters ----------------------------------------------------
 
@@ -165,6 +165,7 @@ particle_flow resolution_map_ECAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//
 particle_flow resolution_map_ECAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
 particle_flow resolution_map_HCAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
 particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
+
 
 // chi2 maximum limit for ECAL/Track association
 particle_flow chi2_ECAL_Track   50
