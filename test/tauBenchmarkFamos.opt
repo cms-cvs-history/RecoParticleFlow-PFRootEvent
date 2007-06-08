@@ -8,7 +8,7 @@ root outfile  tauBenchmark.root
 root file  ../../PFBlockProducer/test/famosTaus.root
 // root file /castor/cern.ch/user/a/azabi/EFLOW2/TAU/CMSSW131/singletau_pf_1.root
 
-root outtree 0
+root outtree 1
 
 // name of the branches of the input TTree. 
 
@@ -190,10 +190,10 @@ print clusters 1
 // print particle flow blocks yes/no
 print PFBs     0
 // print true particles yes/no
-print true_particles     0
+print true_particles     1
 
 // verbosity 
-print verbosity 0
+print verbosity 1
 
 //Jet Algorithm options ---------------------------------------------------
 //making jets from PF objects yes/no
