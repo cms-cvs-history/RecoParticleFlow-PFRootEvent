@@ -184,11 +184,13 @@ print rechits  0
 // print clusters yes/no
 print clusters 0
 // print particle flow blocks yes/no
-print PFBs     0
+print PFBlocks     0
 // print true particles yes/no
 print true_particles     1
 // print MC Truth
 print MC_truth 1
+// print reconstructed particles yes/no
+print PFCandidates     0
 
 // verbosity 
 print verbosity 0
