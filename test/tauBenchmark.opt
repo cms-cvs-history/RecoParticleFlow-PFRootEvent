@@ -185,11 +185,13 @@ particle_flow   ecalib 0.11 1.07
 // print rechits yes/no
 print rechits  0
 // print clusters yes/no
-print clusters 1
+print clusters 0
 // print particle flow blocks yes/no
 print PFBs     0
 // print true particles yes/no
 print true_particles     0
+// print MC Truth
+print MC_truth 0
 
 // verbosity 
 print verbosity 1

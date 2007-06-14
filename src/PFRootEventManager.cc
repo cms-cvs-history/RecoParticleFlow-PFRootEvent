@@ -6,7 +6,6 @@
 #include "DataFormats/Provenance/interface/ProductID.h"
 
 
-
 #include "DataFormats/Math/interface/Point3D.h"
 
 #include "DataFormats/ParticleFlowReco/interface/PFLayer.h"
@@ -115,20 +114,12 @@ void PFRootEventManager::reset() {
   maxERecHitEcal_ = -1;
   maxERecHitHcal_ = -1;  
 
-//   rechitsECAL_.clear();
-//   rechitsHCAL_.clear();
-//   rechitsPS_.clear();
-//   recTracks_.clear();
-//   stdTracks_.clear();
-//   clustersECAL_->clear();
-//   clustersHCAL_->clear();
-//   clustersPS_->clear();
-//   clustersIslandBarrel_.clear();
-//   trueParticles_.clear();
 
-
-  if(outEvent_) outEvent_->reset();
-  
+  if(outEvent_) {
+    outEvent_->reset();
+    outTree_->GetBranch("event")->SetAddress(&outEvent_);
+  } 
+ 
 }
 
 void PFRootEventManager::readOptions(const char* file, 
@@ -174,6 +165,7 @@ void PFRootEventManager::readOptions(const char* file,
   
   
   // output root file   ------------------------------------------
+
   
   if(!outFile_) {
     string outfilename;
@@ -513,21 +505,6 @@ void PFRootEventManager::readOptions(const char* file,
 	<<"wrong calibration coefficients for ECAL"<<endl;
   }
 
-//   if(ecalib.size() == 2) {
-// // CV: PFBlock::setEcalib(ecalib[0], ecalib[1]);
-// //     std::cout << "setting ECAL calibration for electrons/photons:" <<std::endl;
-// //     std::cout << " slope = " << ecalib[1] << std::endl;
-// //     std::cout << " offset = " << ecalib[0] << std::endl;
-// //     energyCalibration_->setCalibrationParametersEm(ecalib[1], ecalib[0]); 
-//   } else {
-// // CV: PFBlock::setEcalib(0, 1);
-//     energyCalibration_->setCalibrationParametersEm(1., 0.);
-// =======
-//     eCalibP0 = ecalib[0];
-//     eCalibP1 = ecalib[1]; 
-// >>>>>>> 1.50.2.2
-//   }
-  
 
   double nSigmaECAL = 99999;
   options_->GetOpt("particle_flow", "nsigma_ECAL", nSigmaECAL);
@@ -554,6 +531,9 @@ void PFRootEventManager::readOptions(const char* file,
   
   printTrueParticles_ = true;
   options_->GetOpt("print", "true_particles", printTrueParticles_ );
+  
+  printMCtruth_ = true;
+  options_->GetOpt("print", "MC_truth", printMCtruth_ );
   
   verbosity_ = VERBOSE;
   options_->GetOpt("print", "verbosity", verbosity_ );
@@ -757,6 +737,18 @@ void PFRootEventManager::connect( const char* infilename ) {
     trueParticlesBranch_->SetAddress(&trueParticles_);
   }    
 
+  string MCTruthbranchname;
+  options_->GetOpt("root","MCTruth_branch", MCTruthbranchname);
+
+  MCTruthBranch_ = tree_->GetBranch(MCTruthbranchname.c_str());
+  if(!MCTruthBranch_) {
+    cerr<<"PFRootEventManager::ReadOptions : MCTruth_branch not found : "
+	<<MCTruthbranchname << endl;
+  }
+  else {
+    MCTruthBranch_->SetAddress(&MCTruth_);
+  }    
+
   string caloTowersBranchName;
   caloTowersBranch_ = 0;
   options_->GetOpt("root","caloTowers_branch", caloTowersBranchName);
@@ -789,6 +781,9 @@ void PFRootEventManager::setAddresses() {
   if( recTracksBranch_ ) recTracksBranch_->SetAddress(&recTracks_);
   if( stdTracksBranch_ ) stdTracksBranch_->SetAddress(&stdTracks_);
   if( trueParticlesBranch_ ) trueParticlesBranch_->SetAddress(&trueParticles_);
+  if( MCTruthBranch_ ) { 
+    MCTruthBranch_->SetAddress(&MCTruth_);
+  }
   if( caloTowersBranch_ ) caloTowersBranch_->SetAddress(&caloTowers_);
 }
 
@@ -901,6 +896,9 @@ bool PFRootEventManager::readFromSimulation(int entry) {
   
   // setAddresses();
 
+  if(MCTruthBranch_) { 
+    MCTruthBranch_->GetEntry(entry);
+  }
   if(trueParticlesBranch_ ) {
     trueParticlesBranch_->GetEntry(entry);
   }
@@ -2444,6 +2442,10 @@ void  PFRootEventManager::print(ostream& out) const {
      }    
  
   }
+  if ( printMCtruth_ ) { 
+    out<<"MC truth  ==========================================="<<endl;
+    printMCTruth(MCTruth_.GetEvent());
+  }
 }
 
 
@@ -2465,11 +2467,11 @@ void  PFRootEventManager::printDisplay(  const char* sdirectory ) const {
     cerr<<"cannot create directory "<<directory<<endl;
     return;
   }
-  
+
   cout<<"Event display printed in directory "<<directory<<endl;
 
   directory += "/";
-
+  
   for(unsigned iView=0; iView<displayView_.size(); iView++) {
     if( !displayView_[iView] ) continue;
     
@@ -2484,7 +2486,7 @@ void  PFRootEventManager::printDisplay(  const char* sdirectory ) const {
     string png = name; png += ".png";
     displayView_[iView]->SaveAs( png.c_str() );
   }
-
+  
   string txt = directory;
   txt += "event.txt";
   ofstream out( txt.c_str() );
@@ -2493,6 +2495,181 @@ void  PFRootEventManager::printDisplay(  const char* sdirectory ) const {
   print( out );
 }
 
+void
+PFRootEventManager::printMCTruth(const HepMC::GenEvent* myGenEvent) const {
+
+  if(!myGenEvent) return;
+
+  std::cout << "Id  Gen Name       eta    phi     pT     E    Vtx1   " 
+	    << " x      y      z   " 
+	    << "Moth  Vtx2  eta   phi     R      Z   Da1  Da2 Ecal?" 
+	    << std::endl;
+
+  for ( HepMC::GenEvent::particle_const_iterator 
+	  piter  = myGenEvent->particles_begin();
+	  piter != myGenEvent->particles_end(); 
+	++piter ) {
+    
+    HepMC::GenParticle* p = *piter;
+     /* */
+    int partId = p->pdg_id();
+    std::string name;
+
+    // We have here a subset of particles only. 
+    // To be filled according to the needs.
+    switch(partId) {
+    case    1: { name = "d"; break; } 
+    case    2: { name = "u"; break; } 
+    case    3: { name = "s"; break; } 
+    case    4: { name = "c"; break; } 
+    case    5: { name = "b"; break; } 
+    case    6: { name = "t"; break; } 
+    case   -1: { name = "~d"; break; } 
+    case   -2: { name = "~u"; break; } 
+    case   -3: { name = "~s"; break; } 
+    case   -4: { name = "~c"; break; } 
+    case   -5: { name = "~b"; break; } 
+    case   -6: { name = "~t"; break; } 
+    case   11: { name = "e-"; break; }
+    case  -11: { name = "e+"; break; }
+    case   12: { name = "nu_e"; break; }
+    case  -12: { name = "~nu_e"; break; }
+    case   13: { name = "mu-"; break; }
+    case  -13: { name = "mu+"; break; }
+    case   14: { name = "nu_mu"; break; }
+    case  -14: { name = "~nu_mu"; break; }
+    case   15: { name = "tau-"; break; }
+    case  -15: { name = "tau+"; break; }
+    case   16: { name = "nu_tau"; break; }
+    case  -16: { name = "~nu_tau"; break; }
+    case   21: { name = "gluon"; break; }
+    case   22: { name = "gamma"; break; }
+    case   23: { name = "Z0"; break; }
+    case   24: { name = "W+"; break; }
+    case  -24: { name = "W-"; break; }
+    case  111: { name = "pi0"; break; }
+    case  113: { name = "rho0"; break; }
+    case  223: { name = "omega"; break; }
+    case  333: { name = "phi"; break; }
+    case  443: { name = "J/psi"; break; }
+    case  553: { name = "Upsilon"; break; }
+    case  130: { name = "K0L"; break; }
+    case  211: { name = "pi+"; break; }
+    case -211: { name = "pi-"; break; }
+    case  221: { name = "eta"; break; }
+    case  331: { name = "eta'"; break; }
+    case  441: { name = "etac"; break; }
+    case  551: { name = "etab"; break; }
+    case -213: { name = "rho-"; break; }
+    case  310: { name = "K0S"; break; }
+    case  321: { name = "K+"; break; }
+    case -321: { name = "K-"; break; }
+    case  411: { name = "D+"; break; }
+    case -411: { name = "D-"; break; }
+    case  421: { name = "D0"; break; }
+    case  431: { name = "Ds_+"; break; }
+    case -431: { name = "Ds_-"; break; }
+    case  511: { name = "B0"; break; }
+    case  521: { name = "B+"; break; }
+    case -521: { name = "B-"; break; }
+    case  531: { name = "Bs_0"; break; }
+    case  541: { name = "Bc_+"; break; }
+    case -541: { name = "Bc_+"; break; }
+    case  313: { name = "K*0"; break; }
+    case  323: { name = "K*+"; break; }
+    case -323: { name = "K*-"; break; }
+    case  413: { name = "D*+"; break; }
+    case -413: { name = "D*-"; break; }
+    case  423: { name = "D*0"; break; }
+    case  513: { name = "B*0"; break; }
+    case  523: { name = "B*+"; break; }
+    case -523: { name = "B*-"; break; }
+    case  533: { name = "B*_s0"; break; }
+    case  543: { name = "B*_c+"; break; }
+    case -543: { name = "B*_c-"; break; }
+    case  2112: { name = "n"; break; }
+    case  3122: { name = "Lambda0"; break; }
+    case  3112: { name = "Sigma-"; break; }
+    case -3112: { name = "Sigma+"; break; }
+    case  3212: { name = "Sigma0"; break; }
+    case  2212: { name = "p"; break; }
+    case -2212: { name = "~p"; break; }
+    default: { 
+      name = "unknown"; 
+      cout << "Unknown code : " << partId << endl;
+    }   
+    }
+
+    math::XYZTLorentzVector momentum1(p->momentum().px(),
+				      p->momentum().py(),
+				      p->momentum().pz(),
+				      p->momentum().e());
+
+    int vertexId1 = 0;
+
+    if ( !p->production_vertex() ) continue;
+
+    math::XYZVector vertex1 (p->production_vertex()->position().x()/10.,
+			     p->production_vertex()->position().y()/10.,
+			     p->production_vertex()->position().z()/10.);
+    vertexId1 = p->production_vertex()->barcode();
+    
+    std::cout.setf(std::ios::fixed, std::ios::floatfield);
+    std::cout.setf(std::ios::right, std::ios::adjustfield);
+    
+    std::cout << std::setw(4) << p->barcode() << " " 
+	 << name;
+    
+    for(unsigned int k=0;k<11-name.length() && k<12; k++) std::cout << " ";  
+    
+    double eta = momentum1.eta();
+    if ( eta > +10. ) eta = +10.;
+    if ( eta < -10. ) eta = -10.;
+    std::cout << std::setw(6) << std::setprecision(2) << eta << " " 
+	      << std::setw(6) << std::setprecision(2) << momentum1.phi() << " " 
+	      << std::setw(7) << std::setprecision(2) << momentum1.pt() << " " 
+	      << std::setw(7) << std::setprecision(2) << momentum1.e() << " " 
+	      << std::setw(4) << vertexId1 << " " 
+	      << std::setw(6) << std::setprecision(1) << vertex1.x() << " " 
+	      << std::setw(6) << std::setprecision(1) << vertex1.y() << " " 
+	      << std::setw(6) << std::setprecision(1) << vertex1.z() << " ";
+
+    const HepMC::GenParticle* mother = 
+      *(p->production_vertex()->particles_in_const_begin());
+
+    if ( mother )
+      std::cout << std::setw(4) << mother->barcode() << " ";
+    else 
+      std::cout << "     " ;
+    
+    if ( p->end_vertex() ) {  
+      math::XYZTLorentzVector vertex2(p->end_vertex()->position().x()/10.,
+				      p->end_vertex()->position().y()/10.,
+				      p->end_vertex()->position().z()/10.,
+				      p->end_vertex()->position().t()/10.);
+      int vertexId2 = p->end_vertex()->barcode();
+
+      std::vector<const HepMC::GenParticle*> children;
+      HepMC::GenVertex::particles_out_const_iterator firstDaughterIt = 
+        p->end_vertex()->particles_out_const_begin();
+      HepMC::GenVertex::particles_out_const_iterator lastDaughterIt = 
+        p->end_vertex()->particles_out_const_end();
+      for ( ; firstDaughterIt != lastDaughterIt ; ++firstDaughterIt ) {
+	children.push_back(*firstDaughterIt);
+      }      
+
+      std::cout << std::setw(4) << vertexId2 << " "
+		<< std::setw(6) << std::setprecision(2) << vertex2.eta() << " " 
+		<< std::setw(6) << std::setprecision(2) << vertex2.phi() << " " 
+		<< std::setw(5) << std::setprecision(1) << vertex2.pt() << " " 
+		<< std::setw(6) << std::setprecision(1) << vertex2.z() << " ";
+      for ( unsigned id=0; id<children.size(); ++id )
+	std::cout << std::setw(4) << children[id]->barcode() << " ";
+    }
+    std::cout << std::endl;
+
+  }
+}
 
 
 void  PFRootEventManager::printRecHit(const reco::PFRecHit& rh, 
