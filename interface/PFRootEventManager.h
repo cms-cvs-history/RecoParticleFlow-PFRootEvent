@@ -270,7 +270,7 @@ class PFRootEventManager {
   /// get tree
   TTree* tree() {return tree_;}
 
- protected:
+  // protected:
 
   // retrieve resolution maps
   void   getMap(std::string& map);
@@ -284,11 +284,14 @@ class PFRootEventManager {
   void   printCluster(const reco::PFCluster& cluster,
 		      std::ostream& out = std::cout) const;
   
-  /// is inside cut G? 
-  bool   insideGCut(double eta, double phi) const;
-
+/*   /// is inside cut G?  */
+/*   bool   insideGCut(double eta, double phi) const; */
+  
   /// is PFTrack inside cut G ? yes if at least one trajectory point is inside.
-  bool   trackInsideGCut( const reco::PFTrack* track ) const;
+  bool trackInsideGCut( const reco::PFTrack* track ) const;
+  
+  void fillRecHitMask( vector<bool>& mask, 
+		       const reco::PFRecHitCollection& rechits ) const;
 
   // data members -------------------------------------------------------
 
