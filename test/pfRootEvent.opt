@@ -3,7 +3,7 @@ root outfile  out.root
 root outtree 1
 
 
-root file  ../../PFProducer/test/candidates.root
+root file  ../../PFBlockProducer/test/blocks.root
 
 // name of the branches of the input TTree. 
 
