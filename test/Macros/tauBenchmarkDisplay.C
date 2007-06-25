@@ -9,7 +9,7 @@ ROOT::Cintex::Cintex::Enable();
 
 // create a PFRootEventManager
 // PFRootEventManager em("pfRootEvent.opt");
-PFRootEventManager em("tauBenchmarkFamos.opt");
+PFRootEventManager em("tauBenchmark.opt");
 
 // display entry number 2
 int i=0;

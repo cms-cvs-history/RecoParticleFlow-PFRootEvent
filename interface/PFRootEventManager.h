@@ -188,6 +188,10 @@ class PFRootEventManager {
   /// fills OutEvent with sim particles
   void fillOutEventWithSimParticles(const reco::PFSimParticleCollection& ptcs);
 
+  /// fills outEvent with calo towers
+  void fillOutEventWithCaloTowers(const CaloTowerCollection& cts);
+
+
   /// performs particle flow
   void particleFlow();
 
@@ -247,11 +251,11 @@ class PFRootEventManager {
   void updateDisplay();
 
   /// look for rechit with max energy in ecal or hcal.
-  /// 
-  /// \todo look for rechit with max transverse energy, look for other objects
   void lookForMaxRecHit(bool ecal);
-
-
+  
+  /// look for particle with index i in MC truth.
+  void lookForGenParticle(unsigned barcode);
+  
   /// finds max rechit energy in a given layer 
   double getMaxE(int layer) const;
 
@@ -286,14 +290,25 @@ class PFRootEventManager {
 		      std::ostream& out = std::cout) const;
 
   /// print the HepMC truth
-  void printMCTruth(const HepMC::GenEvent*) const;
+  void printMCTruth(std::ostream& out = std::cout,
+		    int maxNLines = -1) const;
   
   
   /// is PFTrack inside cut G ? yes if at least one trajectory point is inside.
-  bool trackInsideGCut( const reco::PFTrack* track ) const;
+  bool trackInsideGCut( const reco::PFTrack& track ) const;
   
+  /// rechit mask set to true for rechits inside TCutG
   void fillRecHitMask( vector<bool>& mask, 
 		       const reco::PFRecHitCollection& rechits ) const;
+
+  /// cluster mask set to true for rechits inside TCutG
+  void fillClusterMask( vector<bool>& mask, 
+			const reco::PFClusterCollection& clusters ) const;
+
+  /// track mask set to true for rechits inside TCutG
+  void fillTrackMask( vector<bool>& mask, 
+		      const reco::PFRecTrackCollection& tracks ) const;
+
 
   // data members -------------------------------------------------------
 

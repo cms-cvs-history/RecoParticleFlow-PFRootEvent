@@ -41,15 +41,25 @@ class EventColin {
 
   class Jet {
   public:
-    Jet() : eta(0),phi(0),et(0),e(0) {}
+    Jet() : eta(0),phi(0),et(0),e(0),ee(0),eh(0),ete(0),eth(0)  {}
     virtual ~Jet() {}
     double eta;
     double phi;
     double et;
     double e;
+    double ee;
+    double eh;
+    double ete;
+    double eth;
   };
 
-  
+  class CaloTower {
+  public:
+    CaloTower() : e(0), ee(0), eh(0) {} 
+    double e;
+    double ee;
+    double eh;
+  };
 
   void setNumber(int number) {number_ = number;}
   void setNTracks(int nTracks) {nTracks_ = nTracks;}
@@ -78,6 +88,10 @@ class EventColin {
     jetsPF_.push_back(jets);
   }
 
+  void addCaloTower( const CaloTower& ct ) {
+    caloTowers_.push_back( ct );
+  } 
+
 
   const std::vector<EventColin::Particle>& particles() 
     {return particles_;}
@@ -102,6 +116,8 @@ class EventColin {
   std::vector<EventColin::Jet>      jetsMC_;
   std::vector<EventColin::Jet>      jetsEHT_;
   std::vector<EventColin::Jet>      jetsPF_;
+  std::vector<EventColin::CaloTower>  caloTowers_;
+  
 };
 
 #endif

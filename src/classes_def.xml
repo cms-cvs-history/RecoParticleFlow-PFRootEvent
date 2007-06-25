@@ -9,6 +9,8 @@
   <class name="std::vector<EventColin::Cluster>"/>
   <class name="EventColin::Jet"/>
   <class name="std::vector<EventColin::Jet>"/>
+  <class name="EventColin::CaloTower"/>
+  <class name="std::vector<EventColin::CaloTower>"/>
   <class name="ResidualFitter"/>
 </lcgdict>
 

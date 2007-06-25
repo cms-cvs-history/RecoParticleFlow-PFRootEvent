@@ -21,7 +21,7 @@ root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_BLOCK.obj
 // PS clusters branch
 root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_BLOCK.obj
 // HepMCProduct branch
-root MCTruth_branch  edmHepMCProduct_VtxSmeared__Rec.obj
+root MCTruth_branch  edmHepMCProduct_source__Rec.obj
 
 
 // root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_BLOCK.obj

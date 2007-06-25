@@ -1,42 +1,40 @@
 
 root outfile  tauBenchmark.root
-
-// source root file, generated in src/RecoParticleFlow/PFProducer/test
-// with the command: cmsRun singletau_all.cfg 
-
-//root file /castor/cern.ch/user/a/azabi/EFLOW/TAU/CMSSW120/NEW/singletau_pf_20.root
-//root file  ../../PFProducer/test/singletau_repf.root
-root file /castor/cern.ch/user/a/azabi/EFLOW2/TAU/CMSSW131/singletau_pf_1.root
-
 root outtree 1
+
+root file  /castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_5_0/Taus_2/Blocks/out_singletau_fevt_5.root
 
 // name of the branches of the input TTree. 
 
 // ECAL rechits branch
-root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_FLOW.obj
+root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_BLOCK.obj
 // HCAL rechits branch
-root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_FLOW.obj
+root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_BLOCK.obj
 // PS rechits branch
-root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_FLOW.obj
+root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_BLOCK.obj
 
 // ECAL clusters branch
-root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_FLOW.obj
+root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_BLOCK.obj
 // HCAL clusters branch
-root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_FLOW.obj
+root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_BLOCK.obj
 // PS clusters branch
-root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_FLOW.obj
-//ECAL island clusters //not working in 1_3_0_pre3 
-//root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_FLOW.obj
+root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_BLOCK.obj
+// HepMCProduct branch
+root MCTruth_branch  edmHepMCProduct_source__Rec.obj
 
-// CaloTowers
+
+// root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_BLOCK.obj
+
 root caloTowers_branch     CaloTowersSorted_towerMaker__Rec.obj
 
 // reconstructed tracks branch
-root recTracks_branch      recoPFRecTracks_elecpreid__FLOW.obj
-root stdTracks_branch      recoTracks_trackRefitter__FLOW.obj
+
+root recTracks_branch      recoPFRecTracks_elecpreid__BLOCK.obj
+root stdTracks_branch      recoTracks_trackRefitter__BLOCK.obj
 
 // true particles branch
-root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__FLOW.obj
+
+root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__BLOCK.obj
 
 // display parameters ----------------------------------------------------
 
@@ -187,14 +185,16 @@ print rechits  0
 // print clusters yes/no
 print clusters 0
 // print particle flow blocks yes/no
-print PFBs     0
+print PFBlocks     1
 // print true particles yes/no
 print true_particles     0
 // print MC Truth
 print MC_truth 0
+// print reconstructed particles yes/no
+print PFCandidates     0
 
 // verbosity 
-print verbosity 1
+print verbosity 0
 
 //Jet Algorithm options ---------------------------------------------------
 //making jets from PF objects yes/no
