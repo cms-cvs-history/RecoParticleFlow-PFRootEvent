@@ -1,5 +1,5 @@
 
-root outfile out.root
+root outfile tauBenchmark.root
 root outtree 1
 
 // root file  ../../PFBlockProducer/test/blocks_famos.root
