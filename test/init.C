@@ -3,13 +3,9 @@
 // library, which contains the ROOT interface
 gSystem->Load("libFWCoreFWLite.so");
 gSystem->Load("libRecoParticleFlowPFRootEvent.so");
-
-
-
 AutoLibraryLoader::enable();
 gSystem->Load("libCintex.so");
 ROOT::Cintex::Cintex::Enable();
 
-TFile f("../../PFProducer/test/candidates.root");
 
 }
