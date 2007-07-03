@@ -21,11 +21,12 @@ class EventColin {
 
   class Particle {
   public:
-    Particle() : eta(0),phi(0),e(0) {}
+    Particle() : eta(0),phi(0),e(0),pdgCode(0) {}
     virtual ~Particle() {}
     double eta; 
     double phi;
     double e;
+    int    pdgCode;
   };   
 
   class Cluster {
@@ -37,6 +38,7 @@ class EventColin {
     double e;
     int layer;
     int type;
+    Particle particle;
   };   
 
   class Jet {

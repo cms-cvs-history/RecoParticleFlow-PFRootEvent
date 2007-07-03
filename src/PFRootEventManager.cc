@@ -1124,9 +1124,47 @@ PFRootEventManager::fillOutEventWithClusters(const reco::PFClusterCollection&
     cluster.e = clusters[i].energy();
     cluster.layer = clusters[i].layer();
     cluster.type = 1;
+
+    reco::PFTrajectoryPoint::LayerType tpLayer = 
+      reco::PFTrajectoryPoint::NLayers;
+    switch( clusters[i].layer() ) {
+    case PFLayer::ECAL_BARREL:
+    case PFLayer::ECAL_ENDCAP:
+      tpLayer = reco::PFTrajectoryPoint::ECALEntrance;
+      break;
+    case PFLayer::HCAL_BARREL1:
+    case PFLayer::HCAL_ENDCAP:
+      tpLayer = reco::PFTrajectoryPoint::HCALEntrance;
+      break;
+    default:
+      break;
+    }
+    if(tpLayer < reco::PFTrajectoryPoint::NLayers) {
+      try {
+	double peta = -10;
+	double phi = -10;
+	double pe = -10;
+
+	const reco::PFSimParticle& ptc 
+	  = closestParticle( tpLayer, 
+			     cluster.eta, cluster.phi, 
+			     peta, phi, pe );
+
+	
+	cluster.particle.eta = peta;
+	cluster.particle.phi = phi;
+	cluster.particle.e = pe;
+	cluster.particle.pdgCode = ptc.pdgCode();
+	
+	
+      }
+      catch( std::exception& err ) {
+	cerr<<err.what()<<endl;
+      } 
+    }
+
     outEvent_->addCluster(cluster);
   }   
-
 }
 
 
@@ -1139,17 +1177,22 @@ PFRootEventManager::fillOutEventWithSimParticles(const reco::PFSimParticleCollec
   for ( unsigned i=0;  i < trueParticles.size(); i++) {
     
     const reco::PFSimParticle& ptc = trueParticles[i];
-    const reco::PFTrajectoryPoint& tpatecal 
-      = ptc.trajectoryPoint(1);
-    
-    // cout<<tpatecal<<endl;
-    
-    EventColin::Particle outptc;
-    outptc.eta = tpatecal.positionXYZ().Eta();
-    outptc.phi = tpatecal.positionXYZ().Phi();    
-    outptc.e = tpatecal.momentum().E();
-    
-    outEvent_->addParticle(outptc);
+
+    unsigned ntrajpoints = ptc.nTrajectoryPoints();
+
+    if(ntrajpoints>2) { // decay before ecal -> 2 trajpoints only
+      const reco::PFTrajectoryPoint& tpatecal 
+	//      = ptc.trajectoryPoint(1);
+	= ptc.extrapolatedPoint(reco::PFTrajectoryPoint::ECALEntrance);
+            
+      EventColin::Particle outptc;
+      outptc.eta = tpatecal.positionXYZ().Eta();
+      outptc.phi = tpatecal.positionXYZ().Phi();    
+      outptc.e = tpatecal.momentum().E();
+      outptc.pdgCode = ptc.pdgCode();
+
+      outEvent_->addParticle(outptc);
+    }
   }   
 }
       
@@ -2898,4 +2941,53 @@ PFRootEventManager::fillTrackMask(vector<bool>& mask,
       mask.push_back( false );   
   }
 }
+
+
+const reco::PFSimParticle&
+PFRootEventManager::closestParticle( reco::PFTrajectoryPoint::LayerType layer, 
+				     double eta, double phi,
+				     double& peta, double& pphi, double& pe) 
+  const {
+  
+
+  if( trueParticles_.empty() ) {
+    string err  = "PFRootEventManager::closestParticle : ";
+    err        += "vector of PFSimParticles is empty";
+    throw std::length_error( err.c_str() );
+  }
+
+  double mindist2 = 99999999;
+  unsigned iClosest=0;
+  for(unsigned i=0; i<trueParticles_.size(); i++) {
+    
+    const reco::PFSimParticle& ptc = trueParticles_[i];
+
+    if( layer >= 
+	static_cast<reco::PFTrajectoryPoint::LayerType> 
+	(ptc.nTrajectoryPoints()) ) {
+      continue;
+    }
+
+    const reco::PFTrajectoryPoint& tp
+      = ptc.extrapolatedPoint( layer );
+
+
+    peta = tp.positionXYZ().Eta();
+    pphi = tp.positionXYZ().Phi();
+    pe = tp.momentum().E();
+
+    double deta = peta - eta;
+    double dphi = pphi - phi;
+
+    double dist2 = deta*deta + dphi*dphi;
+
+    if(dist2<mindist2) {
+      mindist2 = dist2;
+      iClosest = i;
+    }
+  }
+
+  return trueParticles_[iClosest];
+}
+
 

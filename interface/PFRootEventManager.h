@@ -290,8 +290,8 @@ class PFRootEventManager {
 		      std::ostream& out = std::cout) const;
 
   /// print the HepMC truth
-  void printMCTruth(std::ostream& out = std::cout,
-		    int maxNLines = -1) const;
+  void   printMCTruth(std::ostream& out = std::cout,
+		      int maxNLines = -1) const;
   
   
   /// is PFTrack inside cut G ? yes if at least one trajectory point is inside.
@@ -309,6 +309,11 @@ class PFRootEventManager {
   void fillTrackMask( vector<bool>& mask, 
 		      const reco::PFRecTrackCollection& tracks ) const;
 
+  /// find the closest PFSimParticle to a point (eta,phi) in a given detector
+  const reco::PFSimParticle& 
+    closestParticle( reco::PFTrajectoryPoint::LayerType  layer, 
+		     double eta, double phi, 
+		     double& peta, double& pphi, double& pe) const;
 
   // data members -------------------------------------------------------
 
