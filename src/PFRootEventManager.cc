@@ -41,11 +41,12 @@
 #include <TCutG.h>
 #include <TPolyLine.h>
 #include <TColor.h>
-#include "TGraph.h"
-#include "TMath.h"
-#include "TLine.h"
-#include "TLatex.h"
-#include "TVector3.h"
+#include <TGraph.h>
+#include <TMath.h>
+#include <TLine.h>
+#include <TLatex.h>
+#include <TVector3.h>
+// #include <TDatabasePDG.h>
 
 #include <iostream>
 #include <vector>
@@ -76,7 +77,9 @@ PFRootEventManager::PFRootEventManager(const char* file)
   pfCandidates_(new reco::PFCandidateCollection),
   outFile_(0),
   maxERecHitEcal_(-1),
-  maxERecHitHcal_(-1) {
+  maxERecHitHcal_(-1)
+//   ,pdgTable_( new TDatabasePDG) 
+{
   
 //   options_ = 0;
 //   tree_ = 0;
@@ -269,6 +272,16 @@ void PFRootEventManager::readOptions(const char* file,
   filterHadronicTaus_ = true;
   options_->GetOpt("filter", "hadronic_taus", filterHadronicTaus_);
   
+  filterTaus_.clear();
+  options_->GetOpt("filter", "taus", filterTaus_);
+  if( filterTaus_.size() != 2 ) {
+    cerr<<"PFRootEventManager::ReadOptions, bad filter/taus option."<<endl
+	<<"please use : "<<endl
+	<<"\tfilter taus n_charged n_neutral"<<endl;
+    filterTaus_.clear();
+  }
+  
+
   // clustering parameters -----------------------------------------------
 
   double threshEcalBarrel = 0.1;
@@ -942,10 +955,18 @@ bool PFRootEventManager::readFromSimulation(int entry) {
 	   <<filterNParticles_<< endl; 
       goodevent = false;
     }
-    if(filterHadronicTaus_ && !isHadronicTau() ) {
+    if(goodevent && filterHadronicTaus_ && !isHadronicTau() ) {
       cout << "PFRootEventManager : leptonic tau discarded " << endl; 
       goodevent =  false;
     }
+    if( goodevent && !filterTaus_.empty() && !chargedNeutralTau() ) {
+      assert( filterTaus_.size() == 2 );
+      cout <<"PFRootEventManager : tau discarded: "
+	   <<"number of charged and neutral particles different from "
+	   <<filterTaus_[0]<<","<<filterTaus_[1]<<endl;
+      goodevent =  false;      
+    } 
+
     if(goodevent)
       fillOutEventWithSimParticles( trueParticles_ );
 
@@ -982,6 +1003,7 @@ bool PFRootEventManager::readFromSimulation(int entry) {
 }
 
 
+
 bool PFRootEventManager::isHadronicTau() const {
 
   for ( unsigned i=0;  i < trueParticles_.size(); i++) {
@@ -1008,6 +1030,143 @@ bool PFRootEventManager::isHadronicTau() const {
 
 
   return true;
+}
+
+
+
+bool PFRootEventManager::chargedNeutralTau() const {
+  
+  int nNeutral = 0;
+  int nCharged = 0;
+  
+  for ( unsigned i=0;  i < trueParticles_.size(); i++) {
+    const reco::PFSimParticle& ptc = trueParticles_[i];
+   
+    const std::vector<int>& daughters = ptc.daughterIds();
+
+    // if the particle decays before ECAL, we do not want to 
+    // consider it.
+    if(!daughters.empty() ) continue; 
+
+    double charge = ptc.charge();
+    
+    if( abs(charge)>1e-9) 
+      nCharged++;
+    else 
+      nNeutral++;
+  }    
+
+//   const HepMC::GenEvent* myGenEvent = MCTruth_.GetEvent();
+//   if(!myGenEvent) {
+//     cerr<<"impossible to filter on the number of charged and "
+// 	<<"neutral particles without the HepMCProduct. "
+// 	<<"Please check that the branch edmHepMCProduct_*_*_* is found"<<endl;
+//     exit(1);
+//   }
+  
+//   for ( HepMC::GenEvent::particle_const_iterator 
+// 	  piter  = myGenEvent->particles_begin();
+// 	piter != myGenEvent->particles_end(); 
+// 	++piter ) {
+    
+//     const HepMC::GenParticle* p = *piter;
+//     int partId = p->pdg_id();
+    
+// //     pdgTable_->GetParticle( partId )->Print();
+       
+//     int charge = chargeValue(partId);
+//     cout<<partId <<" "<<charge/3.<<endl;
+
+//     if(charge) 
+//       nCharged++;
+//     else 
+//       nNeutral++;
+//   }
+  
+  if( nCharged == filterTaus_[0] && 
+      nNeutral == filterTaus_[1]  )
+    return true;
+  else 
+    return false;
+}
+
+
+
+int PFRootEventManager::chargeValue(const int& Id) const {
+
+  
+  //...Purpose: to give three times the charge for a particle/parton.
+
+  //      ID     = particle ID
+  //      hepchg = particle charge times 3
+
+  int kqa,kq1,kq2,kq3,kqj,irt,kqx,kqn;
+  int hepchg;
+
+
+  int ichg[109]={-1,2,-1,2,-1,2,-1,2,0,0,-3,0,-3,0,-3,0,
+-3,0,0,0,0,0,0,3,0,0,0,0,0,0,3,0,3,6,0,0,3,6,0,0,-1,2,-1,2,-1,2,0,0,0,0,
+-3,0,-3,0,-3,0,0,0,0,0,-1,2,-1,2,-1,2,0,0,0,0,
+-3,0,-3,0,-3,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+
+  //...Initial values. Simple case of direct readout.
+  hepchg=0;
+  kqa=abs(Id);
+  kqn=kqa/1000000000%10;
+  kqx=kqa/1000000%10;
+  kq3=kqa/1000%10;
+  kq2=kqa/100%10;
+  kq1=kqa/10%10;
+  kqj=kqa%10;
+  irt=kqa%10000;
+
+  //...illegal or ion
+  //...set ion charge to zero - not enough information
+  if(kqa==0 || kqa >= 10000000) {
+
+    if(kqn==1) {hepchg=0;}
+  }
+  //... direct translation
+  else if(kqa<=100) {hepchg = ichg[kqa-1];}
+  //... deuteron or tritium
+  else if(kqa==100 || kqa==101) {hepchg = -3;}
+  //... alpha or He3
+  else if(kqa==102 || kqa==104) {hepchg = -6;}
+  //... KS and KL (and undefined)
+  else if(kqj == 0) {hepchg = 0;}
+  //C... direct translation
+  else if(kqx>0 && irt<100)
+    {
+      hepchg = ichg[irt-1];
+      if(kqa==1000017 || kqa==1000018) {hepchg = 0;}
+      if(kqa==1000034 || kqa==1000052) {hepchg = 0;}
+      if(kqa==1000053 || kqa==1000054) {hepchg = 0;}
+      if(kqa==5100061 || kqa==5100062) {hepchg = 6;}
+    }
+  //...Construction from quark content for heavy meson, diquark, baryon.
+  //...Mesons.
+  else if(kq3==0)
+    {
+      hepchg = ichg[kq2-1]-ichg[kq1-1];
+      //...Strange or beauty mesons.
+      if((kq2==3) || (kq2==5)) {hepchg = ichg[kq1-1]-ichg[kq2-1];}
+    }
+  else if(kq1 == 0) {
+    //...Diquarks.
+    hepchg = ichg[kq3-1] + ichg[kq2-1];
+  }
+
+  else{
+    //...Baryons
+    hepchg = ichg[kq3-1]+ichg[kq2-1]+ichg[kq1-1];
+  }
+
+  //... fix sign of charge
+  if(Id<0 && hepchg!=0) {hepchg = -1*hepchg;}
+
+  // cout << hepchg<< endl;
+  return hepchg;
 }
 
 

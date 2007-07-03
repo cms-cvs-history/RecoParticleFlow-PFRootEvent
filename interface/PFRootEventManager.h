@@ -36,8 +36,8 @@
 #include "RecoParticleFlow/PFRootEvent/interface/PFJetAlgorithm.h"
 
 #include <TObject.h>
-#include "TEllipse.h"
-#include "TBox.h"
+#include <TEllipse.h>
+#include <TBox.h>
 
 #include <string>
 #include <map>
@@ -52,7 +52,7 @@ class TCanvas;
 class TH2F;
 class TH1F;
 class TGraph;
-
+/* class TDatabasePDG; */
 
 class IO;
 
@@ -62,6 +62,7 @@ class PFBlockElement;
 class EventColin;
 class PFEnergyCalibration;
 class PFEnergyResolution;
+
 
 /// \brief ROOT interface to particle flow package
 /*!
@@ -165,6 +166,16 @@ class PFRootEventManager {
 
   /// study the sim event to check if the tau decay is hadronic
   bool isHadronicTau() const;
+
+  /// study the sim event to check if the 
+  /// number of charged and neutral particles match the selection
+  bool chargedNeutralTau() const;
+
+  /// return the chargex3
+  /// \todo function stolen from famos. remove when it it possible to 
+  /// use the particle data table in FWLite
+  int chargeValue(const int& pdgId) const;
+  
 
   /// preprocess a rechit vector from a given rechit branch
   void PreprocessRecHits( reco::PFRecHitCollection& rechits, 
@@ -555,6 +566,8 @@ class PFRootEventManager {
   
   bool                     filterHadronicTaus_;
 
+  std::vector<int>         filterTaus_;
+
   //----------------- clustering parameters ---------------------
 
   /// clustering on/off. If on, rechits from tree are used to form 
@@ -582,6 +595,13 @@ class PFRootEventManager {
   
   /// debug printouts for jet algo on/off
   bool   jetsDebug_;
+
+  // MC Truth tools              ---------------------------------------
+
+  /// particle data table.
+  /// \todo this could be concrete, but reflex generate code to copy the table,
+  /// and the copy constructor is protected...
+/*   TDatabasePDG*   pdgTable_; */
 
 };
 #endif

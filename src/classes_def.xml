@@ -1,6 +1,8 @@
 
 <lcgdict>
-  <class name="PFRootEventManager"/>
+  <class name="PFRootEventManager">
+    <field name="pdgTable_" transient="true"/>
+  </class>
   <class name="PFRootEventManagerColin"/>
   <class name="EventColin"/>
   <class name="EventColin::Particle"/>
