@@ -893,8 +893,10 @@ bool PFRootEventManager::processEntry(int entry) {
   if(outTree_) outTree_->Fill();
   
  
-  if( deltaEt>10 )
+  if( deltaEt<-0.5 ) {
+    cout<<deltaEt<<endl;
     return true;
+  }
   //  if(trueParticles_.size() != 1 ) return false;
   else 
     return false;
@@ -1420,6 +1422,8 @@ void PFRootEventManager::particleFlow() {
   if( debug_) cout<<"PFRootEventManager::particleFlow stop"<<endl;
 }
 
+
+
 double PFRootEventManager::makeJets() {
   //std::cout << "building jets from MC particles," 
   //    << "PF particles and caloTowers" << std::endl;
@@ -1676,8 +1680,8 @@ double PFRootEventManager::makeJets() {
   if (verbosity_ == VERBOSE ) {
     cout << "makeJets E_T(PF) - E_T(true) = " << deltaEt << endl;
   }
-
-  return deltaEtEHT;
+  
+  return deltaEt/partTOTMC.Et();
 }//Makejets
 
 
@@ -1700,7 +1704,11 @@ void PFRootEventManager::displayNext(bool init) {
     // iCurrentEntry_=ientry;
     ientry++;
   }
-  display();
+  
+  if( ok )
+    display();
+  else 
+    cerr<<"PFRootEventManager::displayNext : no event matching criteria"<<endl;
 }
 
 
