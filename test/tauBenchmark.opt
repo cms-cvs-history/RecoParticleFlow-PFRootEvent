@@ -55,12 +55,18 @@ display  color_clusters		1
 // the eta/phi display zooms to the rechit with maximum energy. 
 // display/zoom_factor roughly gives the size of the view around this rechit
 // in number of ecal cells	
-display  zoom_factor		15
+display  zoom_factor		5
 
 // display reconstructed tracks yes/no
 display  rectracks              1
 // display true particles yes/no
 display  particles              1              
+
+// min pt for simparticles display
+display  particles_ptmin 0
+
+// min pt for rectracks display
+display  rectracks_ptmin 0
 
 // display x/y view yes/no
 display  x/y      1
@@ -72,6 +78,9 @@ display  r/z      1
 // filter ------------------------------------------------------------
 
 filter   nparticles  0
+
+// filter   taus	     1	2
+
 
 // clustering parameters ---------------------------------------------------
 
@@ -172,10 +181,12 @@ particle_flow chi2_HCAL_Track	50
 particle_flow chi2_ECAL_HCAL	10
 
 // number of sigmas for neutral energy detection
-particle_flow   nsigma_neutral    3
+particle_flow   nsigma_ECAL    3
+particle_flow   nsigma_HCAL    3
 
 //calibration
-particle_flow   ecalib 0.11 1.07
+// particle_flow   ecalib 0.108 1.050
+particle_flow   ecalib 0 1
 
 // print flags ------------------------------------------------------------
 // for PFRootEventManager::print()
@@ -185,13 +196,13 @@ print rechits  0
 // print clusters yes/no
 print clusters 0
 // print particle flow blocks yes/no
-print PFBlocks     1
+print PFBlocks     0
 // print true particles yes/no
-print true_particles     0
+print true_particles     1
 // print MC Truth
-print MC_truth 0
+print MC_truth 1
 // print reconstructed particles yes/no
-print PFCandidates     0
+print PFCandidates     1
 
 // verbosity 
 print verbosity 0

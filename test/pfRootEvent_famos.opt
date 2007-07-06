@@ -2,9 +2,8 @@
 root outfile  out.root
 root outtree 1
 
+root file  ../../PFBlockProducer/test/blocks_famos.root
 
-//root file  rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_5_0/Famos/qqH_Htautau/qqh_htautau_fevt_0.root
-root file  /afs/cern.ch/user/c/cbern/public/qqh_htautau_fevt.root
 // name of the branches of the input TTree. 
 
 // ECAL rechits branch
@@ -26,7 +25,7 @@ root MCTruth_branch  edmHepMCProduct_source__PROD.obj
 
 // root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_PROD.obj
 
-// root caloTowers_branch     CaloTowersSorted_towerMaker__PROD.obj
+root caloTowers_branch     CaloTowersSorted_towerMaker__PROD.obj
 
 // reconstructed tracks branch
 
@@ -43,33 +42,31 @@ root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__PROD.obj
 display  cluster_algos 2
 display  cluster_lines 0
 
-// display the color of the clusters yes/no
-// if yes, the color is equal to the type (type 2 -> red)
-display  color_clusters		1
-
---------
-
 // size of the eta/phi canvas 
 display  viewsize_etaphi 400 200
 // size of the x/y canvas  
 display  viewsize_xy     400 400
 
+// display the color of the clusters yes/no
+// if yes, the color is equal to the type (type 2 -> red)
+display  color_clusters		1
+
 // when the function PFRootEventManager::lookForMaxRecHit is used
 // the eta/phi display zooms to the rechit with maximum energy. 
 // display/zoom_factor roughly gives the size of the view around this rechit
 // in number of ecal cells	
-display  zoom_factor		15
-
--------
+display  zoom_factor		5
 
 // display reconstructed tracks yes/no
 display  rectracks              1
-
--------
-
 // display true particles yes/no
 display  particles              1              
-display  particles_ptmin	1
+
+// min pt for simparticles display
+display  particles_ptmin 0
+
+// min pt for rectracks display
+display  rectracks_ptmin 0
 
 // display x/y view yes/no
 display  x/y      1
@@ -81,6 +78,9 @@ display  r/z      1
 // filter ------------------------------------------------------------
 
 filter   nparticles  0
+
+// filter   taus	     1	2
+
 
 // clustering parameters ---------------------------------------------------
 
@@ -181,10 +181,12 @@ particle_flow chi2_HCAL_Track	50
 particle_flow chi2_ECAL_HCAL	10
 
 // number of sigmas for neutral energy detection
-particle_flow   nsigma_neutral    3
+particle_flow   nsigma_ECAL    3
+particle_flow   nsigma_HCAL    3
 
 //calibration
-particle_flow   ecalib 0.11 1.07
+// particle_flow   ecalib 0.108 1.050
+particle_flow   ecalib 0 1
 
 // print flags ------------------------------------------------------------
 // for PFRootEventManager::print()
@@ -194,13 +196,13 @@ print rechits  0
 // print clusters yes/no
 print clusters 0
 // print particle flow blocks yes/no
-print PFBlocks     1
+print PFBlocks     0
 // print true particles yes/no
-print true_particles     0
+print true_particles     1
 // print MC Truth
-print MC_truth 0
+print MC_truth 1
 // print reconstructed particles yes/no
-print PFCandidates     0
+print PFCandidates     1
 
 // verbosity 
 print verbosity 0
