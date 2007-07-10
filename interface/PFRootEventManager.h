@@ -52,7 +52,12 @@ class TCanvas;
 class TH2F;
 class TH1F;
 class TGraph;
-/* class TDatabasePDG; */
+
+class GPFRecHit;
+class GPFCluster;
+class GPFTrack;
+class GPFPart;
+
 
 class IO;
 
@@ -244,17 +249,35 @@ class PFRootEventManager {
   /// display reconstructed tracks
   void displayRecTracks(unsigned viewType, double phi0 = 0.);
 
+  /// create graphic objet track
+  void displayTrack(reco::PFRecTrack &tr,const std::vector<reco::PFTrajectoryPoint>& points, 
+ 		    unsigned viewType, double phi0, 
+		    double sign, bool displayInitial, 
+		    int linestyle, int markerstyle, double markersize, 
+ 		    int color);
+		    
   /// display true particles
   void displayTrueParticles(unsigned viewType, double phi0 = 0.);
 
-  /// display track (for rectracks and particles)
-  void displayTrack(const std::vector<reco::PFTrajectoryPoint>& points, 
-		    unsigned viewType, double phi0, 
-		    double sign, bool displayInitial, 
-		    int linestyle, int markerstyle, double markersize, 
-		    int color);  
+  /// create graphic objet Particule
+  void displayPart(const reco::PFSimParticle &ptc, const std::vector<reco::PFTrajectoryPoint>& points, 
+ 		   unsigned viewType, double phi0, 
+		   double sign, bool displayInitial, 
+		   int linestyle, int markerstyle, double markersize, 
+ 		   int color); 
 
 
+  /// reset of graphic containers before next event
+  void   resetGraphicContainers();
+  
+  ///display graphic objects
+  void   drawRecHits(unsigned viewType);
+  void   drawClusters(unsigned viewType);
+  void   drawTracks(unsigned viewType);
+  void   drawParts(unsigned viewType);
+  
+  
+  
   /// unzooms all support histograms
   void unZoom();
 
@@ -325,6 +348,7 @@ class PFRootEventManager {
     closestParticle( reco::PFTrajectoryPoint::LayerType  layer, 
 		     double eta, double phi, 
 		     double& peta, double& pphi, double& pe) const;
+
 
   // data members -------------------------------------------------------
 
@@ -481,7 +505,15 @@ class PFRootEventManager {
   bool                     displayClusterLines_;
 
   /// display pad xy size for eta/phi view
-  std::vector<int>         viewSizeEtaPhi_;        
+  std::vector<int>         viewSizeEtaPhi_; 
+  
+  /// containers og graphic objects      
+  std::vector< std::vector<GPFRecHit> >   vectGHits_;
+  std::vector< std::vector<GPFCluster> >  vectGClus_;
+  std::vector< std::vector<GPFTrack> >    vectGTracks_;
+  std::vector< std::vector<GPFPart> >     vectGParts_;
+  
+  
 
   //------------ display settings -----------------------------
 
@@ -505,7 +537,13 @@ class PFRootEventManager {
 
   /// size of view in number of cells when centering on a rechit
   double displayZoomFactor_;
-
+  
+  /// pt threshold to display rec hits
+  double displayRecHitsPtMin_;
+  
+  /// pt threshold to display clusters
+  double displayClustersPtMin_;
+  
   /// pt threshold to display rec tracks
   double displayRecTracksPtMin_;
 
@@ -595,6 +633,7 @@ class PFRootEventManager {
   
   /// debug printouts for jet algo on/off
   bool   jetsDebug_;
+      
 
   // MC Truth tools              ---------------------------------------
 

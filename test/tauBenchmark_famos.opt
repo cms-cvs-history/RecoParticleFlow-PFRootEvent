@@ -2,7 +2,9 @@
 root outfile tauBenchmark.root
 root outtree 1
 
-root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_5_0/Famos_4july/Taus_200_500/blocks_famos_0.root
+// root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_5_0/Famos_4july/Taus_200_500/blocks_famos_0.root
+root file ../../PFBlockProducer/test/blocks_famos.root
+
 
 // name of the branches of the input TTree. 
 
