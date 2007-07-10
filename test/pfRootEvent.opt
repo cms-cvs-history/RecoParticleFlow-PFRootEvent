@@ -4,6 +4,7 @@ root outtree 1
 
 
 root file  ../../PFBlockProducer/test/blocks.root
+// root file  /castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_5_0/Taus_2/Blocks/out_singletau_fevt_5.root
 
 // name of the branches of the input TTree. 
 

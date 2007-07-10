@@ -274,7 +274,8 @@ void PFRootEventManager::readOptions(const char* file,
   
   filterTaus_.clear();
   options_->GetOpt("filter", "taus", filterTaus_);
-  if( filterTaus_.size() != 2 ) {
+  if( !filterTaus_.empty() &&
+       filterTaus_.size() != 2 ) {
     cerr<<"PFRootEventManager::ReadOptions, bad filter/taus option."<<endl
 	<<"please use : "<<endl
 	<<"\tfilter taus n_charged n_neutral"<<endl;
@@ -1342,9 +1343,21 @@ PFRootEventManager::fillOutEventWithSimParticles(const reco::PFSimParticleCollec
     unsigned ntrajpoints = ptc.nTrajectoryPoints();
 
     if(ntrajpoints>2) { // decay before ecal -> 2 trajpoints only
+
+      
+      reco::PFTrajectoryPoint::LayerType ecalEntrance 
+	= reco::PFTrajectoryPoint::ECALEntrance;
+
+      if(ntrajpoints == 3) { 
+	// old format for PFSimCandidates. 
+	// in this case, the PFSimCandidate which does not decay 
+	// before ECAL has 3 points: initial, ecal entrance, hcal entrance
+	ecalEntrance = static_cast<reco::PFTrajectoryPoint::LayerType>(1);
+      }
+      else continue; // endcap case we do not care;
+
       const reco::PFTrajectoryPoint& tpatecal 
-	//      = ptc.trajectoryPoint(1);
-	= ptc.extrapolatedPoint(reco::PFTrajectoryPoint::ECALEntrance);
+	= ptc.extrapolatedPoint( ecalEntrance );
             
       EventColin::Particle outptc;
       outptc.eta = tpatecal.positionXYZ().Eta();
@@ -3129,15 +3142,16 @@ PFRootEventManager::closestParticle( reco::PFTrajectoryPoint::LayerType layer,
     
     const reco::PFSimParticle& ptc = trueParticles_[i];
 
-    if( layer >= 
-	static_cast<reco::PFTrajectoryPoint::LayerType> 
-	(ptc.nTrajectoryPoints()) ) {
+    // protection for old version of the PFSimParticle 
+    // dataformats. 
+    if( layer >= reco::PFTrajectoryPoint::NLayers ||
+	ptc.nTrajectoryMeasurements() + layer >= 
+	ptc.nTrajectoryPoints() ) {
       continue;
     }
 
     const reco::PFTrajectoryPoint& tp
       = ptc.extrapolatedPoint( layer );
-
 
     peta = tp.positionXYZ().Eta();
     pphi = tp.positionXYZ().Phi();
