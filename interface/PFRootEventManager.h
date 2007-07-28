@@ -207,6 +207,9 @@ class PFRootEventManager {
   /// fills outEvent with calo towers
   void fillOutEventWithCaloTowers(const CaloTowerCollection& cts);
 
+  /// fills outEvent with blocks
+  void fillOutEventWithBlocks(const reco::PFBlockCollection& blocks);
+
 
   /// performs particle flow
   void particleFlow();

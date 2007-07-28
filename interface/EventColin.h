@@ -63,6 +63,17 @@ class EventColin {
     double eh;
   };
 
+  class Block {
+  public:
+    Block() : p(0), e(0), h(0) {}
+    double         p;    // tot momentum
+    double         e;    // tot ecal
+    double         h;    // tot hcal
+    int            ntracks; // number of tracks
+    std::vector<double> ptrack; 
+    std::vector<double> etrack;
+  };
+
   void setNumber(int number) {number_ = number;}
   void setNTracks(int nTracks) {nTracks_ = nTracks;}
 
@@ -94,6 +105,10 @@ class EventColin {
     caloTowers_.push_back( ct );
   } 
 
+  void addBlock( const Block& b ) {
+    blocks_.push_back( b );
+  }
+  
 
   const std::vector<EventColin::Particle>& particles() 
     {return particles_;}
@@ -119,6 +134,7 @@ class EventColin {
   std::vector<EventColin::Jet>      jetsEHT_;
   std::vector<EventColin::Jet>      jetsPF_;
   std::vector<EventColin::CaloTower>  caloTowers_;
+  std::vector<EventColin::Block>    blocks_;
   
 };
 

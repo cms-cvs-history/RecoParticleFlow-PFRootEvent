@@ -1411,6 +1411,24 @@ PFRootEventManager::fillOutEventWithCaloTowers( const CaloTowerCollection& cts )
 }
 
 
+void 
+PFRootEventManager::fillOutEventWithBlocks( const reco::PFBlockCollection& 
+					    blocks ) {
+
+  if(!outEvent_) return;
+  
+  for ( unsigned i=0;  i < blocks.size(); i++) {
+
+    const reco::PFBlock& block = blocks[i];
+    
+    EventColin::Block outblock;
+ 
+    outEvent_->addBlock( outblock );
+  }
+}
+
+
+
 
 void PFRootEventManager::particleFlow() {
   

@@ -13,6 +13,8 @@
   <class name="std::vector<EventColin::Jet>"/>
   <class name="EventColin::CaloTower"/>
   <class name="std::vector<EventColin::CaloTower>"/>
+  <class name="EventColin::Block"/>
+  <class name="std::vector<EventColin::Block>"/>
   <class name="ResidualFitter"/>
   <class name="GPFRecHit"/>
   <class name="std::vector<GPFRecHit>"/>
