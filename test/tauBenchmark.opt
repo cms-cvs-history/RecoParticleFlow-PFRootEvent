@@ -1,42 +1,40 @@
 
 root outfile  tauBenchmark.root
+root outtree 1
 
-// source root file, generated in src/RecoParticleFlow/PFProducer/test
-// with the command: cmsRun singletau_all.cfg 
-
-//root file /castor/cern.ch/user/a/azabi/EFLOW/TAU/CMSSW120/NEW/singletau_pf_20.root
-//root file  ../../PFProducer/test/singletau_repf.root
-root file /castor/cern.ch/user/a/azabi/EFLOW2/TAU/CMSSW131/singletau_pf_1.root
-
-root outtree 0
+root file  /castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_5_0/Taus_2/Blocks/out_singletau_fevt_5.root
 
 // name of the branches of the input TTree. 
 
 // ECAL rechits branch
-root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_FLOW.obj
+root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_BLOCK.obj
 // HCAL rechits branch
-root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_FLOW.obj
+root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_BLOCK.obj
 // PS rechits branch
-root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_FLOW.obj
+root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_BLOCK.obj
 
 // ECAL clusters branch
-root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_FLOW.obj
+root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_BLOCK.obj
 // HCAL clusters branch
-root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_FLOW.obj
+root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_BLOCK.obj
 // PS clusters branch
-root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_FLOW.obj
-//ECAL island clusters //not working in 1_3_0_pre3 
-//root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_FLOW.obj
+root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_BLOCK.obj
+// HepMCProduct branch
+root MCTruth_branch  edmHepMCProduct_source__Rec.obj
 
-// CaloTowers
+
+// root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_BLOCK.obj
+
 root caloTowers_branch     CaloTowersSorted_towerMaker__Rec.obj
 
 // reconstructed tracks branch
-root recTracks_branch      recoPFRecTracks_elecpreid__FLOW.obj
-root stdTracks_branch      recoTracks_trackRefitter__FLOW.obj
+
+root recTracks_branch      recoPFRecTracks_elecpreid__BLOCK.obj
+root stdTracks_branch      recoTracks_trackRefitter__BLOCK.obj
 
 // true particles branch
-root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__FLOW.obj
+
+root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__BLOCK.obj
 
 // display parameters ----------------------------------------------------
 
@@ -57,12 +55,18 @@ display  color_clusters		1
 // the eta/phi display zooms to the rechit with maximum energy. 
 // display/zoom_factor roughly gives the size of the view around this rechit
 // in number of ecal cells	
-display  zoom_factor		15
+display  zoom_factor		5
 
 // display reconstructed tracks yes/no
 display  rectracks              1
 // display true particles yes/no
 display  particles              1              
+
+// min pt for simparticles display
+display  particles_ptmin 0
+
+// min pt for rectracks display
+display  rectracks_ptmin 0
 
 // display x/y view yes/no
 display  x/y      1
@@ -74,6 +78,9 @@ display  r/z      1
 // filter ------------------------------------------------------------
 
 filter   nparticles  0
+
+// filter   taus	     1	2
+
 
 // clustering parameters ---------------------------------------------------
 
@@ -161,10 +168,10 @@ clustering posCalc_p1_PS                0
 // particle flow parameters ----------------------------------------------
 
 
-particle_flow resolution_map_ECAL_eta $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
-particle_flow resolution_map_ECAL_phi $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
-particle_flow resolution_map_HCAL_eta $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
-particle_flow resolution_map_HCAL_phi $CMSSW_BASE/share/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
+particle_flow resolution_map_ECAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
+particle_flow resolution_map_ECAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
+particle_flow resolution_map_HCAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
+particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
 
 // chi2 maximum limit for ECAL/Track association
 particle_flow chi2_ECAL_Track   50
@@ -174,10 +181,12 @@ particle_flow chi2_HCAL_Track	50
 particle_flow chi2_ECAL_HCAL	10
 
 // number of sigmas for neutral energy detection
-particle_flow   nsigma_neutral    3
+particle_flow   nsigma_ECAL    3
+particle_flow   nsigma_HCAL    3
 
 //calibration
-particle_flow   ecalib 0.11 1.07
+// particle_flow   ecalib 0.108 1.050
+particle_flow   ecalib 0 1
 
 // print flags ------------------------------------------------------------
 // for PFRootEventManager::print()
@@ -187,11 +196,13 @@ print rechits  0
 // print clusters yes/no
 print clusters 0
 // print particle flow blocks yes/no
-print PFBs     0
+print PFBlocks     0
 // print true particles yes/no
-print true_particles     0
+print true_particles     1
 // print MC Truth
-print MC_truth 0
+print MC_truth 1
+// print reconstructed particles yes/no
+print PFCandidates     1
 
 // verbosity 
 print verbosity 0
