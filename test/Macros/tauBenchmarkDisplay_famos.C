@@ -3,14 +3,15 @@
 // library, which contains the ROOT interface
 gSystem->Load("libFWCoreFWLite.so");
 gSystem->Load("libRecoParticleFlowPFRootEvent.so");
-// // AutoLibraryLoader::enable();
+// AutoLibraryLoader::enable();
 gSystem->Load("libCintex.so");
 ROOT::Cintex::Cintex::Enable();
 
 // create a PFRootEventManager
-PFRootEventManager em("pfRootEvent.opt");
+// PFRootEventManager em("pfRootEvent.opt");
+PFRootEventManager em("tauBenchmark_famos.opt");
 
-// display first entry
+// display entry number 2
 int i=0;
 em.display(i++);
 
