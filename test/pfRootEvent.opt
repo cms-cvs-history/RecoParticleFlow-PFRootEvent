@@ -5,6 +5,7 @@ root outtree 1
 
 root file  ../../PFBlockProducer/test/blocks.root
 // root file  /castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_5_0/Taus_2/Blocks/out_singletau_fevt_5.root
+#root file candidates.root
 
 // name of the branches of the input TTree. 
 
@@ -37,6 +38,22 @@ root stdTracks_branch      recoTracks_trackRefitter__BLOCK.obj
 // true particles branch
 
 root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__BLOCK.obj
+
+// FWLITE JetMaker Branches ----------
+// PFIC5Jets
+root pfjet_branch	recoPFJets_iterativeCone5PFJets__FLOW.obj
+// CaloIC5Jets
+root calojet_branch	recoCaloJets_iterativeCone5CaloJets__Rec.obj
+// GenParticleCandidates
+root genParticleCand_branch	recoCandidatesOwned_genParticleCandidates__Rec.obj
+// CaloTowersCandidates
+root caloTowersCand_branch      recoCandidatesOwned_caloTowers__Rec.obj
+// Particle Flow Candidates
+root ParticleFlowCandbranch    recoCandidatesOwned_particleFlowJetCandidates__FLOW.obj
+
+//---------------
+
+
 
 // display parameters ----------------------------------------------------
 
@@ -224,3 +241,23 @@ jets cone_merge 100
 
 //debug yes/no
 jets jets_debug 0	
+
+// FWLITE CMSSW Jet Algorithm options --------------------------------------------------
+// Debug
+CMSSWjets  jetsDebugCMSSW 1
+// Jet Algo : 1= ICone; 2=MCone; 3=FastJet
+CMSSWjets  Algo 3
+//Eta cuts
+CMSSWjets  EtInputCut 0.2
+CMSSWjets  EInputCut 0.
+// IC parameter
+CMSSWjets  seedThreshold 1.0
+CMSSWjets  coneRadius 0.5
+// MidPointCone
+CMSSWjets  coneAreaFraction 2
+CMSSWjets  maxPairSize 2
+CMSSWjets  maxIterations 100
+CMSSWjets  overlapThreshold 0.75
+//FastJet
+CMSSWjets  ptMin 10.
+CMSSWjets  rParam 1.0
