@@ -195,7 +195,7 @@ particle_flow chi2_ECAL_HCAL	10
 particle_flow   nsigma_ECAL    3
 particle_flow   nsigma_HCAL    3
 
-particle_flow   mergedPhotons_mvaCut 0.5
+// particle_flow   mergedPhotons_mvaCut 0.5
 
 //calibration
 // particle_flow   ecalib 0.108 1.050
