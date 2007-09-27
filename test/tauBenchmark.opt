@@ -38,18 +38,28 @@ root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__BLOCK.obj
 
 // display parameters ----------------------------------------------------
 
+
+//display reconstructed hits  yes/no
+display rechits 1
+
+//pt threshold to display hits
+display rechits_enmin    0 
+
 // display clusters of type 2 (particle flow clusters)
 display  cluster_algos 2
-display  cluster_lines 0
+display  cluster_lines 1
+
+display   clusters_enmin  0
+
+
+// display the color of the clusters yes/no
+// if yes, the color is equal to the type (type 2 -> red)
+display  color_clusters		1
 
 // size of the eta/phi canvas 
 display  viewsize_etaphi 400 200
 // size of the x/y canvas  
 display  viewsize_xy     400 400
-
-// display the color of the clusters yes/no
-// if yes, the color is equal to the type (type 2 -> red)
-display  color_clusters		1
 
 // when the function PFRootEventManager::lookForMaxRecHit is used
 // the eta/phi display zooms to the rechit with maximum energy. 
@@ -57,16 +67,18 @@ display  color_clusters		1
 // in number of ecal cells	
 display  zoom_factor		5
 
+// display clusters yes/no
+display   clusters    1
 // display reconstructed tracks yes/no
 display  rectracks              1
 // display true particles yes/no
 display  particles              1              
 
 // min pt for simparticles display
-display  particles_ptmin 0
+display  particles_ptmin   0
 
 // min pt for rectracks display
-display  rectracks_ptmin 0
+display  rectracks_ptmin   0
 
 // display x/y view yes/no
 display  x/y      1
