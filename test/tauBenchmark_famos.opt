@@ -74,6 +74,11 @@ display  color_clusters		1
 // in number of ecal cells	
 display  zoom_factor		5
 
+
+//display reconstructed hits  yes/no
+display rechits                 1
+// display clusters yes/no
+display   clusters              1
 // display reconstructed tracks yes/no
 display  rectracks              1
 // display true particles yes/no
@@ -84,6 +89,13 @@ display  particles_ptmin 0
 
 // min pt for rectracks display
 display  rectracks_ptmin 0
+
+//min energy threshold to display hits
+display rechits_enmin    0 
+
+// min energy threshold to display cluster
+display   clusters_enmin  0
+
 
 // display x/y view yes/no
 display  x/y      1

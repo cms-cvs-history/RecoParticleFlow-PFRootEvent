@@ -8,13 +8,19 @@ gSystem->Load("libCintex.so");
 ROOT::Cintex::Cintex::Enable();
 
 // create a PFRootEventManager
-// PFRootEventManager em("pfRootEvent.opt");
 PFRootEventManager em("tauBenchmark.opt");
+// create a DisplayManager
+DisplayManager dm(&em);
 
 // display entry number 2
 int i=0;
-em.display(i++);
+dm.display(i++);
 
 // look for ECAL rechit with maximum energy
-em.lookForMaxRecHit(true);
+dm.lookForMaxRecHit(true);
+
+// create a dialogFrame:
+// DialogFrame *win = new DialogFrame(&em,&dm,gClient->GetRoot(), 200,220);
+
+
 }
