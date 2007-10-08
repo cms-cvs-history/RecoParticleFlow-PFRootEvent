@@ -526,8 +526,14 @@ void PFRootEventManager::readOptions(const char* file,
   options_->GetOpt("particle_flow", "mergedPhotons_mvaCut", mvaCut);
     
   
+  int    algo = 1;
+  options_->GetOpt("particle_flow", "algorithm", algo);
+
+
   pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
 			 mvaCut );
+  pfAlgo_.setAlgo( algo );
+  
 
   // print flags -------------
 
@@ -888,7 +894,7 @@ bool PFRootEventManager::processEntry(int entry) {
 //   else 
 //     return false;
   
-//   return goodevent;
+  return goodevent;
 
 }
 
