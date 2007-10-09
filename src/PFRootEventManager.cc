@@ -487,17 +487,23 @@ void PFRootEventManager::readOptions(const char* file,
   options_->GetOpt("particle_flow", "chi2_ECAL_HCAL", chi2ECALHCAL);
 
 
-  pfBlockAlgo_.setParameters( map_ECAL_eta.c_str(),
-			      map_ECAL_phi.c_str(),
-			      map_HCAL_eta.c_str(),
-			      map_HCAL_phi.c_str(),
-			      chi2TrackECAL,
-			      chi2TrackHCAL,
-			      chi2ECALHCAL );
-  
+  try {
+    pfBlockAlgo_.setParameters( map_ECAL_eta.c_str(),
+				map_ECAL_phi.c_str(),
+				map_HCAL_eta.c_str(),
+				map_HCAL_phi.c_str(),
+				chi2TrackECAL,
+				chi2TrackHCAL,
+				chi2ECALHCAL );
+  }  
+  catch( std::exception& err ) {
+    cerr<<err.what()<<". terminating."<<endl;
+    exit(1);
+  }
+
+
   bool blockAlgoDebug = false;
   options_->GetOpt("blockAlgo", "debug",  blockAlgoDebug);  
-
   pfBlockAlgo_.setDebug( blockAlgoDebug );
 
 
@@ -524,16 +530,28 @@ void PFRootEventManager::readOptions(const char* file,
 
   double mvaCut = 999999;
   options_->GetOpt("particle_flow", "mergedPhotons_mvaCut", mvaCut);
-    
   
+  string mvaWeightFile = "";
+  options_->GetOpt("particle_flow", "mergedPhotons_mvaWeightFile", 
+		   mvaWeightFile);  
+
+  try {
+    pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
+			   mvaCut, mvaWeightFile.c_str() );
+  }
+  catch( std::exception& err ) {
+    cerr<<err.what()<<". terminating."<<endl;
+    exit(1);
+  }
+
   int    algo = 1;
   options_->GetOpt("particle_flow", "algorithm", algo);
 
-
-  pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
-			 mvaCut );
   pfAlgo_.setAlgo( algo );
   
+  bool pfAlgoDebug = false;
+  options_->GetOpt("particle_flow", "debug", pfAlgoDebug );  
+  pfAlgo_.setDebug( pfAlgoDebug );
 
   // print flags -------------
 
@@ -885,7 +903,7 @@ bool PFRootEventManager::processEntry(int entry) {
   if(outTree_) outTree_->Fill();
   
  
-  if( deltaEt>0.5 ) {
+  if( deltaEt>0.4 ) {
     cout<<"delta E_t ="<<deltaEt<<endl;
     return true;
   }  
