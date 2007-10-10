@@ -205,12 +205,27 @@ particle_flow resolution_map_ECAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//
 particle_flow resolution_map_HCAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
 particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
 
+// Debug blockAlgo
+blockAlgo debug 0
+// Debug PFAlgo
+PFAlgo debug 0
+
+// Track Quality Cut: Tracks are kept if DPt/Pt < Cut
+particle_flow DPtoverPt_Cut   999.9
+
 // chi2 maximum limit for ECAL/Track association
 particle_flow chi2_ECAL_Track   50
 // chi2 maximum limit for HCAL/Track association
 particle_flow chi2_HCAL_Track	50
 // chi2 maximum limit for ECAL/HCAL assoiation
 particle_flow chi2_ECAL_HCAL	10
+
+// chi2 maximum limit for PS/ECAL association
+particle_flow chi2_PS_ECAL	100
+// chi2 maximum limit for PS/Track association
+particle_flow chi2_PS_Track	100
+// chi2 maximum limit for PSH/PSH association
+particle_flow chi2_PSH_PSV	5
 
 // number of sigmas for neutral energy detection
 particle_flow   nsigma_ECAL    3
