@@ -235,8 +235,8 @@ class PFRootEventManager {
 
   // protected:
 
-  // retrieve resolution maps
-  void   getMap(std::string& map);
+  // expand environment variable in a string
+  std::string  expand(const std::string& oldString) const;
 
   /// print a rechit
   void   printRecHit(const reco::PFRecHit& rh, 

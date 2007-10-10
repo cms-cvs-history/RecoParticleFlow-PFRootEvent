@@ -473,10 +473,10 @@ void PFRootEventManager::readOptions(const char* file,
   options_->GetOpt("particle_flow", "resolution_map_HCAL_phi", map_HCAL_phi);
 
   //getting resolution maps
-  getMap(map_ECAL_eta);
-  getMap(map_ECAL_phi);
-  getMap(map_HCAL_eta);
-  getMap(map_HCAL_phi);
+  map_ECAL_eta = expand(map_ECAL_eta);
+  map_ECAL_phi = expand(map_ECAL_phi);
+  map_HCAL_eta = expand(map_HCAL_eta);
+  map_HCAL_phi = expand(map_HCAL_phi);
 
 
   double chi2TrackECAL=100;
@@ -534,6 +534,7 @@ void PFRootEventManager::readOptions(const char* file,
   string mvaWeightFile = "";
   options_->GetOpt("particle_flow", "mergedPhotons_mvaWeightFile", 
 		   mvaWeightFile);  
+  mvaWeightFile = expand( mvaWeightFile );
 
   try {
     pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
@@ -1777,40 +1778,48 @@ void PFRootEventManager::lookForGenParticle(unsigned barcode) {
 
 
 
-void PFRootEventManager::getMap(string& map) {
+string PFRootEventManager::expand(const string& oldString) const {
 
+  string newString = oldString;
+ 
   string dollar = "$";
   string slash  = "/";
   
   // protection necessary or segv !!
-  int dollarPos = map.find(dollar,0);
-  if( dollarPos == -1 ) return;
+  int dollarPos = newString.find(dollar,0);
+  if( dollarPos == -1 ) return oldString;
 
-  int    lengh  = map.find(slash,0) - map.find(dollar,0) + 1;
+  int    lengh  = newString.find(slash,0) - newString.find(dollar,0) + 1;
   string env_variable =
-    map.substr( ( map.find(dollar,0) + 1 ), lengh -2);
-  //  cout << "var=" << env_variable << endl;
+    newString.substr( ( newString.find(dollar,0) + 1 ), lengh -2);
+  // the env var could be defined between { }
+  int begin = env_variable.find_first_of("{");
+  int end = env_variable.find_last_of("}");
+  
+  cout << "var=" << env_variable << begin<<" "<<end<< endl;
+  
 
-  const char* name = env_variable.c_str();
-  string directory;
-  try{
-    // cout<<"call getenv"<<endl;
-    directory = getenv(name);
-    directory += "/";
-    // cout<<directory<<endl;
-  }
-  catch( const string& err ) {
-    cout<<err<<endl;
-    cout << "ERROR: YOU SHOULD SET THE VARIABLE "
-         << env_variable << endl;
-  }
+  env_variable = env_variable.substr( begin+1, end-1 );
+  cout << "var=" << env_variable <<endl;
 
-  map.replace( 0, lengh , directory);
+
+  cerr<<"call getenv "<<endl;
+  char* directory = getenv( env_variable.c_str() );
+
+  if(!directory) {
+    cerr<<"please define environment variable $"<<env_variable<<endl;
+    exit(1);
+  }
+  string sdir = directory;
+  sdir += "/";
+
+  newString.replace( 0, lengh , sdir);
 
   if (verbosity_ == VERBOSE ) {
-    cout << "Looking for resolution " << map << endl;
-    cout << map << endl;
+    cout << "expand " <<oldString<<" to "<< newString << endl;
   }
+
+  return newString;
 }
 
 void  PFRootEventManager::print(ostream& out) const {
