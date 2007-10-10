@@ -1,4 +1,5 @@
 
+
 //#include "FWCore/Framework/interface/OrphanHandle.h"
 #include "DataFormats/Common/interface/OrphanHandle.h"
 //#include "DataFormats/Common/interface/ProductID.h"
@@ -478,35 +479,47 @@ void PFRootEventManager::readOptions(const char* file,
   map_HCAL_eta = expand(map_HCAL_eta);
   map_HCAL_phi = expand(map_HCAL_phi);
 
-
+  double DPtovPtCut = 999.;
+  options_->GetOpt("particle_flow", "DPtoverPt_Cut", DPtovPtCut);
   double chi2TrackECAL=100;
   options_->GetOpt("particle_flow", "chi2_ECAL_Track", chi2TrackECAL);
   double chi2TrackHCAL=100;
   options_->GetOpt("particle_flow", "chi2_HCAL_Track", chi2TrackHCAL);
   double chi2ECALHCAL=100;
   options_->GetOpt("particle_flow", "chi2_ECAL_HCAL", chi2ECALHCAL);
-
+  double chi2PSECAL=100;
+  options_->GetOpt("particle_flow", "chi2_PS_ECAL", chi2PSECAL);
+  double chi2PSTrack=100;
+  options_->GetOpt("particle_flow", "chi2_PS_Track", chi2PSTrack);
+  double chi2PSHV=100;
+  options_->GetOpt("particle_flow", "chi2_PSH_PSV", chi2PSHV);
 
   try {
     pfBlockAlgo_.setParameters( map_ECAL_eta.c_str(),
 				map_ECAL_phi.c_str(),
 				map_HCAL_eta.c_str(),
 				map_HCAL_phi.c_str(),
+				DPtovPtCut, 
 				chi2TrackECAL,
 				chi2TrackHCAL,
-				chi2ECALHCAL );
+				chi2ECALHCAL,
+				chi2PSECAL, 
+				chi2PSTrack,
+				chi2PSHV ); 
   }  
   catch( std::exception& err ) {
     cerr<<err.what()<<". terminating."<<endl;
     exit(1);
   }
-
+  
 
   bool blockAlgoDebug = false;
   options_->GetOpt("blockAlgo", "debug",  blockAlgoDebug);  
   pfBlockAlgo_.setDebug( blockAlgoDebug );
 
-
+  bool AlgoDebug = false;
+  options_->GetOpt("PFAlgo", "debug",  AlgoDebug);  
+  pfAlgo_.setDebug( AlgoDebug );
 
   double eCalibP0 = 0;
   double eCalibP1 = 1;
@@ -548,7 +561,9 @@ void PFRootEventManager::readOptions(const char* file,
   int    algo = 1;
   options_->GetOpt("particle_flow", "algorithm", algo);
 
-  pfAlgo_.setAlgo( algo );
+  pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
+			 mvaCut );
+  pfAlgo_.setAlgo( algo ); 
   
   bool pfAlgoDebug = false;
   options_->GetOpt("particle_flow", "debug", pfAlgoDebug );  
@@ -897,6 +912,8 @@ bool PFRootEventManager::processEntry(int entry) {
 
   particleFlow();
 
+  // call print() in verbose mode
+  if( verbosity_ == VERBOSE )print();
   double deltaEt=0;
   if( goodevent && doJets_) 
     deltaEt = makeJets(); 
@@ -1440,7 +1457,10 @@ void PFRootEventManager::particleFlow() {
   
   edm::OrphanHandle< reco::PFClusterCollection > hcalh( clustersHCAL_.get(), 
 							edm::ProductID(3) );  
-  
+
+  edm::OrphanHandle< reco::PFClusterCollection > psh( clustersPS_.get(), 
+						      edm::ProductID(4) );   
+
 
   vector<bool> trackMask;
   fillTrackMask( trackMask, recTracks_ );
@@ -1448,9 +1468,11 @@ void PFRootEventManager::particleFlow() {
   fillClusterMask( ecalMask, *clustersECAL_ );
   vector<bool> hcalMask;
   fillClusterMask( hcalMask, *clustersHCAL_ );
- 
-  pfBlockAlgo_.setInput( trackh, ecalh, hcalh,
-			 trackMask, ecalMask, hcalMask );
+  vector<bool> psMask;
+  fillClusterMask( psMask, *clustersPS_ );
+  
+  pfBlockAlgo_.setInput( trackh, ecalh, hcalh, psh,
+			 trackMask, ecalMask, hcalMask, psMask ); 
   pfBlockAlgo_.findBlocks();
   
   if( debug_) cout<<pfBlockAlgo_<<endl;
@@ -1459,7 +1481,7 @@ void PFRootEventManager::particleFlow() {
 
 
   edm::OrphanHandle< reco::PFBlockCollection > blockh( pfBlocks_.get(), 
-						       edm::ProductID(4) );  
+						       edm::ProductID(5) );  
   
   pfAlgo_.reconstructParticles( blockh );
   if( debug_) cout<< pfAlgo_<<endl;
