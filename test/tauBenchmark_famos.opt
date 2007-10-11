@@ -7,12 +7,6 @@ colin	mode 1
 
 root file ../../PFBlockProducer/test/blocks_famos.root
 
-// root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_6_0/K0L/blocks_famos_0.root
-// root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_6_0/Taus/Pt100to300_noPhotons/blocks_famos_0.root
-// root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_6_0/Taus/Pt100to300/blocks_famos_30.root
-// root file /afs/cern.ch/user/c/cbern/scratch0/CMS/HighETaus/CMSSW_1_6_0/src/RecoParticleFlow/PFBlockProducer/test/blocks_famos.root
-// root file rfio:///castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_5_0/Famos_4july/Taus_200_500/blocks_famos_0.root
-
 
 // filter ------------------------------------------------------------
 
@@ -196,6 +190,11 @@ particle_flow resolution_map_ECAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//
 particle_flow resolution_map_HCAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
 particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
 
+//particle_flow resolution_map_ECAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
+//particle_flow resolution_map_ECAL_phi /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
+//particle_flow resolution_map_HCAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
+//particle_flow resolution_map_HCAL_phi /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
+
 // Debug blockAlgo
 blockAlgo debug 0
 // Debug PFAlgo
@@ -205,9 +204,9 @@ PFAlgo debug 0
 particle_flow DPtoverPt_Cut   999.9
 
 // chi2 maximum limit for ECAL/Track association
-particle_flow chi2_ECAL_Track   50
+particle_flow chi2_ECAL_Track  100
 // chi2 maximum limit for HCAL/Track association
-particle_flow chi2_HCAL_Track	50
+particle_flow chi2_HCAL_Track  100
 // chi2 maximum limit for ECAL/HCAL assoiation
 particle_flow chi2_ECAL_HCAL	10
 
@@ -220,13 +219,17 @@ particle_flow chi2_PSH_PSV	5
 
 // number of sigmas for neutral energy detection
 particle_flow   nsigma_ECAL    3
-particle_flow   nsigma_HCAL    3
+particle_flow   nsigma_HCAL    1.
 
-// particle_flow   mergedPhotons_mvaCut 0.5
+particle_flow   mergedPhotons_mvaCut 		0.5
+particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt   
 
 //calibration
 // particle_flow   ecalib 0.108 1.050
 particle_flow   ecalib 0 1
+
+particle_flow   algorithm 2
+particle_flow   debug 0
 
 // print flags ------------------------------------------------------------
 // for PFRootEventManager::print()
@@ -236,11 +239,11 @@ print rechits  0
 // print clusters yes/no
 print clusters 0
 // print particle flow blocks yes/no
-print PFBlocks     1
+print PFBlocks     0
 // print true particles yes/no
-print true_particles     0
+print true_particles 1
 // print MC Truth
-print MC_truth 1
+print MC_truth 0
 // print reconstructed particles yes/no
 print PFCandidates  1
 
