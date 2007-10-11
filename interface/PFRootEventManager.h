@@ -198,6 +198,9 @@ class PFRootEventManager {
   /// fills OutEvent with clusters
   void fillOutEventWithClusters(const reco::PFClusterCollection& clusters);
 
+  /// fills OutEvent with candidates
+  void fillOutEventWithPFCandidates(const reco::PFCandidateCollection& pfCandidates );
+
   /// fills OutEvent with sim particles
   void fillOutEventWithSimParticles(const reco::PFSimParticleCollection& ptcs);
 
@@ -211,7 +214,7 @@ class PFRootEventManager {
   void particleFlow();
 
   //performs the jets reconstructions
-  double makeJets();
+  double makeJets( const reco::PFCandidateCollection& candidates);
 
 
   // display functions ------------------------------------------------
@@ -405,6 +408,8 @@ class PFRootEventManager {
   /// reconstructed pfCandidates 
   std::auto_ptr< reco::PFCandidateCollection > pfCandidates_;
 
+  std::auto_ptr< reco::PFCandidateCollection > pfCandidatesOther_;
+
   /// input file
   TFile*     file_; 
 
@@ -435,6 +440,9 @@ class PFRootEventManager {
 
   /// particle flow algorithm
   PFAlgo          pfAlgo_;
+
+  /// other particle flow algorithm, for comparisons
+  PFAlgo          pfAlgoOther_;
 
   /// jet algorithm 
   /// \todo make concrete

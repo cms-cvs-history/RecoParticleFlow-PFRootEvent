@@ -65,8 +65,9 @@ void PFRootEventManagerColin::readSpecificOptions(const char* file) {
     cerr<<"colin: undefined mode"<<endl;
     exit(1);
   }
-
 }
+
+
 
 
 
@@ -75,7 +76,6 @@ bool PFRootEventManagerColin::processEntry(int entry) {
     // cerr<<"event was not accepted"<<endl;
     return false; // event not accepted
   }
-
 
   bool rvalue = false;
   switch(mode_) {
@@ -91,9 +91,11 @@ bool PFRootEventManagerColin::processEntry(int entry) {
     cerr<<"colin: undefined mode"<<endl;
     assert(0);
   }
- 
+
   return rvalue;
 }
+
+
 
 
 bool PFRootEventManagerColin::processNeutral() {

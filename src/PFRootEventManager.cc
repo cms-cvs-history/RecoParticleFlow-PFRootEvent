@@ -64,6 +64,7 @@ PFRootEventManager::PFRootEventManager(const char* file)
   clustersPS_(new reco::PFClusterCollection),
   pfBlocks_(new reco::PFBlockCollection),
   pfCandidates_(new reco::PFCandidateCollection),
+  pfCandidatesOther_(new reco::PFCandidateCollection),
   outFile_(0)
 {
   
@@ -552,6 +553,8 @@ void PFRootEventManager::readOptions(const char* file,
   try {
     pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
 			   mvaCut, mvaWeightFile.c_str() );
+    pfAlgoOther_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
+			    mvaCut, mvaWeightFile.c_str() );
   }
   catch( std::exception& err ) {
     cerr<<err.what()<<". terminating."<<endl;
@@ -561,13 +564,15 @@ void PFRootEventManager::readOptions(const char* file,
   int    algo = 1;
   options_->GetOpt("particle_flow", "algorithm", algo);
 
-  pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
-			 mvaCut );
-  pfAlgo_.setAlgo( algo ); 
-  
+  pfAlgo_.setAlgo( algo );
+  pfAlgoOther_.setAlgo( 1 );
+
+
   bool pfAlgoDebug = false;
   options_->GetOpt("particle_flow", "debug", pfAlgoDebug );  
+
   pfAlgo_.setDebug( pfAlgoDebug );
+  pfAlgoOther_.setDebug( pfAlgoDebug );
 
   // print flags -------------
 
@@ -913,19 +918,25 @@ bool PFRootEventManager::processEntry(int entry) {
   particleFlow();
 
   // call print() in verbose mode
-  if( verbosity_ == VERBOSE )print();
+  if( verbosity_ == VERBOSE ) print();
   double deltaEt=0;
-  if( goodevent && doJets_) 
-    deltaEt = makeJets(); 
+  double deltaEt1=0;
+  if( goodevent && doJets_) { 
+    deltaEt  = makeJets( *pfCandidates_ ); 
+    deltaEt1 = makeJets( *pfCandidatesOther_ ); 
+  }
   
-  if(outTree_) outTree_->Fill();
+  if(goodevent && outTree_) 
+    outTree_->Fill();
   
  
-  if( deltaEt>0.4 ) {
-    cout<<"delta E_t ="<<deltaEt<<endl;
-    return true;
-  }  
-  else return false;
+  if( verbosity_ == VERBOSE )
+     cout<<"delta E_t ="<<deltaEt<<" delta E_t Other ="<<deltaEt1<<endl;
+
+//   if( deltaEt>0.1 && fabs(deltaEt1)<0.05 ) {
+//     return true;
+//   }  
+//   else return false;
 //   //  if(trueParticles_.size() != 1 ) return false;
 //   else 
 //     return false;
@@ -1370,14 +1381,12 @@ PFRootEventManager::fillOutEventWithSimParticles(const reco::PFSimParticleCollec
   if(!outEvent_) return;
   
   for ( unsigned i=0;  i < trueParticles.size(); i++) {
-    
+
     const reco::PFSimParticle& ptc = trueParticles[i];
 
     unsigned ntrajpoints = ptc.nTrajectoryPoints();
-
-    if(ntrajpoints>2) { // decay before ecal -> 2 trajpoints only
-
-      
+    
+    if(ptc.daughterIds().empty() ) { // stable
       reco::PFTrajectoryPoint::LayerType ecalEntrance 
 	= reco::PFTrajectoryPoint::ECALEntrance;
 
@@ -1387,7 +1396,7 @@ PFRootEventManager::fillOutEventWithSimParticles(const reco::PFSimParticleCollec
 	// before ECAL has 3 points: initial, ecal entrance, hcal entrance
 	ecalEntrance = static_cast<reco::PFTrajectoryPoint::LayerType>(1);
       }
-      else continue; // endcap case we do not care;
+      // else continue; // endcap case we do not care;
 
       const reco::PFTrajectoryPoint& tpatecal 
 	= ptc.extrapolatedPoint( ecalEntrance );
@@ -1398,8 +1407,29 @@ PFRootEventManager::fillOutEventWithSimParticles(const reco::PFSimParticleCollec
       outptc.e = tpatecal.momentum().E();
       outptc.pdgCode = ptc.pdgCode();
     
+      
       outEvent_->addParticle(outptc);
     }  
+  }   
+}      
+
+void 
+PFRootEventManager::fillOutEventWithPFCandidates(const reco::PFCandidateCollection& pfCandidates ) {
+
+  if(!outEvent_) return;
+  
+  for ( unsigned i=0;  i < pfCandidates.size(); i++) {
+
+    const reco::PFCandidate& candidate = pfCandidates[i];
+    
+    EventColin::Particle outptc;
+    outptc.eta = candidate.eta();
+    outptc.phi = candidate.phi();    
+    outptc.e = candidate.energy();
+    outptc.pdgCode = candidate.particleId();
+    
+    
+    outEvent_->addCandidate(outptc);  
   }   
 }      
 
@@ -1484,13 +1514,17 @@ void PFRootEventManager::particleFlow() {
 						       edm::ProductID(5) );  
   
   pfAlgo_.reconstructParticles( blockh );
+  pfAlgoOther_.reconstructParticles( blockh );
   if( debug_) cout<< pfAlgo_<<endl;
   pfCandidates_ = pfAlgo_.transferCandidates();
- 
+  pfCandidatesOther_ = pfAlgoOther_.transferCandidates();
+  
+  fillOutEventWithPFCandidates( *pfCandidates_ );
+
   if( debug_) cout<<"PFRootEventManager::particleFlow stop"<<endl;
 }
 
-double PFRootEventManager::makeJets() {
+double PFRootEventManager::makeJets( const reco::PFCandidateCollection& candidates) {
   //std::cout << "building jets from MC particles," 
   //    << "PF particles and caloTowers" << std::endl;
   
@@ -1670,13 +1704,14 @@ double PFRootEventManager::makeJets() {
 // 	= pfBlocks_[iefb].particles();
 
   
-  for(unsigned i=0; i<pfCandidates_->size(); i++) {
+  
+  for(unsigned i=0; i<candidates.size(); i++) {
   
 //       if (jetsDebug_) 
 // 	cout << " there are " << recparticles.size() 
 // 	     << " particle in this block" << endl;
     
-    const reco::PFCandidate& candidate = (*pfCandidates_)[i];
+    const reco::PFCandidate& candidate = candidates[i];
 
     if (jetsDebug_) {
       cout << i << " " << candidate << endl;
@@ -1818,14 +1853,14 @@ string PFRootEventManager::expand(const string& oldString) const {
   int begin = env_variable.find_first_of("{");
   int end = env_variable.find_last_of("}");
   
-  cout << "var=" << env_variable << begin<<" "<<end<< endl;
+  // cout << "var=" << env_variable << begin<<" "<<end<< endl;
   
 
   env_variable = env_variable.substr( begin+1, end-1 );
-  cout << "var=" << env_variable <<endl;
+  // cout << "var=" << env_variable <<endl;
 
 
-  cerr<<"call getenv "<<endl;
+  // cerr<<"call getenv "<<endl;
   char* directory = getenv( env_variable.c_str() );
 
   if(!directory) {
