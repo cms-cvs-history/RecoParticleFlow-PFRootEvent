@@ -409,19 +409,19 @@ void PFRootEventManager::readOptions(const char* file,
 
   // clustering preshower
 
-  double threshPSBarrel = 0.0001;
-  options_->GetOpt("clustering", "thresh_PS_Barrel", threshPSBarrel);
+  double threshPS = 0.0001;
+  options_->GetOpt("clustering", "thresh_PS", threshPS);
   
-  double threshSeedPSBarrel = 0.001;
-  options_->GetOpt("clustering", "thresh_Seed_PS_Barrel", 
-		   threshSeedPSBarrel);
+  double threshSeedPS = 0.001;
+  options_->GetOpt("clustering", "thresh_Seed_PS", 
+		   threshSeedPS);
+  
+  //Comment Michel: PSBarrel shall be removed?
+  double threshPSBarrel     = threshPS;
+  double threshSeedPSBarrel = threshSeedPS;
 
-  double threshPSEndcap = 0.0001;
-  options_->GetOpt("clustering", "thresh_PS_Endcap", threshPSEndcap);
-
-  double threshSeedPSEndcap = 0.001;
-  options_->GetOpt("clustering", "thresh_Seed_PS_Endcap",
-		   threshSeedPSEndcap);
+  double threshPSEndcap     = threshPS;
+  double threshSeedPSEndcap = threshSeedPS;
 
   double showerSigmaPS    = 0.1;
   options_->GetOpt("clustering", "shower_Sigma_PS",
