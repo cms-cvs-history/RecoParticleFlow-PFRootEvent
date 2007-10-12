@@ -219,6 +219,10 @@ particle_flow chi2_PS_Track	100
 // chi2 maximum limit for PSH/PSH association
 particle_flow chi2_PSH_PSV	5
 
+// if true, using special algorithm to process
+// multiple track associations to the same hcal cluster
+particle_flow multilink 0
+
 // number of sigmas for neutral energy detection
 particle_flow   nsigma_ECAL    3
 particle_flow   nsigma_HCAL    1.
