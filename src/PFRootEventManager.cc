@@ -494,6 +494,8 @@ void PFRootEventManager::readOptions(const char* file,
   options_->GetOpt("particle_flow", "chi2_PS_Track", chi2PSTrack);
   double chi2PSHV=100;
   options_->GetOpt("particle_flow", "chi2_PSH_PSV", chi2PSHV);
+  bool   multiLink = false;
+  options_->GetOpt("particle_flow", "multilink", multiLink);
 
   try {
     pfBlockAlgo_.setParameters( map_ECAL_eta.c_str(),
@@ -506,7 +508,8 @@ void PFRootEventManager::readOptions(const char* file,
 				chi2ECALHCAL,
 				chi2PSECAL, 
 				chi2PSTrack,
-				chi2PSHV ); 
+				chi2PSHV,
+				multiLink ); 
   }  
   catch( std::exception& err ) {
     cerr<<err.what()<<". terminating."<<endl;
