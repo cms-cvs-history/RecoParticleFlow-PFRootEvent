@@ -81,6 +81,7 @@ class DisplayManager {
     //-------------- draw Canvas --------------------------------------
     /// vector of canvas for x/y or r/z display
     std::vector<TCanvas*> displayView_;
+
     /// display pad xy size for (x,y) or (r,z) display
     std::vector<int>      viewSize_; 
         

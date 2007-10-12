@@ -768,7 +768,7 @@ void DisplayManager::drawGObject(int ident,int color,bool toInitial)
      else p->second->setColor(color);
      p->second->draw();
      gPad->Modified();
-     displayView_[view]->Update();
+//      displayView_[view]->Update();
      if (!toInitial) selectedGObj_.push_back(ident);
      p++; 
    }
@@ -799,6 +799,7 @@ void DisplayManager::findAndDraw(int ident)
       redrawWithoutHits_=false;
     }
   }     
+  updateDisplay();
 }
 //___________________________________________________________________________________
 void DisplayManager::findBlock(int ident) 
@@ -816,7 +817,19 @@ void DisplayManager::findBlock(int ident)
     std::cout<<"this object belongs to PFblock nb "<<blockNb<<std::endl;
     displayPFBlock(blockNb);
   }   
+  updateDisplay();
 }  
+//_________________________________________________________________________________
+void DisplayManager::updateDisplay() {
+  for(unsigned i=0; i<displayView_.size(); i++) {
+    TPad* p =  displayView_[i];
+    assert( p );
+    p->Modified();
+    p->Update();
+  }
+}
+
+
 //_________________________________________________________________________________
 void DisplayManager::getDisplayOptions()
 {
@@ -1331,15 +1344,15 @@ void DisplayManager::unZoom()
   updateDisplay();
 }
 //_________________________________________________________________________________
-void DisplayManager::updateDisplay()
-{
- for( unsigned i=0; i<displayView_.size(); i++) {
-    if( gROOT->GetListOfCanvases()->FindObject(displayView_[i]) ) {
-      displayView_[i]->Modified();
-      displayView_[i]->Update();
-    }  
-  }
-}
+// void DisplayManager::updateDisplay()
+// {
+//  for( unsigned i=0; i<displayView_.size(); i++) {
+//     if( gROOT->GetListOfCanvases()->FindObject(displayView_[i]) ) {
+//       displayView_[i]->Modified();
+//       displayView_[i]->Update();
+//     }  
+//   }
+// }
 //_____________________________________________________________________________________________________
 /*void DisplayManager::drawClusters(int viewType,double enmin)
 {
