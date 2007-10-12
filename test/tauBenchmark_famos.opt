@@ -50,9 +50,11 @@ root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__PROD.obj
 
 // display parameters ----------------------------------------------------
 
+
 // display clusters of type 2 (particle flow clusters)
 display  cluster_algos 2
 display  cluster_lines 0
+
 
 // size of the eta/phi canvas 
 display  viewsize_etaphi 400 200
@@ -68,7 +70,6 @@ display  color_clusters		1
 // display/zoom_factor roughly gives the size of the view around this rechit
 // in number of ecal cells	
 display  zoom_factor		5
-
 
 //display reconstructed hits  yes/no
 display rechits                 1
@@ -191,10 +192,10 @@ particle_flow resolution_map_ECAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//
 particle_flow resolution_map_HCAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
 particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
 
-//particle_flow resolution_map_ECAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
-//particle_flow resolution_map_ECAL_phi /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
-//particle_flow resolution_map_HCAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
-//particle_flow resolution_map_HCAL_phi /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
+// particle_flow resolution_map_ECAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
+// particle_flow resolution_map_ECAL_phi /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
+// particle_flow resolution_map_HCAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
+// particle_flow resolution_map_HCAL_phi /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
 
 // Debug blockAlgo
 blockAlgo debug 0
@@ -229,7 +230,7 @@ particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_BASE}/src/RecoParticleFlow/PFP
 // particle_flow   ecalib 0.108 1.050
 particle_flow   ecalib 0 1
 
-particle_flow   algorithm 2
+// particle_flow   algorithm 2
 particle_flow   debug 0
 
 // print flags ------------------------------------------------------------

@@ -64,7 +64,7 @@ PFRootEventManager::PFRootEventManager(const char* file)
   clustersPS_(new reco::PFClusterCollection),
   pfBlocks_(new reco::PFBlockCollection),
   pfCandidates_(new reco::PFCandidateCollection),
-  pfCandidatesOther_(new reco::PFCandidateCollection),
+//   pfCandidatesOther_(new reco::PFCandidateCollection),
   outFile_(0)
 {
   
@@ -553,26 +553,26 @@ void PFRootEventManager::readOptions(const char* file,
   try {
     pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
 			   mvaCut, mvaWeightFile.c_str() );
-    pfAlgoOther_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
-			    mvaCut, mvaWeightFile.c_str() );
+//     pfAlgoOther_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
+// 			    mvaCut, mvaWeightFile.c_str() );
   }
   catch( std::exception& err ) {
     cerr<<err.what()<<". terminating."<<endl;
     exit(1);
   }
 
-  int    algo = 1;
+  int    algo = 2;
   options_->GetOpt("particle_flow", "algorithm", algo);
 
   pfAlgo_.setAlgo( algo );
-  pfAlgoOther_.setAlgo( 1 );
+//   pfAlgoOther_.setAlgo( 1 );
 
 
   bool pfAlgoDebug = false;
   options_->GetOpt("particle_flow", "debug", pfAlgoDebug );  
 
   pfAlgo_.setDebug( pfAlgoDebug );
-  pfAlgoOther_.setDebug( pfAlgoDebug );
+//   pfAlgoOther_.setDebug( pfAlgoDebug );
 
   // print flags -------------
 
@@ -920,10 +920,10 @@ bool PFRootEventManager::processEntry(int entry) {
   // call print() in verbose mode
   if( verbosity_ == VERBOSE ) print();
   double deltaEt=0;
-  double deltaEt1=0;
+  // double deltaEt1=0;
   if( goodevent && doJets_) { 
     deltaEt  = makeJets( *pfCandidates_ ); 
-    deltaEt1 = makeJets( *pfCandidatesOther_ ); 
+    // deltaEt1 = makeJets( *pfCandidatesOther_ ); 
   }
   
   if(goodevent && outTree_) 
@@ -931,7 +931,8 @@ bool PFRootEventManager::processEntry(int entry) {
   
  
   if( verbosity_ == VERBOSE )
-     cout<<"delta E_t ="<<deltaEt<<" delta E_t Other ="<<deltaEt1<<endl;
+     cout<<"delta E_t ="<<deltaEt<<endl;
+//      cout<<"delta E_t ="<<deltaEt<<" delta E_t Other ="<<deltaEt1<<endl;
 
 //   if( deltaEt>0.1 && fabs(deltaEt1)<0.05 ) {
 //     return true;
@@ -1514,10 +1515,10 @@ void PFRootEventManager::particleFlow() {
 						       edm::ProductID(5) );  
   
   pfAlgo_.reconstructParticles( blockh );
-  pfAlgoOther_.reconstructParticles( blockh );
+//   pfAlgoOther_.reconstructParticles( blockh );
   if( debug_) cout<< pfAlgo_<<endl;
   pfCandidates_ = pfAlgo_.transferCandidates();
-  pfCandidatesOther_ = pfAlgoOther_.transferCandidates();
+//   pfCandidatesOther_ = pfAlgoOther_.transferCandidates();
   
   fillOutEventWithPFCandidates( *pfCandidates_ );
 

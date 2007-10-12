@@ -408,7 +408,7 @@ class PFRootEventManager {
   /// reconstructed pfCandidates 
   std::auto_ptr< reco::PFCandidateCollection > pfCandidates_;
 
-  std::auto_ptr< reco::PFCandidateCollection > pfCandidatesOther_;
+/*   std::auto_ptr< reco::PFCandidateCollection > pfCandidatesOther_; */
 
   /// input file
   TFile*     file_; 
@@ -442,7 +442,7 @@ class PFRootEventManager {
   PFAlgo          pfAlgo_;
 
   /// other particle flow algorithm, for comparisons
-  PFAlgo          pfAlgoOther_;
+/*   PFAlgo          pfAlgoOther_; */
 
   /// jet algorithm 
   /// \todo make concrete

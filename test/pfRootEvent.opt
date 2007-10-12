@@ -3,9 +3,17 @@ root outfile  out.root
 root outtree 1
 
 
+colin	mode 1
+
+
 root file  ../../PFBlockProducer/test/blocks.root
-// root file  /castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_5_0/Taus_2/Blocks/out_singletau_fevt_5.root
-#root file candidates.root
+
+// filter ------------------------------------------------------------
+
+// filter   nparticles  1
+	
+// filter   taus	     1 2
+
 
 // name of the branches of the input TTree. 
 
@@ -28,7 +36,7 @@ root MCTruth_branch  edmHepMCProduct_source__Rec.obj
 
 // root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_BLOCK.obj
 
-// root caloTowers_branch     CaloTowersSorted_towerMaker__BLOCK.obj
+root caloTowers_branch     CaloTowersSorted_towerMaker__Rec.obj
 
 // reconstructed tracks branch
 
@@ -57,11 +65,9 @@ root ParticleFlowCandbranch    recoCandidatesOwned_particleFlowJetCandidates__FL
 
 // display parameters ----------------------------------------------------
 
-
 // display clusters of type 2 (particle flow clusters)
 display  cluster_algos 2
 display  cluster_lines 0
-
 
 // size of the eta/phi canvas 
 display  viewsize_etaphi 400 200
@@ -77,6 +83,7 @@ display  color_clusters		1
 // display/zoom_factor roughly gives the size of the view around this rechit
 // in number of ecal cells	
 display  zoom_factor		5
+
 
 //display reconstructed hits  yes/no
 display rechits                 1
@@ -106,12 +113,6 @@ display  x/y      1
 display  eta/phi  1
 // display r/z view yes/no
 display  r/z      1
-
-// filter ------------------------------------------------------------
-
-filter   nparticles  0
-
-// filter   taus	     1	2
 
 
 // clustering parameters ---------------------------------------------------
@@ -205,6 +206,11 @@ particle_flow resolution_map_ECAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//
 particle_flow resolution_map_HCAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
 particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
 
+// particle_flow resolution_map_ECAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
+// particle_flow resolution_map_ECAL_phi /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
+// particle_flow resolution_map_HCAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
+// particle_flow resolution_map_HCAL_phi /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
+
 // Debug blockAlgo
 blockAlgo debug 0
 // Debug PFAlgo
@@ -214,9 +220,9 @@ PFAlgo debug 0
 particle_flow DPtoverPt_Cut   999.9
 
 // chi2 maximum limit for ECAL/Track association
-particle_flow chi2_ECAL_Track   50
+particle_flow chi2_ECAL_Track  100
 // chi2 maximum limit for HCAL/Track association
-particle_flow chi2_HCAL_Track	50
+particle_flow chi2_HCAL_Track  100
 // chi2 maximum limit for ECAL/HCAL assoiation
 particle_flow chi2_ECAL_HCAL	10
 
@@ -229,11 +235,17 @@ particle_flow chi2_PSH_PSV	5
 
 // number of sigmas for neutral energy detection
 particle_flow   nsigma_ECAL    3
-particle_flow   nsigma_HCAL    3
+particle_flow   nsigma_HCAL    1.
+
+particle_flow   mergedPhotons_mvaCut 		0.5
+particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt   
 
 //calibration
 // particle_flow   ecalib 0.108 1.050
 particle_flow   ecalib 0 1
+
+// particle_flow   algorithm 2
+particle_flow   debug 0
 
 // print flags ------------------------------------------------------------
 // for PFRootEventManager::print()
@@ -245,11 +257,11 @@ print clusters 0
 // print particle flow blocks yes/no
 print PFBlocks     0
 // print true particles yes/no
-print true_particles     1
+print true_particles 1
 // print MC Truth
-print MC_truth 1
+print MC_truth 0
 // print reconstructed particles yes/no
-print PFCandidates     1
+print PFCandidates  1
 
 // verbosity 
 print verbosity 0
