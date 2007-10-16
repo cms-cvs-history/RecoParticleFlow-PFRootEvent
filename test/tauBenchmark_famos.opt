@@ -220,7 +220,7 @@ particle_flow chi2_PSH_PSV	5
 
 // if true, using special algorithm to process
 // multiple track associations to the same hcal cluster
-particle_flow multilink 0
+particle_flow multilink 1
 
 // number of sigmas for neutral energy detection
 particle_flow   nsigma_ECAL    3
