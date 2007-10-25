@@ -224,7 +224,7 @@ particle_flow multilink 1
 
 // number of sigmas for neutral energy detection
 particle_flow   nsigma_ECAL    3
-particle_flow   nsigma_HCAL    1.
+particle_flow   nsigma_HCAL    1.7
 
 particle_flow   mergedPhotons_mvaCut 		0.5
 particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt   
