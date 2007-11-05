@@ -553,12 +553,15 @@ void PFRootEventManager::readOptions(const char* file,
   options_->GetOpt("particle_flow", "mergedPhotons_mvaWeightFile", 
 		   mvaWeightFile);  
   mvaWeightFile = expand( mvaWeightFile );
+  
+
+// new for PS PFAlgo validation (MDN)
+  double PSCut = 999999;
+  options_->GetOpt("particle_flow", "mergedPhotons_PSCut", PSCut);
 
   try {
     pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
-			   mvaCut, mvaWeightFile.c_str() );
-//     pfAlgoOther_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
-// 			    mvaCut, mvaWeightFile.c_str() );
+			   PSCut, mvaCut, mvaWeightFile.c_str() );
   }
   catch( std::exception& err ) {
     cerr<<"exception setting PFAlgo parameters: "
