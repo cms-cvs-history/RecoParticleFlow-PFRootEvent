@@ -135,9 +135,6 @@ void PFRootEventManager::readOptions(const char* file,
 
   clusteringIsOn_ = true;
   options_->GetOpt("clustering", "on/off", clusteringIsOn_);
-
-//   clusteringMode_ = 0;
-//   options_->GetOpt("clustering", "mode", clusteringMode_);  
   
 
   bool clusteringDebug = false;
@@ -180,87 +177,6 @@ void PFRootEventManager::readOptions(const char* file,
   if( reconnect )
     connect( inFileName_.c_str() );
 
-
-  // various parameters ------------------------------------------
-
-  vector<int> algos;
-  options_->GetOpt("display", "cluster_algos", algos);
-  algosToDisplay_.clear();
-  for(unsigned i=0; i< algos.size(); i++) algosToDisplay_.insert( algos[i] );
-
-  displayClusterLines_ = false;
-  options_->GetOpt("display", "cluster_lines", displayClusterLines_);
-  
-//   if(displayClusterLines_) 
-//     cout<<"will display cluster lines "<<endl;
-
-  viewSizeEtaPhi_.clear();
-  options_->GetOpt("display", "viewsize_etaphi", viewSizeEtaPhi_);
-  if(viewSizeEtaPhi_.size() != 2) {
-    cerr<<"PFRootEventManager::ReadOptions, bad display/viewsize_etaphi tag...using 700/350"
-	<<endl;
-    viewSizeEtaPhi_.clear();
-    viewSizeEtaPhi_.push_back(700); 
-    viewSizeEtaPhi_.push_back(350); 
-  }
-
- viewSize_.clear();
-  options_->GetOpt("display", "viewsize_xy", viewSize_);
-  if(viewSize_.size() != 2) {
-    cerr<<"PFRootEventManager::ReadOptions, bad display/viewsize_xy tag...using 700/350"
-	<<endl;
-    viewSize_.clear();
-    viewSize_.push_back(600); 
-    viewSize_.push_back(600); 
-  }
-
-
-  // display parametes ------------------------------------
-
-  displayXY_ = true;
-  options_->GetOpt("display", "x/y", displayXY_);
-  
-  displayEtaPhi_ = true;
-  options_->GetOpt("display", "eta/phi", displayEtaPhi_);
-
-  displayRZ_ = true;
-  options_->GetOpt("display", "r/z", displayRZ_);
-
- 
-  displayColorClusters_ = false;
-  options_->GetOpt("display", "color_clusters", displayColorClusters_);
-  
-  displayRecHits_= true;
-  options_->GetOpt("display", "rechits",displayRecHits_);
-  
-  displayClusters_ = true;
-  options_->GetOpt("display", "clusters",displayClusters_);
- 
-  displayRecTracks_ = true;
-  options_->GetOpt("display", "rectracks", displayRecTracks_);
-
-  displayTrueParticles_ = true;
-  options_->GetOpt("display", "particles", displayTrueParticles_);
-
-  displayZoomFactor_ = 10;  
-  options_->GetOpt("display", "zoom_factor", displayZoomFactor_);
-
-  displayJetColors_ = false;
-  options_->GetOpt("display", "jet_colors", displayJetColors_);
-  
-
-  displayTrueParticlesPtMin_ = -1;
-  options_->GetOpt("display", "particles_ptmin", displayTrueParticlesPtMin_);
-  
-  displayRecTracksPtMin_ = -1;
-  options_->GetOpt("display", "rectracks_ptmin", displayRecTracksPtMin_);
-  
-  displayRecHitsEnMin_ = -1;
-  options_->GetOpt("display","rechits_enmin",displayRecHitsEnMin_);
-  
-  displayClustersEnMin_ = -1;
-  options_->GetOpt("display","clusters_enmin",displayClustersEnMin_);
-  
 
   // filter --------------------------------------------------------------
 
@@ -1945,7 +1861,7 @@ void  PFRootEventManager::print(ostream& out) const {
   if( printPFBlocks_ ) {
     out<<"Particle Flow Blocks ======================================"<<endl;
     for(unsigned i=0; i<pfBlocks_->size(); i++) {
-      out<<(*pfBlocks_)[i]<<endl;
+      out<<i<<" "<<(*pfBlocks_)[i]<<endl;
     }    
     out<<endl;
   }

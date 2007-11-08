@@ -128,7 +128,7 @@ void DialogFrame::CloseWindow()
 void DialogFrame::doModifyOptions(unsigned objNb)
 {
  // hits and clusters are always drawn !
- //int eventNb = evMan_->iEvent_;
+ //int eventNumber = evMan_->iEvent_;
    //case 0: selectObject[0]->SetState(kButtonDown); break;
    //case 1: selectObject[1]->SetState(kButtonDown); break;
  switch (objNb) {
@@ -178,22 +178,22 @@ void DialogFrame::doModifyPtThreshold(unsigned objNb,long pt)
 void DialogFrame::doNextEvent()
 {
  display_->displayNext();
- int eventNb = evMan_->getEventIndex();
- //TODOLIST:display new value of eventNb in the futur reserve field
+ int eventNumber = evMan_->eventNumber();
+ //TODOLIST:display new value of eventNumber in the futur reserve field
 } 
 //_________________________________________________________________________________
 void DialogFrame::doPreviousEvent()
 {
   display_->displayPrevious();
-  int eventNb = evMan_->getEventIndex();
-  //TODOLIST:display new value of eventNb in the futur reserve field
+  int eventNumber = evMan_->eventNumber();
+  //TODOLIST:display new value of eventNumber in the futur reserve field
 }
 //__________________________________________________________________________________
 void DialogFrame::doReProcessEvent()
 {
 // TODOLIST:evMan_->connect() + nouveau nom de fichier s'il y a lieu ??
- int eventNb = evMan_->getEventIndex();
- display_->display(eventNb);
+ int eventNumber = evMan_->eventNumber();
+ display_->display(eventNumber);
 }
 
 
@@ -218,7 +218,7 @@ Bool_t DialogFrame::ProcessMessage(Long_t msg, Long_t parm1, Long_t parm2)
          switch (parm1) {
 	   case EN :case EN+1: case EN+2: case EN+3:
 	      {
-	       //int eventNb=evMan_->iEvent_;
+	       //int eventNumber=evMan_->iEvent_;
 	       long val=threshEntry[parm1-EN]->GetIntNumber();
 	       thresholdS[parm1-EN]->SetPosition(val);
 	       doModifyPtThreshold(parm1-EN,val);

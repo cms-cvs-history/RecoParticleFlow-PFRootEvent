@@ -8,9 +8,10 @@ gSystem->Load("libCintex.so");
 ROOT::Cintex::Cintex::Enable();
 
 // create a PFRootEventManager
-PFRootEventManager em("tauBenchmark.opt");
+string opt = "tauBenchmark_famos.opt";
+PFRootEventManager em(opt.c_str() );
 // create a DisplayManager
-DisplayManager dm(&em);
+DisplayManager dm(&em, opt.c_str() );
 
 // display entry number 2
 int i=0;
