@@ -62,7 +62,7 @@ FastJetFWLiteWrapper::FastJetFWLiteWrapper(){
   theActive_Area_Repeats_=5;
   //default GhostArea 0.01  
   theGhostArea_=0.01;
-	
+        
   theJetConfig_=new JetConfig;
   theJetConfig_->theAreaSpec=fastjet::ActiveAreaSpec(theGhost_EtaMax_, theActive_Area_Repeats_, theGhostArea_);
   
@@ -72,9 +72,9 @@ FastJetFWLiteWrapper::FastJetFWLiteWrapper(){
   fastjet::JetFinder jet_finder;
   if (JetFinder=="cambridge_algorithm") jet_finder=fastjet::cambridge_algorithm;
   else jet_finder=fastjet::kt_algorithm;
-	
+        
   //choosing search-strategy:
-	
+        
   fastjet::Strategy strategy;
   if (Strategy=="N2Plain") strategy=fastjet::N2Plain;
   // N2Plain is best for N<50
@@ -88,7 +88,7 @@ FastJetFWLiteWrapper::FastJetFWLiteWrapper(){
   // NlnNCam is best for N>6000
   else strategy=fastjet::Best;
   // Chooses best Strategy for every event, depending on N and ktRParam
-	
+        
   //additional strategies are possible, but not documented in the manual as they are experimental,
   //they are also not used by the "Best" method. Note: "NlnNCam" only works with 
   //the cambridge_algorithm and does not link against CGAL, "NlnN" is only 
@@ -110,7 +110,7 @@ FastJetFWLiteWrapper::FastJetFWLiteWrapper(){
   else {
     theMode_=0;     
   }
-	
+        
   theJetConfig_->theJetDef=fastjet::JetDefinition(jet_finder, theRparam_, strategy);
   cout <<"*******************************************"<<endl;
   cout <<"* Configuration of FastJet                "<<endl;
@@ -141,10 +141,10 @@ FastJetFWLiteWrapper::FastJetFWLiteWrapper(){
 }
 
 //void FastJetFWLiteWrapper::run(const std::vector <const reco::Candidate*>& fInput, 
-//			  std::vector<ProtoJet>* fOutput){
+//                        std::vector<ProtoJet>* fOutput){
 void FastJetFWLiteWrapper::run(const std::vector<FJCand>& fInput, 
-			       std::vector<ProtoJet>* fOutput) {
-		
+                               std::vector<ProtoJet>* fOutput) {
+                
   std::vector<fastjet::PseudoJet> input_vectors;
   int index_=0;
   for (std::vector<FJCand>::const_iterator inputCand=fInput.begin();
@@ -159,25 +159,25 @@ void FastJetFWLiteWrapper::run(const std::vector<FJCand>& fInput,
     input_vectors.push_back(PsJet);
     index_++;
   }
-		
+                
   // create an object that represents your choice of jet finder and 
   // the associated parameters
   // run the jet clustering with the above jet definition
-		
+                
   std::vector<fastjet::PseudoJet> theJets;
-		
+                
   if (theDoSubtraction_) {
     //with subtraction
     fastjet::ClusterSequenceActiveArea clust_AAseq(input_vectors,theJetConfig_->theJetDef,theJetConfig_->theAreaSpec);
-			
+                        
     //  cout<< "***************************"<<endl;
     //  cout<< "* Strategy adopted by FastJet for this event was "<<
     //clust_seq.strategy_string()<<endl;
     //  cout<< "***************************\n"<<endl;
     //get jets
-			
+                        
     //select mode:
-			
+                        
     if (theMode_==0){
       theJets=clust_AAseq.inclusive_jets(thePtMin_);
     }
@@ -195,28 +195,28 @@ void FastJetFWLiteWrapper::run(const std::vector<FJCand>& fInput,
       //default mode
       theJets=clust_AAseq.inclusive_jets(thePtMin_);
     }
-			
+                        
     //make CMSSW-Objects:
     std::vector<FJCand> jetConst;
     theMedian_Pt_Per_Area_=clust_AAseq.pt_per_unit_area();
     for (std::vector<fastjet::PseudoJet>::const_iterator itJet=theJets.begin();
-	 itJet!=theJets.end();itJet++){
+         itJet!=theJets.end();itJet++){
       std::vector<fastjet::PseudoJet> jet_constituents = clust_AAseq.constituents(*itJet);
       for (std::vector<fastjet::PseudoJet>::const_iterator itConst=jet_constituents.begin();
-	   itConst!=jet_constituents.end();itConst++){
-	jetConst.push_back(fInput[(*itConst).user_index()]);
+           itConst!=jet_constituents.end();itConst++){
+        jetConst.push_back(fInput[(*itConst).user_index()]);
       }
       fastjet::PseudoJet corrected_jet;
       fastjet::PseudoJet area_4vect = theMedian_Pt_Per_Area_ * clust_AAseq.area_4vector(*itJet);
       if (area_4vect.perp2() >= (*itJet).perp2() || 
-	  area_4vect.E() >= (*itJet).E()) { 
-	// if the correction is too large, set the jet to zero
-	corrected_jet = 0.0 * (*itJet);
+          area_4vect.E() >= (*itJet).E()) { 
+        // if the correction is too large, set the jet to zero
+        corrected_jet = 0.0 * (*itJet);
       } 
       else {   // otherwise do an E-scheme subtraction
-	corrected_jet = (*itJet) - area_4vect;
+        corrected_jet = (*itJet) - area_4vect;
       }
-				
+                                
       double px=corrected_jet.px();
       double py=corrected_jet.py();
       double pz=corrected_jet.pz();
@@ -226,12 +226,12 @@ void FastJetFWLiteWrapper::run(const std::vector<FJCand>& fInput,
       jetConst.clear();
     }
   }
-		
-		
+                
+                
   // or run without subtraction:
   else {
     fastjet::ClusterSequence clust_seq(input_vectors, theJetConfig_->theJetDef);
-			
+                        
     //select mode:
     if ((theNjets_==-1)&&(theDcut_==-1)){
       theJets=clust_seq.inclusive_jets(thePtMin_);
@@ -250,16 +250,16 @@ void FastJetFWLiteWrapper::run(const std::vector<FJCand>& fInput,
       //default mode
       theJets=clust_seq.inclusive_jets(thePtMin_);
     }
-			
+                        
     //make CMSSW-Objects:
     std::vector<FJCand> jetConst;
     for (std::vector<fastjet::PseudoJet>::const_iterator itJet=theJets.begin();
-	 itJet!=theJets.end();itJet++){
+         itJet!=theJets.end();itJet++){
       std::vector<fastjet::PseudoJet> jet_constituents = clust_seq.constituents(*itJet);
       for (std::vector<fastjet::PseudoJet>::const_iterator itConst=jet_constituents.begin();
-	   itConst!=jet_constituents.end();itConst++){
-	jetConst.push_back(fInput[(*itConst).user_index()]);
-					
+           itConst!=jet_constituents.end();itConst++){
+        jetConst.push_back(fInput[(*itConst).user_index()]);
+                                        
       }
       double px=(*itJet).px();
       double py=(*itJet).py();
@@ -271,5 +271,5 @@ void FastJetFWLiteWrapper::run(const std::vector<FJCand>& fInput,
     }
   }
 }
-	
-	
+        
+        

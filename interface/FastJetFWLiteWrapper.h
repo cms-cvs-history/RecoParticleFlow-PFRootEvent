@@ -46,7 +46,7 @@ class FastJetFWLiteWrapper
   void run (const std::vector <FJCand>& fInput, std::vector<ProtoJet>* fOutput);
  
 
-private:         
+ private:         
   //fastjet::JetDefinition jet_def;
   struct JetConfig;
   int theMode_;

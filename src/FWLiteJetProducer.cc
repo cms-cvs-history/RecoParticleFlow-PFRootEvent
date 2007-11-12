@@ -20,9 +20,9 @@ using namespace JetReco;
 
 //-----------------------------------------------------------
 
-FWLiteJetProducer::FWLiteJetProducer(){	
+FWLiteJetProducer::FWLiteJetProducer(){ 
 
-  mEtInputCut_=0.5;	
+  mEtInputCut_=0.5;     
   mEInputCut_=0.;
   seedThreshold_=1.0;
   coneRadius_=0.5;
@@ -40,7 +40,7 @@ FWLiteJetProducer::FWLiteJetProducer(){
 
 
 //-----------------------------------------------------------
-FWLiteJetProducer::~FWLiteJetProducer() {  	
+FWLiteJetProducer::~FWLiteJetProducer() {       
   delete algoIC_;
   delete algoMC_;
 }
@@ -52,15 +52,15 @@ void FWLiteJetProducer::updateParameter(){
   if (algoMC_) delete algoMC_;
   algoIC_= new CMSIterativeConeAlgorithm(seedThreshold_,coneRadius_ );
   algoMC_= new CMSMidpointAlgorithm(seedThreshold_, coneRadius_,coneAreaFraction_, 
-				    maxPairSize_, maxIterations_, overlapThreshold_, 0) ; 
-    algoF_.setPtMin(ptMin_);
-   algoF_.setRParam(rparam_);
+                                    maxPairSize_, maxIterations_, overlapThreshold_, 0) ; 
+  algoF_.setPtMin(ptMin_);
+  algoF_.setRParam(rparam_);
   print();
 }
 
 
 //-----------------------------------------------------------
-void FWLiteJetProducer::print() {  	
+void FWLiteJetProducer::print() {       
 
   cout <<"--- FWLiteJetProducer:Print(): ---" << endl;
 
@@ -84,27 +84,27 @@ void FWLiteJetProducer::print() {
 void FWLiteJetProducer::applyCuts(const reco::CandidateCollection& Candidates, JetReco::InputCollection* input){
   //!!!!
   edm::OrphanHandle< reco::CandidateCollection >  CandidateHandle(&(Candidates), edm::ProductID(10001) );
-  input->reserve ( Candidates.size());	
+  input->reserve ( Candidates.size());  
   //cout<<" Candidate " << CandidateHandle->size()<<Candidates.size() << endl;
   for (unsigned i = 0; i <Candidates.size() ; i++) {
-    const reco::Candidate* constituent = &Candidates[i];	
+    const reco::Candidate* constituent = &Candidates[i];        
 
     if ((mEtInputCut_ <= 0 || constituent->et() > mEtInputCut_) &&
-	(mEInputCut_ <= 0 || constituent->energy() > mEInputCut_)) {			
-      input->push_back (InputItem(CandidateHandle,i));			
+        (mEInputCut_ <= 0 || constituent->energy() > mEInputCut_)) {                    
+      input->push_back (InputItem(CandidateHandle,i));                  
     }
   }
 }
 
 //-----------------------------------------------------------
-void FWLiteJetProducer::makeIterativeConeJets(const InputCollection& fInput, OutputCollection* fOutput){	
+void FWLiteJetProducer::makeIterativeConeJets(const InputCollection& fInput, OutputCollection* fOutput){        
   if (fInput.empty ()) {
     std::cout << "empty input for jet algorithm: bypassing..." << std::endl;
   }
   else {                                      
     algoIC_->run(fInput, & (*fOutput));
-  } 	
-}     	
+  }     
+}       
 
 //-----------------------------------------------------------
 void FWLiteJetProducer::makeFastJets(const InputCollection& fInput, OutputCollection* fOutput){
@@ -113,7 +113,7 @@ void FWLiteJetProducer::makeFastJets(const InputCollection& fInput, OutputCollec
     std::cout << "empty input for jet algorithm: bypassing..." << std::endl;
   }
   else {                                      
-       algoF_.run(fInput, &(*fOutput));
+    algoF_.run(fInput, &(*fOutput));
   } 
 }
 

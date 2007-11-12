@@ -32,7 +32,7 @@
 //________________________________________________________________
 
 DisplayManager::DisplayManager(PFRootEventManager *em,
-			       const char* optfile ) : 
+                               const char* optfile ) : 
   em_(em), 
   options_(0),
   maxERecHitEcal_(-1),
@@ -76,7 +76,7 @@ void DisplayManager::readOptions( const char* optfile ) {
   options_->GetOpt("display", "viewsize_etaphi", viewSizeEtaPhi_);
   if(viewSizeEtaPhi_.size() != 2) {
     cerr<<"PFRootEventManager::ReadOptions, bad display/viewsize_etaphi tag...using 700/350"
-	<<endl;
+        <<endl;
     viewSizeEtaPhi_.clear();
     viewSizeEtaPhi_.push_back(700); 
     viewSizeEtaPhi_.push_back(350); 
@@ -86,7 +86,7 @@ void DisplayManager::readOptions( const char* optfile ) {
   options_->GetOpt("display", "viewsize_xy", viewSize_);
   if(viewSize_.size() != 2) {
     cerr<<"PFRootEventManager::ReadOptions, bad display/viewsize_xy tag...using 700/350"
-	<<endl;
+        <<endl;
     viewSize_.clear();
     viewSize_.push_back(600); 
     viewSize_.push_back(600); 
@@ -161,17 +161,17 @@ void DisplayManager::createCanvas()
   double rLow = -300.;
   double rUp  = +300.;
   displayHist_[XY] = new TH2F("hdisplayHist_XY", "", 500, rLow, rUp, 
-			      500, rLow, rUp);
+                              500, rLow, rUp);
   displayHist_[XY]->SetXTitle("X");
   displayHist_[XY]->SetYTitle("Y");
   
   displayHist_[RZ] = new TH2F("hdisplayHist_RZ", "",500, zLow, zUp, 
-			      500, rLow, rUp); 
+                              500, rLow, rUp); 
   displayHist_[RZ]->SetXTitle("Z");
   displayHist_[RZ]->SetYTitle("R");
   
   displayHist_[EPE] = new TH2F("hdisplayHist_EP", "", 500, -5, 5, 
-			       500, -3.5, 3.5);
+                               500, -3.5, 3.5);
   displayHist_[EPE]->SetXTitle("#eta");
   displayHist_[EPE]->SetYTitle("#phi");
   
@@ -205,8 +205,8 @@ void DisplayManager::createCanvas()
 }
 //_________________________________________________________________________
 void DisplayManager::createGCluster(const reco::PFCluster& cluster, 
-				    int ident, 
-				    double phi0)
+                                    int ident, 
+                                    double phi0)
 {
   double eta = cluster.positionXYZ().Eta();
   double phi = cluster.positionXYZ().Phi();
@@ -231,33 +231,33 @@ void DisplayManager::createGCluster(const reco::PFCluster& cluster,
     switch(viewType) {
     case XY:
       GPFCluster *gc = new  GPFCluster(this,
-				       viewType,ident,
-				       &cluster,
-				       xyzPos.X(), xyzPos.Y(), color);
+                                       viewType,ident,
+                                       &cluster,
+                                       xyzPos.X(), xyzPos.Y(), color);
       graphicMap_.insert(pair<int,GPFBase *> (ident, gc));
       break;
     case RZ:
       {
-	double sign = 1.;
-	if (cos(phi0 - phi) < 0.)
-	  sign = -1.;
-	graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFCluster(this,viewType,ident,&cluster,xyzPos.z(),sign*xyzPos.Rho(),color)));
+        double sign = 1.;
+        if (cos(phi0 - phi) < 0.)
+          sign = -1.;
+        graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFCluster(this,viewType,ident,&cluster,xyzPos.z(),sign*xyzPos.Rho(),color)));
       } 
       break;
     case EPE:
       {
-	if( cluster.layer()<0 ) {
-	  graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFCluster(this,viewType,ident,&cluster,eta,phi,color)));
-	  //createGClusterLines(cluster,viewType); 
-	}
+        if( cluster.layer()<0 ) {
+          graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFCluster(this,viewType,ident,&cluster,eta,phi,color)));
+          //createGClusterLines(cluster,viewType); 
+        }
       } 
       break;
     case EPH:
       {
-	if( cluster.layer()>0 ) {
-	  graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFCluster(this,viewType,ident,&cluster,eta,phi,color)));
-	  //createGClusterLines(cluster,viewType);
-	}
+        if( cluster.layer()>0 ) {
+          graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFCluster(this,viewType,ident,&cluster,eta,phi,color)));
+          //createGClusterLines(cluster,viewType);
+        }
       } 
       break;
     default :break; 
@@ -304,9 +304,9 @@ void DisplayManager::createGClusterLines(const reco::PFCluster& cluster,int view
 }
 //_______________________________________________________________________________________________
 void DisplayManager::createGPart( const reco::PFSimParticle &ptc,
-				  const std::vector<reco::PFTrajectoryPoint>& points, 
-				  int ident,double pt,double phi0, double sign, bool displayInitial,
-				  int markerstyle)
+                                  const std::vector<reco::PFTrajectoryPoint>& points, 
+                                  int ident,double pt,double phi0, double sign, bool displayInitial,
+                                  int markerstyle)
 {
   //bool inside = false; 
   //TCutG* cutg = (TCutG*) gROOT->FindObject("CUTG");
@@ -320,16 +320,16 @@ void DisplayManager::createGPart( const reco::PFSimParticle &ptc,
   
     for(unsigned i=0; i<points.size(); i++) {
       if( !points[i].isValid() ) continue;
-	
+        
       const math::XYZPoint& xyzPos = points[i].positionXYZ();      
       double eta = xyzPos.Eta();
       double phi = xyzPos.Phi();
     
       if( !displayInitial && 
-	  points[i].layer() == reco::PFTrajectoryPoint::ClosestApproach ) {
-	const math::XYZTLorentzVector& mom = points[i].momentum();
-	eta = mom.Eta();
-	phi = mom.Phi();
+          points[i].layer() == reco::PFTrajectoryPoint::ClosestApproach ) {
+        const math::XYZTLorentzVector& mom = points[i].momentum();
+        eta = mom.Eta();
+        phi = mom.Phi();
       }
     
       //if( !cutg || cutg->IsInside( eta, phi ) ) 
@@ -339,23 +339,24 @@ void DisplayManager::createGPart( const reco::PFSimParticle &ptc,
       case XY:
         xPos.push_back(xyzPos.X());
         yPos.push_back(xyzPos.Y());
-	break;
+        break;
       case RZ:
         xPos.push_back(xyzPos.Z());
         yPos.push_back(sign*xyzPos.Rho());
-	break;
+        break;
       case EPE:
       case EPH:
         xPos.push_back( eta );
         yPos.push_back( phi );
-	break;
+        break;
       default:break;
       }
     }  
 
     /// no point inside graphical cut.
     //if( !inside ) return;
-    graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFSimParticle(this,viewType,ident,&ptc,xPos.size(),&xPos[0],&yPos[0],pt,markerstyle,"pl")));
+    int color = 4;
+    graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFSimParticle(this,viewType,ident,&ptc,xPos.size(),&xPos[0],&yPos[0],pt,markerstyle, color, "pl")));
   }
 }
 //____________________________________________________________________
@@ -389,7 +390,7 @@ void DisplayManager::createGRecHit(reco::PFRecHit& rh,int ident, double maxe, do
   default:
     {
       cerr<<"DisplayManager::createGRecHit : manage other layers."
-	  <<" GRechit notcreated."<<endl;
+          <<" GRechit notcreated."<<endl;
       return;
     }
   }
@@ -399,16 +400,16 @@ void DisplayManager::createGRecHit(reco::PFRecHit& rh,int ident, double maxe, do
   for(int viewType=0;viewType<4;++viewType) {
   
     if(  viewType == EPH && 
-	 ! (layer == PFLayer::HCAL_BARREL1 || 
-	    layer == PFLayer::HCAL_BARREL2 || 
-	    layer == PFLayer::HCAL_ENDCAP ) ) {
+         ! (layer == PFLayer::HCAL_BARREL1 || 
+            layer == PFLayer::HCAL_BARREL2 || 
+            layer == PFLayer::HCAL_ENDCAP ) ) {
       continue;
     }
     // on EPE view, draw only HCAL and preshower
     if(  viewType == EPE && 
-	 (layer == PFLayer::HCAL_BARREL1 || 
-	  layer == PFLayer::HCAL_BARREL2 || 
-	  layer == PFLayer::HCAL_ENDCAP ) ) {
+         (layer == PFLayer::HCAL_BARREL1 || 
+          layer == PFLayer::HCAL_BARREL2 || 
+          layer == PFLayer::HCAL_ENDCAP ) ) {
       continue;
     }
     double rheta = rh.positionREP().Eta();
@@ -461,31 +462,31 @@ void DisplayManager::createGRecHit(reco::PFRecHit& rh,int ident, double maxe, do
       // not drawn for preshower. 
       // otherwise, drawn for eta/phi view, and for endcaps in xy view
       if( layer != PFLayer::PS1 && 
-	  layer != PFLayer::PS2 && 
-	  ( viewType == EPE || 
-	    viewType == EPH || 
-	    ( viewType == XY &&  
-	      ( layer == PFLayer::ECAL_ENDCAP || 
-		layer == PFLayer::HCAL_ENDCAP ) ) ) ) {
+          layer != PFLayer::PS2 && 
+          ( viewType == EPE || 
+            viewType == EPH || 
+            ( viewType == XY &&  
+              ( layer == PFLayer::ECAL_ENDCAP || 
+                layer == PFLayer::HCAL_ENDCAP ) ) ) ) {
       
       
-	math::XYZPoint centreXYZrot = rh.positionXYZ();
+        math::XYZPoint centreXYZrot = rh.positionXYZ();
 
-	math::XYZPoint centertocorner(x[jc] - centreXYZrot.X(), 
-				      y[jc] - centreXYZrot.Y(),
-				      0 );
+        math::XYZPoint centertocorner(x[jc] - centreXYZrot.X(), 
+                                      y[jc] - centreXYZrot.Y(),
+                                      0 );
 
-	math::XYZPoint centertocornerep(eta[jc] - centreXYZrot.Eta(), 
-					phi[jc] - centreXYZrot.Phi(),
-					0 );
+        math::XYZPoint centertocornerep(eta[jc] - centreXYZrot.Eta(), 
+                                        phi[jc] - centreXYZrot.Phi(),
+                                        0 );
       
 
         // centertocorner -= centreXYZrot;
-	xprop[jc] = centreXYZrot.X() + centertocorner.X()*ampl;
-	yprop[jc] = centreXYZrot.Y() + centertocorner.Y()*ampl;
+        xprop[jc] = centreXYZrot.X() + centertocorner.X()*ampl;
+        yprop[jc] = centreXYZrot.Y() + centertocorner.Y()*ampl;
 
-	etaprop[jc] = centreXYZrot.Eta() + centertocornerep.X()*ampl;
-	phiprop[jc] = centreXYZrot.Phi() + centertocornerep.Y()*ampl;
+        etaprop[jc] = centreXYZrot.Eta() + centertocornerep.X()*ampl;
+        phiprop[jc] = centreXYZrot.Phi() + centertocornerep.Y()*ampl;
       }
     }//loop on jc 
   
@@ -501,19 +502,19 @@ void DisplayManager::createGRecHit(reco::PFRecHit& rh,int ident, double maxe, do
 
       if(fabs(phiSize[1]-phiSize[0]) > 0.0001) {
         if (viewType == XY) {
-	  i1 = 2;
-	  i2 = 3;
+          i1 = 2;
+          i2 = 3;
         } else if (viewType == RZ) {
-	  i1 = 1;
-	  i2 = 2;
+          i1 = 1;
+          i2 = 2;
         }
       } else {
         if (viewType == XY) {
-	  i1 = 1;
-	  i2 = 2;
+          i1 = 1;
+          i2 = 2;
         } else if (viewType == RZ) {
-	  i1 = 2;
-	  i2 = 3;
+          i1 = 2;
+          i2 = 3;
         }
       }
 
@@ -538,19 +539,19 @@ void DisplayManager::createGRecHit(reco::PFRecHit& rh,int ident, double maxe, do
     switch( viewType ) {
     case  XY:
       {
-	if(layer == PFLayer::ECAL_BARREL || 
-	   layer == PFLayer::HCAL_BARREL1 || 
-	   layer == PFLayer::HCAL_BARREL2) {
-	  graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,x,y,color,"f")));
+        if(layer == PFLayer::ECAL_BARREL || 
+           layer == PFLayer::HCAL_BARREL1 || 
+           layer == PFLayer::HCAL_BARREL2) {
+          graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,x,y,color,"f")));
 
-	} else {
-	  graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,x,y,color,"l")));
-	  if( ampl>0 ) { // not for preshower
-	    xprop[4]=xprop[0];
-	    yprop[4]=yprop[0]; // closing the polycell    
-	    graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,xprop,yprop,color,"f")));
-	  }
-	}
+        } else {
+          graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,x,y,color,"l")));
+          if( ampl>0 ) { // not for preshower
+            xprop[4]=xprop[0];
+            yprop[4]=yprop[0]; // closing the polycell    
+            graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,xprop,yprop,color,"f")));
+          }
+        }
       } 
       break;
    
@@ -560,24 +561,24 @@ void DisplayManager::createGRecHit(reco::PFRecHit& rh,int ident, double maxe, do
     
     case EPE:
       {
-	graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,eta,phi,color,"l")));
+        graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,eta,phi,color,"l")));
       
-	if( ampl>0 ) { // not for preshower
-	  etaprop[4]=etaprop[0];
-	  phiprop[4]=phiprop[0]; // closing the polycell    
-	  graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,etaprop,phiprop,color,"f")));
-	}
+        if( ampl>0 ) { // not for preshower
+          etaprop[4]=etaprop[0];
+          phiprop[4]=phiprop[0]; // closing the polycell    
+          graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,etaprop,phiprop,color,"f")));
+        }
       }  
       break;
     case EPH:
       {      
-	graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,eta,phi,color,"l")));
+        graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,eta,phi,color,"l")));
      
-	if( ampl>0 ) { // not for preshower
-	  etaprop[4]=etaprop[0];
-	  phiprop[4]=phiprop[0]; // closing the polycell    
-	  graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,etaprop,phiprop,color,"f")));
-	}
+        if( ampl>0 ) { // not for preshower
+          etaprop[4]=etaprop[0];
+          phiprop[4]=phiprop[0]; // closing the polycell    
+          graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFRecHit(this, viewType,ident,&rh,npoints,etaprop,phiprop,color,"f")));
+        }
       } 
       break;
     
@@ -589,9 +590,9 @@ void DisplayManager::createGRecHit(reco::PFRecHit& rh,int ident, double maxe, do
 
 //_________________________________________________________________________________________
 void DisplayManager::createGTrack( reco::PFRecTrack &tr,
-				   const std::vector<reco::PFTrajectoryPoint>& points, 
-				   int ident,double pt,double phi0, double sign, bool displayInitial,
-				   int linestyle) 
+                                   const std::vector<reco::PFTrajectoryPoint>& points, 
+                                   int ident,double pt,double phi0, double sign, bool displayInitial,
+                                   int linestyle) 
 {
       
   bool inside = false; 
@@ -612,10 +613,10 @@ void DisplayManager::createGTrack( reco::PFRecTrack &tr,
       double phi = xyzPos.Phi();
     
       if( !displayInitial && 
-	  points[i].layer() == reco::PFTrajectoryPoint::ClosestApproach ) {
-	const math::XYZTLorentzVector& mom = points[i].momentum();
-	eta = mom.Eta();
-	phi = mom.Phi();
+          points[i].layer() == reco::PFTrajectoryPoint::ClosestApproach ) {
+        const math::XYZTLorentzVector& mom = points[i].momentum();
+        eta = mom.Eta();
+        phi = mom.Phi();
       }
     
       //if( !cutg || cutg->IsInside( eta, phi ) ) 
@@ -642,7 +643,8 @@ void DisplayManager::createGTrack( reco::PFRecTrack &tr,
     //if( !inside ) return;
   
     //fill map with graphic objects
-    graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFTrack(this,viewType,ident,&tr,xPos.size(),&xPos[0],&yPos[0],pt,linestyle,"pl")));
+    int color = 103;
+    graphicMap_.insert(pair<int,GPFBase *> (ident,new GPFTrack(this,viewType,ident,&tr,xPos.size(),&xPos[0],&yPos[0],pt,linestyle, color, "pl")));
   }   
 }
 //________________________________________________________
@@ -684,42 +686,42 @@ void DisplayManager::displayAll()
     switch (type) {
     case CLUSTERECALID: case CLUSTERHCALID: case  CLUSTERPSID: case CLUSTERIBID:
       {
-	if (drawClus_)
-	  if (p->second->getEnergy() > clusEnMin_) {
-	    displayView_[view]->cd();
-	    p->second->draw();
-	  }	   
+        if (drawClus_)
+          if (p->second->getEnergy() > clusEnMin_) {
+            displayView_[view]->cd();
+            p->second->draw();
+          }        
       }
       break;
     case RECHITECALID: case  RECHITHCALID: case RECHITPSID:
       {
-	if (redrawWithoutHits_) break; 
-	if (drawHits_) 
-	  if(p->second->getEnergy() > hitEnMin_)  {
-	    displayView_[view]->cd();
-	    p->second->draw();
-	  }
-	break;  
+        if (redrawWithoutHits_) break; 
+        if (drawHits_) 
+          if(p->second->getEnergy() > hitEnMin_)  {
+            displayView_[view]->cd();
+            p->second->draw();
+          }
+        break;  
       }  
     case RECTRACKID:
       {
-	if (drawTracks_) 
-	  if (p->second->getPt() > trackPtMin_) {
-	    displayView_[view]->cd();
-	    p->second->draw();
-	  }
+        if (drawTracks_) 
+          if (p->second->getPt() > trackPtMin_) {
+            displayView_[view]->cd();
+            p->second->draw();
+          }
       }
       break;
     case SIMPLEPARTID:
       {
-	if (drawParticles_)
-	  if (p->second->getPt() > particlePtMin_) {
-	    displayView_[view]->cd();
-	    p->second->draw();
-	  }
+        if (drawParticles_)
+          if (p->second->getPt() > particlePtMin_) {
+            displayView_[view]->cd();
+            p->second->draw();
+          }
       }
       break;
-    default : std::cout<<"DisplayManager::displayAll()-- unknown object "<<std::endl;	     	    
+    default : std::cout<<"DisplayManager::displayAll()-- unknown object "<<std::endl;               
     }  //switch end
   }   //for end
   for (int i=0;i<NViews;i++) {
@@ -747,7 +749,7 @@ void DisplayManager::displayCanvas()
       frontFaceECALXY_.Draw();
       frontFaceHCALXY_.Draw();
       break;
-    case RZ:	
+    case RZ:    
       {// Draw lines at different etas
         TLine l;
         l.SetLineColor(1);
@@ -759,23 +761,23 @@ void DisplayManager::displayCanvas()
         float etaBin = 0.2;
         int nEtas = int((etaMax - etaMin)/0.2) + 1;
         for (int iEta = 0; iEta <= nEtas; iEta++) {
-	  float eta = etaMin + iEta*etaBin;
-	  float r = 0.9*rUp;
+          float eta = etaMin + iEta*etaBin;
+          float r = 0.9*rUp;
           TVector3 etaImpact;
-	  etaImpact.SetPtEtaPhi(r, eta, 0.);
-	  etaLeg.SetTextAlign(21);
-	  if (eta <= -1.39) {
-	    etaImpact.SetXYZ(0.,0.85*zLow*tan(etaImpact.Theta()),0.85*zLow);
-	    etaLeg.SetTextAlign(31);
-	  } else if (eta >= 1.39) {
-	    etaImpact.SetXYZ(0.,0.85*zUp*tan(etaImpact.Theta()),0.85*zUp);
-	    etaLeg.SetTextAlign(11);
-	  }
-	  l.DrawLine(0., 0., etaImpact.Z(), etaImpact.Perp());
-	  etaLeg.DrawLatex(etaImpact.Z(), etaImpact.Perp(), Form("%2.1f", eta));
+          etaImpact.SetPtEtaPhi(r, eta, 0.);
+          etaLeg.SetTextAlign(21);
+          if (eta <= -1.39) {
+            etaImpact.SetXYZ(0.,0.85*zLow*tan(etaImpact.Theta()),0.85*zLow);
+            etaLeg.SetTextAlign(31);
+          } else if (eta >= 1.39) {
+            etaImpact.SetXYZ(0.,0.85*zUp*tan(etaImpact.Theta()),0.85*zUp);
+            etaLeg.SetTextAlign(11);
+          }
+          l.DrawLine(0., 0., etaImpact.Z(), etaImpact.Perp());
+          etaLeg.DrawLatex(etaImpact.Z(), etaImpact.Perp(), Form("%2.1f", eta));
         }
         frontFaceECALRZ_.Draw();
-      }	
+      } 
       break;
     default: break;
     } //end switch
@@ -1005,10 +1007,10 @@ void DisplayManager::loadGClusters()
     int clusId=(CLUSTERIBID<<shiftId_) | i;
    
     reco::PFCluster cluster( layer, 
-			     em_->clustersIslandBarrel_[i].energy(),
-			     em_->clustersIslandBarrel_[i].x(),
-			     em_->clustersIslandBarrel_[i].y(),
-			     em_->clustersIslandBarrel_[i].z() ); 
+                             em_->clustersIslandBarrel_[i].energy(),
+                             em_->clustersIslandBarrel_[i].x(),
+                             em_->clustersIslandBarrel_[i].y(),
+                             em_->clustersIslandBarrel_[i].z() ); 
     createGCluster( cluster,clusId, phi0);
   }  
 }
@@ -1024,58 +1026,58 @@ void DisplayManager::loadGPFBlocks()
          iter != ((*(em_->pfBlocks_))[ibl].elements()).end();iter++) {
       //std::cout<<"elem index "<<(*iter).index()<<"-type:"
       //         <<(*iter).type()<<std::flush<<std::endl;
-      int ident=-1;		  	     
+      int ident=-1;                          
       switch ((*iter).type()) {
       case reco::PFBlockElement::NONE :
-	std::cout<<"unknown PFBlock element"<<std::endl;
-	break;
+        std::cout<<"unknown PFBlock element"<<std::endl;
+        break;
       case reco::PFBlockElement::TRACK:
-	{
-	  reco::PFRecTrackRef trackref =(*iter).trackRefPF();  
-	  assert( !trackref.isNull() );
-	  // std::cout<<" - key "<<trackref.key()<<std::flush<<std::endl<<std::endl;
-	  ident=(RECTRACKID <<shiftId_) | trackref.key();
-	}
+        {
+          reco::PFRecTrackRef trackref =(*iter).trackRefPF();  
+          assert( !trackref.isNull() );
+          // std::cout<<" - key "<<trackref.key()<<std::flush<<std::endl<<std::endl;
+          ident=(RECTRACKID <<shiftId_) | trackref.key();
+        }
       break;
       case reco::PFBlockElement::PS1:
-	{
-	  reco::PFClusterRef clusref=(*iter).clusterRef();
-	  assert( !clusref.isNull() );
-	  //std::cout<<"- key "<<clusref.key()<<std::flush<<std::endl<<std::endl;
-	  ident=(CLUSTERPSID <<shiftId_) |clusref.key();
-	}
+        {
+          reco::PFClusterRef clusref=(*iter).clusterRef();
+          assert( !clusref.isNull() );
+          //std::cout<<"- key "<<clusref.key()<<std::flush<<std::endl<<std::endl;
+          ident=(CLUSTERPSID <<shiftId_) |clusref.key();
+        }
       break;
       case reco::PFBlockElement::PS2:
-	{
-	  reco::PFClusterRef clusref=(*iter).clusterRef();
-	  assert( !clusref.isNull() );
-	  //std::cout<<"key "<<clusref.key()<<std::flush<<std::endl<<std::endl;
-	  ident=(CLUSTERPSID <<shiftId_) |clusref.key();
-	}
+        {
+          reco::PFClusterRef clusref=(*iter).clusterRef();
+          assert( !clusref.isNull() );
+          //std::cout<<"key "<<clusref.key()<<std::flush<<std::endl<<std::endl;
+          ident=(CLUSTERPSID <<shiftId_) |clusref.key();
+        }
       break;
       case reco::PFBlockElement::ECAL:
-	{
-	  reco::PFClusterRef clusref=(*iter).clusterRef();
-	  assert( !clusref.isNull() );
-	  //std::cout<<"key "<<clusref.key()<<std::flush<<std::endl<<std::endl;
-	  ident=(CLUSTERECALID <<shiftId_) |clusref.key();
-	}
+        {
+          reco::PFClusterRef clusref=(*iter).clusterRef();
+          assert( !clusref.isNull() );
+          //std::cout<<"key "<<clusref.key()<<std::flush<<std::endl<<std::endl;
+          ident=(CLUSTERECALID <<shiftId_) |clusref.key();
+        }
       break;
       case reco::PFBlockElement::HCAL:
-	{
-	  reco::PFClusterRef clusref=(*iter).clusterRef();
-	  assert( !clusref.isNull() );
-	  //std::cout<<"key "<<clusref.key()<<std::flush<<std::endl<<std::endl;
-	  ident=(CLUSTERHCALID <<shiftId_) |clusref.key();
-	}
+        {
+          reco::PFClusterRef clusref=(*iter).clusterRef();
+          assert( !clusref.isNull() );
+          //std::cout<<"key "<<clusref.key()<<std::flush<<std::endl<<std::endl;
+          ident=(CLUSTERHCALID <<shiftId_) |clusref.key();
+        }
       break;
       case reco::PFBlockElement::MUON:
-	break;
+        break;
       default: 
-	std::cout<<"unknown PFBlock element"<<std::endl;
-	break; 
+        std::cout<<"unknown PFBlock element"<<std::endl;
+        break; 
       } //end switch 
-      if (ident != -1) blockIdentsMap_.insert(pair<int,int> (ibl,ident));	     
+      if (ident != -1) blockIdentsMap_.insert(pair<int,int> (ibl,ident));            
     }   //end for elements
   }   //end for blocks
    
@@ -1109,7 +1111,7 @@ void DisplayManager::loadGRecHits()
       case PFClusterAlgo::SEED: rhcolor = seedcolor; break;
       case PFClusterAlgo::SPECIAL: rhcolor = specialcolor; break;
       default:
-	cerr<<"DisplayManager::loadGRecHits: unknown color"<<endl;
+        cerr<<"DisplayManager::loadGRecHits: unknown color"<<endl;
       }
     }
     //int recHitId=(i<<shiftId_) | RECHITECALID;
@@ -1124,7 +1126,7 @@ void DisplayManager::loadGRecHits()
       case PFClusterAlgo::SEED: rhcolor = seedcolor; break;
       case PFClusterAlgo::SPECIAL: rhcolor = specialcolor; break;
       default:
-	cerr<<"DisplayManager::loadGRecHits: unknown color"<<endl;
+        cerr<<"DisplayManager::loadGRecHits: unknown color"<<endl;
       }
     }
     //int recHitId=(i<<shiftId_) | RECHITHCALID;
@@ -1139,7 +1141,7 @@ void DisplayManager::loadGRecHits()
       case PFClusterAlgo::SEED: rhcolor = seedcolor; break;
       case PFClusterAlgo::SPECIAL: rhcolor = specialcolor; break;
       default:
-	cerr<<"DisplayManager::loadGRecHits: unknown color"<<endl;
+        cerr<<"DisplayManager::loadGRecHits: unknown color"<<endl;
       }
     }
     //int recHitId=(i<<shiftId_) | RECHITPSID;
@@ -1164,7 +1166,7 @@ void DisplayManager::loadGRecTracks()
 
     const reco::PFTrajectoryPoint& tpatecal 
       = itRecTrack->trajectoryPoint(itRecTrack->nTrajectoryMeasurements() +
-				    reco::PFTrajectoryPoint::ECALEntrance );
+                                    reco::PFTrajectoryPoint::ECALEntrance );
     
     if ( cos(phi0 - tpatecal.momentum().Phi()) < 0.)
       sign = -1.;
@@ -1201,7 +1203,7 @@ void DisplayManager::loadGTrueParticles()
     
     const reco::PFTrajectoryPoint& tpatecal 
       = ptc.trajectoryPoint(ptc.nTrajectoryMeasurements() +
-			    reco::PFTrajectoryPoint::ECALEntrance );
+                            reco::PFTrajectoryPoint::ECALEntrance );
     
     if ( cos(phi0 - tpatecal.momentum().Phi()) < 0.)
       sign = -1.;
@@ -1303,9 +1305,9 @@ void DisplayManager::lookForGenParticle(unsigned barcode) {
   }
 
   math::XYZTLorentzVector momentum(particle->momentum().px(),
-				   particle->momentum().py(),
-				   particle->momentum().pz(),
-				   particle->momentum().e());
+                                   particle->momentum().py(),
+                                   particle->momentum().pz(),
+                                   particle->momentum().e());
 
   double eta = momentum.Eta();
   double phi = momentum.phi();
@@ -1430,7 +1432,7 @@ void DisplayManager::unZoom()
   (vectGClus_[viewType])[i].Draw();
   if (drawClusterL_ && (viewType == EPE || viewType == EPH)) {
   drawClusterLines(i,viewType,istart);
-  }	
+  }     
   }
   }
   }
@@ -1441,7 +1443,7 @@ void DisplayManager::unZoom()
   (vectGClus_[viewType])[i].Draw();
   if (drawClusterL_ && (viewType == EPE || viewType == EPH)) {
   drawClusterLines(i,viewType,istart);
-  }	
+  }     
   }
   }
   }

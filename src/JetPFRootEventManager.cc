@@ -48,28 +48,28 @@ JetPFRootEventManager::JetPFRootEventManager(const char* file):
   particleFlowCand_(new edm::OwnVector<reco::Candidate, edm::ClonePolicy<reco::Candidate> >),
   reccalojets_(new vector<reco::CaloJet>),   
   recpfjets_(new vector<reco::PFJet>),
-  test_(new edm::OwnVector<reco::Candidate, edm::ClonePolicy<reco::Candidate> >){		
-	
-  options_ = 0;	
+  test_(new edm::OwnVector<reco::Candidate, edm::ClonePolicy<reco::Candidate> >){               
+        
+  options_ = 0; 
   jetMaker_=0;
   readOptions(file); 
-	
+        
 }
 //-----------------------------------------------------------
-void JetPFRootEventManager::reset() { 	
+void JetPFRootEventManager::reset() {   
   reccalojets_->clear();
-  recpfjets_->clear();	
+  recpfjets_->clear();  
   caloTowersCand_->clear();
-  particleFlowCand_->clear();	
+  particleFlowCand_->clear();   
 }
 //-----------------------------------------------------------
-JetPFRootEventManager::~JetPFRootEventManager() {  	
- 	
+JetPFRootEventManager::~JetPFRootEventManager() {       
+        
 }
 
 
 //-----------------------------------------------------------
-void JetPFRootEventManager::print() { 	
+void JetPFRootEventManager::print() {   
   if (jetMaker_)  jetMaker_->print();
   cout <<"Opt: jetsDebugCMSSW " << jetsDebugCMSSW_  <<endl; 
   cout <<"Opt: algoType " << algoType_  <<endl; 
@@ -79,7 +79,7 @@ void JetPFRootEventManager::print() {
 bool JetPFRootEventManager::processEntry(int entry) {
   cout<<"JetPFRootEventManager :processEntry" <<endl;  
   PFRootEventManager::processEntry(entry);
- 		
+                
   if(! readFromSimulation(entry) ) return false;
   {
     /* if(reccalojets_.get() ) {
@@ -88,7 +88,7 @@ bool JetPFRootEventManager::processEntry(int entry) {
        if(recpfjets_.get() ) {
        cout<<"PF Jets : "<<recpfjets_->size()<<endl;
        } 
-    */      		
+    */                  
     readCMSSWJets();
     return false;
   }
@@ -108,19 +108,19 @@ void JetPFRootEventManager::readOptions(const char* file, bool refresh) {
   catch( const string& err ) {
     cout<<err<<endl;
   }
-	
+        
   string trueParticlesbranchname;
   options_->GetOpt("root","trueParticles_branch", trueParticlesbranchname);
   trueParticlesBranch_ = tree_->GetBranch(trueParticlesbranchname.c_str());
   if(!trueParticlesBranch_) {
     cerr<<"JetPFRootEventManager::ReadOptions : trueParticles_branch not found : "
-	<<trueParticlesbranchname<< endl;
+        <<trueParticlesbranchname<< endl;
   }
   else {
     trueParticlesBranch_->SetAddress(&trueParticles_);   
   } 
 
-  // GenParticlesCand	
+  // GenParticlesCand   
   string genParticleCandBranchName;
   genParticleCandBranch_ = 0;
   options_->GetOpt("root","genParticleCand_branch", genParticleCandBranchName);
@@ -128,13 +128,13 @@ void JetPFRootEventManager::readOptions(const char* file, bool refresh) {
     genParticleCandBranch_= tree_->GetBranch(genParticleCandBranchName.c_str()); 
     if(!genParticleCandBranch_) {
       cerr<<"JetPFRootEventanager::ReadOptions : genParticleCand_branch not found : "
-	  <<genParticleCandBranchName<< endl;
+          <<genParticleCandBranchName<< endl;
     }
     else {
       genParticleCandBranch_->SetAddress(genParticleCand_.get());
     }      
   }
-	
+        
   // CalotowersCand
   string caloTowersCandBranchName;
   recCaloTowersCandBranch_ = 0;
@@ -143,13 +143,13 @@ void JetPFRootEventManager::readOptions(const char* file, bool refresh) {
     recCaloTowersCandBranch_ = tree_->GetBranch(caloTowersCandBranchName.c_str()); 
     if(!recCaloTowersCandBranch_) {
       cerr<<"JetPFRootEventanager::ReadOptions : caloTowersCand_branch not found : "
-	  <<caloTowersCandBranchName<< endl;
+          <<caloTowersCandBranchName<< endl;
     }
-    else {	
+    else {      
       recCaloTowersCandBranch_->SetAddress(caloTowersCand_.get());
     }           
   }
-	
+        
   // PF Cand
   string ParticleFlowCandBranchName;
   recParticleFlowCandBranch_ = 0;
@@ -158,7 +158,7 @@ void JetPFRootEventManager::readOptions(const char* file, bool refresh) {
     recParticleFlowCandBranch_ = tree_->GetBranch(ParticleFlowCandBranchName.c_str()); 
     if(!recParticleFlowCandBranch_) {
       cerr<<"JetPFRootEventanager::ReadOptions : ParticleFlowCandbranch not found : "
-	  <<ParticleFlowCandBranchName<< endl;
+          <<ParticleFlowCandBranchName<< endl;
     }
     else {
       recParticleFlowCandBranch_->SetAddress(particleFlowCand_.get());
@@ -171,50 +171,50 @@ void JetPFRootEventManager::readOptions(const char* file, bool refresh) {
   recCaloJetsBranch_ = tree_->GetBranch(recCaloJetsBranchname.c_str());
   if(! recCaloJetsBranch_) {
     cerr<<"JetPFRootEventManager::ReadOptions : calojet_IC5_branch  not found : "
-	<<recCaloJetsBranchname<< endl;
+        <<recCaloJetsBranchname<< endl;
   }
   else {
     recCaloJetsBranch_->SetAddress(reccalojets_.get());
   }
-	
+        
   /// rec PFlow jets
-  recPFJetsBranch_=0;	
-  string recPFJetsBranchname;	
+  recPFJetsBranch_=0;   
+  string recPFJetsBranchname;   
   options_->GetOpt("root","pfjet_branch",recPFJetsBranchname);
   recPFJetsBranch_ = tree_->GetBranch(recPFJetsBranchname.c_str());
   if(! recPFJetsBranch_) {
     cerr<<"JetPFRootEventManager::ReadOptions : pfjet_IC5_branch not found : "
-	<<recPFJetsBranchname<< endl;
+        <<recPFJetsBranchname<< endl;
   }
   else {
     recPFJetsBranch_->SetAddress(recpfjets_.get());
   }
-	
+        
   /// jets options ---------------------------------;
   jetsDebugCMSSW_ = false;
   options_->GetOpt("CMSSWjets", "jetsDebugCMSSW", jetsDebugCMSSW_);
   algoType_=3; //FastJet as Default
   options_->GetOpt("CMSSWjets", "Algo", algoType_);
   mEtInputCut_ = 0.5;
-  options_->GetOpt("CMSSWjets", "EtInputCut",  mEtInputCut_);		
+  options_->GetOpt("CMSSWjets", "EtInputCut",  mEtInputCut_);           
   mEInputCut_ = 0.;
   options_->GetOpt("CMSSWjets", "EInputCut",  mEInputCut_);  
   seedThreshold_  = 1.0;
   options_->GetOpt("CMSSWjets", "seedThreshold", seedThreshold_);
   coneRadius_ = 0.5;
-  options_->GetOpt("CMSSWjets", "coneRadius", coneRadius_);		
+  options_->GetOpt("CMSSWjets", "coneRadius", coneRadius_);             
   coneAreaFraction_= 1.0;
-  options_->GetOpt("CMSSWjets", "coneAreaFraction",  coneAreaFraction_);	
+  options_->GetOpt("CMSSWjets", "coneAreaFraction",  coneAreaFraction_);        
   maxPairSize_=2;
-  options_->GetOpt("CMSSWjets", "maxPairSize",  maxPairSize_);	
+  options_->GetOpt("CMSSWjets", "maxPairSize",  maxPairSize_);  
   maxIterations_=100;
-  options_->GetOpt("CMSSWjets", "maxIterations",  maxIterations_);	
+  options_->GetOpt("CMSSWjets", "maxIterations",  maxIterations_);      
   overlapThreshold_  = 0.75;
   options_->GetOpt("CMSSWjets", "overlapThreshold", overlapThreshold_);
   ptMin_ = 10.;
-  options_->GetOpt("CMSSWjets", "ptMin",  ptMin_);	
+  options_->GetOpt("CMSSWjets", "ptMin",  ptMin_);      
   rparam_ = 1.0;
-  options_->GetOpt("CMSSWjets", "rParam",  rparam_);	
+  options_->GetOpt("CMSSWjets", "rParam",  rparam_);    
  
 
   if(! jetMaker_) jetMaker_ = new FWLiteJetProducer();
@@ -230,15 +230,15 @@ void JetPFRootEventManager::readOptions(const char* file, bool refresh) {
   jetMaker_->setRParam (rparam_);
   jetMaker_->updateParameter();
 
-    if (jetsDebugCMSSW_) {      
-      print();
-    }	
+  if (jetsDebugCMSSW_) {      
+    print();
+  }     
 }
 
 
 //-----------------------------------------------------------
 bool  JetPFRootEventManager::readFromSimulation(int entry) {
-	
+        
   reset();
   if(!tree_) return false; 
   if(trueParticlesBranch_ ) {
@@ -252,13 +252,13 @@ bool  JetPFRootEventManager::readFromSimulation(int entry) {
   }
   if( recCaloTowersCandBranch_) {
     recCaloTowersCandBranch_->GetEntry(entry);
-    if (jetsDebugCMSSW_)cout<<"Got candidate number caloTowersCand_->size()" << caloTowersCand_->size() << endl;			
+    if (jetsDebugCMSSW_)cout<<"Got candidate number caloTowersCand_->size()" << caloTowersCand_->size() << endl;                        
   }
   if( recParticleFlowCandBranch_) {
     recParticleFlowCandBranch_->GetEntry(entry);
-   if (jetsDebugCMSSW_)cout<<"Got candidate number recPFCandBranch_->size()" << particleFlowCand_->size() << endl;			
-  }	
-  return true; 	
+    if (jetsDebugCMSSW_)cout<<"Got candidate number recPFCandBranch_->size()" << particleFlowCand_->size() << endl;                     
+  }     
+  return true;  
 }
 
 //-----------------------------------------------------------
@@ -271,14 +271,14 @@ void JetPFRootEventManager::makeFWLiteJets(const reco::CandidateCollection& Cand
   // cout<<"!!! Make FWLite Jets  "<<endl;  
   JetReco::InputCollection input;
   vector <ProtoJet> output;
-  jetMaker_->applyCuts (Candidates, &input);	 
+  jetMaker_->applyCuts (Candidates, &input);     
   if (algoType_==1) {// ICone 
-    /// Produce jet collection using CMS Iterative Cone Algorithm	
-   jetMaker_->makeIterativeConeJets(input, &output);
+    /// Produce jet collection using CMS Iterative Cone Algorithm       
+    jetMaker_->makeIterativeConeJets(input, &output);
   }
   if (algoType_==2) {// MCone
     jetMaker_->makeMidpointJets(input, &output);
-  }	
+  }     
   if (algoType_==3) {// Fastjet
     jetMaker_->makeFastJets(input, &output);  
   }
@@ -287,11 +287,11 @@ void JetPFRootEventManager::makeFWLiteJets(const reco::CandidateCollection& Cand
   }
   if (jetsDebugCMSSW_)cout<<"Proto Jet Size " <<output.size()<<endl;
   vector <ProtoJet>::const_iterator protojet = output.begin ();
-  if (jetsDebugCMSSW_){	
+  if (jetsDebugCMSSW_){ 
     for  (; protojet != output.end (); protojet++) {
       cout<<"Protojet ET " <<protojet->et()<<endl;
     }
-  }	
+  }     
 }
 //-----------------------------------------------------------
 void JetPFRootEventManager::makeGenJets(){
@@ -300,55 +300,55 @@ void JetPFRootEventManager::makeGenJets(){
 
 //-----------------------------------------------------------
 void JetPFRootEventManager::makeCaloJets(){
-  makeFWLiteJets(*caloTowersCand_);	  
+  makeFWLiteJets(*caloTowersCand_);       
 }
 
 //-----------------------------------------------------------
-void JetPFRootEventManager::makePFJets(){	
+void JetPFRootEventManager::makePFJets(){       
   makeFWLiteJets(*particleFlowCand_);
 }
 
 //-----------------------------------------------------------
 void JetPFRootEventManager::readCMSSWJets(){
   TLorentzVector partTOTMC;
-  partTOTMC.SetPxPyPzE(0.0, 0.0, 0.0, 0.0);	
+  partTOTMC.SetPxPyPzE(0.0, 0.0, 0.0, 0.0);     
   //MAKING JETS WITH TAU DAUGHTERS
   vector<reco::PFSimParticle> vectPART;
   for ( unsigned i=0;  i < trueParticles_.size(); i++) {
     const reco::PFSimParticle& ptc = trueParticles_[i];
     vectPART.push_back(ptc);
-  }//loop	
+  }//loop       
   for ( unsigned i=0;  i < trueParticles_.size(); i++) {
     const reco::PFSimParticle& ptc = trueParticles_[i];
     const std::vector<int>& ptcdaughters = ptc.daughterIds();
-		
+                
     if (abs(ptc.pdgCode()) == 15) {
-      for ( unsigned int dapt=0; dapt < ptcdaughters.size(); ++dapt) {				
-	const reco::PFTrajectoryPoint& tpatvtx 
-	  = vectPART[ptcdaughters[dapt]].trajectoryPoint(0);
-	TLorentzVector partMC;
-	partMC.SetPxPyPzE(tpatvtx.momentum().Px(),
-			  tpatvtx.momentum().Py(),
-			  tpatvtx.momentum().Pz(),
-			  tpatvtx.momentum().E());
-				
-	partTOTMC += partMC;
-	if (jetsDebugCMSSW_) {
-	  //pdgcode
-	  int pdgcode = vectPART[ptcdaughters[dapt]].pdgCode();
-	  cout << pdgcode << endl;
-	  cout << tpatvtx << endl;
-	  cout << partMC.Px() << " " << partMC.Py() << " " 
-	       << partMC.Pz() << " " << partMC.E()
-	       << " PT=" 
-	       << sqrt(partMC.Px()*partMC.Px()+partMC.Py()*partMC.Py()) 
-	       << endl;
-	}//debug
+      for ( unsigned int dapt=0; dapt < ptcdaughters.size(); ++dapt) {                          
+        const reco::PFTrajectoryPoint& tpatvtx 
+          = vectPART[ptcdaughters[dapt]].trajectoryPoint(0);
+        TLorentzVector partMC;
+        partMC.SetPxPyPzE(tpatvtx.momentum().Px(),
+                          tpatvtx.momentum().Py(),
+                          tpatvtx.momentum().Pz(),
+                          tpatvtx.momentum().E());
+                                
+        partTOTMC += partMC;
+        if (jetsDebugCMSSW_) {
+          //pdgcode
+          int pdgcode = vectPART[ptcdaughters[dapt]].pdgCode();
+          cout << pdgcode << endl;
+          cout << tpatvtx << endl;
+          cout << partMC.Px() << " " << partMC.Py() << " " 
+               << partMC.Pz() << " " << partMC.E()
+               << " PT=" 
+               << sqrt(partMC.Px()*partMC.Px()+partMC.Py()*partMC.Py()) 
+               << endl;
+        }//debug
       }//loop daughter
     }//tau?
-  }//loop particles	
-  //	if (jetsDebugCMSSW_) {
-		
+  }//loop particles     
+  //    if (jetsDebugCMSSW_) {
+                
   //////////////////////////////////////////////////////////////////////////
   //CALO TOWER JETS (ECAL+HCAL Towers)
   if ( jetsDebugCMSSW_) {
@@ -356,24 +356,24 @@ void JetPFRootEventManager::readCMSSWJets(){
       cout<<"CMSSW Calo jets : "<<reccalojets_->size()<<endl;
     } 
   }
-  double JetEHTETmax = 0.0;	
+  double JetEHTETmax = 0.0;     
   for ( unsigned i = 0; i < reccalojets_->size(); i++) {
     //   TLorentzVector jetmom = (*reccalojets_)[i]. momentum();
     //double jetcalo_pt = (*reccalojets_)[i].pt();
     double jetcalo_et = (*reccalojets_)[i].et();
     if ( jetsDebugCMSSW_) {
       cout  << "CMSSW Calo jet " << (*reccalojets_)[i].px() << " " 
-	    << " " << (*reccalojets_)[i].pz() 
-	    << " ET=" << jetcalo_et << endl;
+            << " " << (*reccalojets_)[i].pz() 
+            << " ET=" << jetcalo_et << endl;
     }//debug
-			
+                        
     if (jetcalo_et >= JetEHTETmax) 
       JetEHTETmax = jetcalo_et;
   }//loop MCjets
-		
+                
   //   //////////////////////////////////////////////////////////////////
   //   //PARTICLE FLOW JETS
-		
+                
   double JetPFETmax = 0.0;
   if ( jetsDebugCMSSW_) {
     if(recpfjets_.get() ) {
@@ -382,13 +382,13 @@ void JetPFRootEventManager::readCMSSWJets(){
   } 
   for ( unsigned i = 0; i < recpfjets_->size(); i++) {
     //   TLorentzVector jetmom = (*recpfjets_)[i]. momentum();
-    //	double jetpf_pt = (*recpfjets_)[i].pt();
+    //  double jetpf_pt = (*recpfjets_)[i].pt();
     double jetpf_et = (*recpfjets_)[i].et();
     if ( jetsDebugCMSSW_) {
       cout  << "CMSSW PFlow jet " << (*recpfjets_)[i].px() << " " 
-	    << " " << (*recpfjets_)[i].pz() 
-	    << " ET=" << jetpf_et<< endl;
-    }//debug		
+            << " " << (*recpfjets_)[i].pz() 
+            << " ET=" << jetpf_et<< endl;
+    }//debug            
     if (jetpf_et >= JetPFETmax) 
       JetPFETmax = jetpf_et;
   }//loop MCjets
@@ -399,6 +399,6 @@ void JetPFRootEventManager::readCMSSWJets(){
 //-----------------------------------------------------------
 void JetPFRootEventManager::write() {
 
-	
+        
 }
 

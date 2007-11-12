@@ -23,7 +23,7 @@ class DisplayManager {
   
  public:
   DisplayManager( PFRootEventManager *em, 
-		  const char* optfile );
+                  const char* optfile );
   virtual ~DisplayManager();
      
   void readOptions( const char* file );
@@ -130,22 +130,22 @@ class DisplayManager {
      
   //create graphicObjects
   void createGRecHit(reco::PFRecHit& rh,int ident, 
-		     double maxe, double phi0=0. , int color=4);
+                     double maxe, double phi0=0. , int color=4);
 
   void createGCluster(const reco::PFCluster& cluster,
-		      int ident, double phi0 = 0.);
+                      int ident, double phi0 = 0.);
 
   void createGTrack(reco::PFRecTrack &tr,
-		    const std::vector<reco::PFTrajectoryPoint>& points,
-		    int ident,double pt,double phi0, double sign, 
-		    bool displayInitial, int linestyle);
+                    const std::vector<reco::PFTrajectoryPoint>& points,
+                    int ident,double pt,double phi0, double sign, 
+                    bool displayInitial, int linestyle);
 
   void createGPart(const reco::PFSimParticle &ptc, 
-		   const std::vector<reco::PFTrajectoryPoint>& points, 
-		   int ident,double pt,double phi0, double sign, 
-		   bool displayInitial, int markerstyle);
+                   const std::vector<reco::PFTrajectoryPoint>& points, 
+                   int ident,double pt,double phi0, double sign, 
+                   bool displayInitial, int markerstyle);
 
-  void createGClusterLines(const reco::PFCluster& cluster,int viewType);		      
+  void createGClusterLines(const reco::PFCluster& cluster,int viewType);                      
   void drawGObject(int ident,int color,bool toInitialColor);
 
   //fill vectors with graphic Objects
@@ -167,7 +167,7 @@ class DisplayManager {
   double getMaxE(int layer) const;
   double getMaxEEcal();
   double getMaxEHcal();
-     	       
+               
      
      
      
