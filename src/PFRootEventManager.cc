@@ -1897,7 +1897,7 @@ PFRootEventManager::printMCTruth(std::ostream& out,
   const HepMC::GenEvent* myGenEvent = MCTruth_.GetEvent();
   if(!myGenEvent) return;
 
-  std::cout << "Id  Gen Name       eta    phi     pT     E    Vtx1   " 
+  out << "Id  Gen Name       eta    phi     pT     E    Vtx1   " 
             << " x      y      z   " 
             << "Moth  Vtx2  eta   phi     R      Z   Da1  Da2 Ecal?" 
             << std::endl;
@@ -2016,18 +2016,18 @@ PFRootEventManager::printMCTruth(std::ostream& out,
                              p->production_vertex()->position().z()/10.);
     vertexId1 = p->production_vertex()->barcode();
     
-    std::cout.setf(std::ios::fixed, std::ios::floatfield);
-    std::cout.setf(std::ios::right, std::ios::adjustfield);
+    out.setf(std::ios::fixed, std::ios::floatfield);
+    out.setf(std::ios::right, std::ios::adjustfield);
     
-    std::cout << std::setw(4) << p->barcode() << " " 
+    out << std::setw(4) << p->barcode() << " " 
               << name;
     
-    for(unsigned int k=0;k<11-name.length() && k<12; k++) std::cout << " ";  
+    for(unsigned int k=0;k<11-name.length() && k<12; k++) out << " ";  
     
     double eta = momentum1.eta();
     if ( eta > +10. ) eta = +10.;
     if ( eta < -10. ) eta = -10.;
-    std::cout << std::setw(6) << std::setprecision(2) << eta << " " 
+    out << std::setw(6) << std::setprecision(2) << eta << " " 
               << std::setw(6) << std::setprecision(2) << momentum1.phi() << " " 
               << std::setw(7) << std::setprecision(2) << momentum1.pt() << " " 
               << std::setw(7) << std::setprecision(2) << momentum1.e() << " " 
@@ -2040,9 +2040,9 @@ PFRootEventManager::printMCTruth(std::ostream& out,
       *(p->production_vertex()->particles_in_const_begin());
 
     if ( mother )
-      std::cout << std::setw(4) << mother->barcode() << " ";
+      out << std::setw(4) << mother->barcode() << " ";
     else 
-      std::cout << "     " ;
+      out << "     " ;
     
     if ( p->end_vertex() ) {  
       math::XYZTLorentzVector vertex2(p->end_vertex()->position().x()/10.,
@@ -2060,15 +2060,15 @@ PFRootEventManager::printMCTruth(std::ostream& out,
         children.push_back(*firstDaughterIt);
       }      
 
-      std::cout << std::setw(4) << vertexId2 << " "
+      out << std::setw(4) << vertexId2 << " "
                 << std::setw(6) << std::setprecision(2) << vertex2.eta() << " " 
                 << std::setw(6) << std::setprecision(2) << vertex2.phi() << " " 
                 << std::setw(5) << std::setprecision(1) << vertex2.pt() << " " 
                 << std::setw(6) << std::setprecision(1) << vertex2.z() << " ";
       for ( unsigned id=0; id<children.size(); ++id )
-        std::cout << std::setw(4) << children[id]->barcode() << " ";
+        out << std::setw(4) << children[id]->barcode() << " ";
     }
-    std::cout << std::endl;
+    out << std::endl;
 
   }
 }
