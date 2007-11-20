@@ -226,6 +226,10 @@ particle_flow multilink 1
 particle_flow   nsigma_ECAL    3
 particle_flow   nsigma_HCAL    1.7
 
+//Alogrithm to recover the clusters 
+//that belong to charged hadrons
+particle_flow   clusterRecovery 1 
+
 particle_flow   mergedPhotons_mvaCut 		0.5
 particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt
 particle_flow   mergedPhotons_PSCut  0.001   

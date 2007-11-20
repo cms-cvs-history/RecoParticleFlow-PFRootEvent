@@ -461,6 +461,8 @@ void PFRootEventManager::readOptions(const char* file,
   double nSigmaHCAL = 99999;
   options_->GetOpt("particle_flow", "nsigma_HCAL", nSigmaHCAL);
 
+  bool   clusterRecoveryAlgo = false;
+  options_->GetOpt("particle_flow", "clusterRecovery", clusterRecoveryAlgo );
 
   double mvaCut = 999999;
   options_->GetOpt("particle_flow", "mergedPhotons_mvaCut", mvaCut);
@@ -476,7 +478,10 @@ void PFRootEventManager::readOptions(const char* file,
   options_->GetOpt("particle_flow", "mergedPhotons_PSCut", PSCut);
 
   try {
+//     pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
+//                            PSCut, mvaCut, mvaWeightFile.c_str() );
     pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
+			   clusterRecoveryAlgo,
                            PSCut, mvaCut, mvaWeightFile.c_str() );
   }
   catch( std::exception& err ) {
