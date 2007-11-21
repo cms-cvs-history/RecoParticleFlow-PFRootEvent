@@ -1902,7 +1902,8 @@ PFRootEventManager::printMCTruth(std::ostream& out,
   const HepMC::GenEvent* myGenEvent = MCTruth_.GetEvent();
   if(!myGenEvent) return;
 
-  out << "Id  Gen Name       eta    phi     pT     E    Vtx1   " 
+
+  std::cout << "Id  Gen Name       eta    phi     pT     E    Vtx1   " 
             << " x      y      z   " 
             << "Moth  Vtx2  eta   phi     R      Z   Da1  Da2 Ecal?" 
             << std::endl;
@@ -2032,14 +2033,16 @@ PFRootEventManager::printMCTruth(std::ostream& out,
     double eta = momentum1.eta();
     if ( eta > +10. ) eta = +10.;
     if ( eta < -10. ) eta = -10.;
+    
     out << std::setw(6) << std::setprecision(2) << eta << " " 
-              << std::setw(6) << std::setprecision(2) << momentum1.phi() << " " 
-              << std::setw(7) << std::setprecision(2) << momentum1.pt() << " " 
-              << std::setw(7) << std::setprecision(2) << momentum1.e() << " " 
-              << std::setw(4) << vertexId1 << " " 
-              << std::setw(6) << std::setprecision(1) << vertex1.x() << " " 
-              << std::setw(6) << std::setprecision(1) << vertex1.y() << " " 
-              << std::setw(6) << std::setprecision(1) << vertex1.z() << " ";
+	<< std::setw(6) << std::setprecision(2) << momentum1.phi() << " " 
+	<< std::setw(7) << std::setprecision(2) << momentum1.pt() << " " 
+	<< std::setw(7) << std::setprecision(2) << momentum1.e() << " " 
+	<< std::setw(4) << vertexId1 << " " 
+	<< std::setw(6) << std::setprecision(1) << vertex1.x() << " " 
+	<< std::setw(6) << std::setprecision(1) << vertex1.y() << " " 
+	<< std::setw(6) << std::setprecision(1) << vertex1.z() << " ";
+
 
     const HepMC::GenParticle* mother = 
       *(p->production_vertex()->particles_in_const_begin());
@@ -2066,15 +2069,15 @@ PFRootEventManager::printMCTruth(std::ostream& out,
       }      
 
       out << std::setw(4) << vertexId2 << " "
-                << std::setw(6) << std::setprecision(2) << vertex2.eta() << " " 
-                << std::setw(6) << std::setprecision(2) << vertex2.phi() << " " 
-                << std::setw(5) << std::setprecision(1) << vertex2.pt() << " " 
-                << std::setw(6) << std::setprecision(1) << vertex2.z() << " ";
+	  << std::setw(6) << std::setprecision(2) << vertex2.eta() << " " 
+	  << std::setw(6) << std::setprecision(2) << vertex2.phi() << " " 
+	  << std::setw(5) << std::setprecision(1) << vertex2.pt() << " " 
+	  << std::setw(6) << std::setprecision(1) << vertex2.z() << " ";
+
       for ( unsigned id=0; id<children.size(); ++id )
         out << std::setw(4) << children[id]->barcode() << " ";
     }
     out << std::endl;
-
   }
 }
 
