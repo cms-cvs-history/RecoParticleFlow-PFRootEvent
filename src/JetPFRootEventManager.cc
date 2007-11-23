@@ -257,7 +257,13 @@ bool  JetPFRootEventManager::readFromSimulation(int entry) {
   if( recParticleFlowCandBranch_) {
     recParticleFlowCandBranch_->GetEntry(entry);
     if (jetsDebugCMSSW_)cout<<"Got candidate number recPFCandBranch_->size()" << particleFlowCand_->size() << endl;                     
-  }     
+  }
+    if( genParticleCandBranch_) {
+    genParticleCandBranch_->GetEntry(entry);
+    if (jetsDebugCMSSW_)cout<<"Got candidate number genCandBranch_->size()" << genParticleCand_->size() << endl;                     
+  }
+  
+  
   return true;  
 }
 
