@@ -1201,11 +1201,8 @@ void DisplayManager::loadGTrueParticles()
 
     double sign = 1.;
     
-    const reco::PFTrajectoryPoint& tpatecal 
-      = ptc.trajectoryPoint(ptc.nTrajectoryMeasurements() +
-                            reco::PFTrajectoryPoint::ECALEntrance );
-    
-    if ( cos(phi0 - tpatecal.momentum().Phi()) < 0.)
+    const reco::PFTrajectoryPoint& tpFirst = ptc.trajectoryPoint(0);
+    if ( tpFirst.positionXYZ().X() < 0. )
       sign = -1.;
 
     const std::vector<reco::PFTrajectoryPoint>& points = 
