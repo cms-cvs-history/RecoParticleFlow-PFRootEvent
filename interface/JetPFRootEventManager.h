@@ -43,7 +43,7 @@ class JetPFRootEventManager : public PFRootEventManager {
   /// print jet relevant parameters     
   void print();
   /// read options from .opt file
-  void readOptions(const char* file, bool refresh=true);
+  void readSpecificOptions(const char* file, bool refresh=true);
   /// read data from simulation tree
   bool readFromSimulation(int entry);
   //Read the CMSSW jets from simulation tree 

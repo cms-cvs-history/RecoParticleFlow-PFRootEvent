@@ -52,7 +52,7 @@ JetPFRootEventManager::JetPFRootEventManager(const char* file):
         
   options_ = 0; 
   jetMaker_=0;
-  readOptions(file); 
+  readSpecificOptions(file); 
         
 }
 //-----------------------------------------------------------
@@ -95,7 +95,8 @@ bool JetPFRootEventManager::processEntry(int entry) {
 }
 
 //-----------------------------------------------------------
-void JetPFRootEventManager::readOptions(const char* file, bool refresh) {
+void JetPFRootEventManager::readSpecificOptions(const char* file, 
+						bool refresh) {
   cout<<"JetPFRootEventManager:reading options "<<endl;
   try {
     if( !options_ )
@@ -239,6 +240,8 @@ void JetPFRootEventManager::readOptions(const char* file, bool refresh) {
 //-----------------------------------------------------------
 bool  JetPFRootEventManager::readFromSimulation(int entry) {
         
+  cout<<"CALL JetPFRootEventManager::readFromSimulation"<<endl;
+  
   reset();
   if(!tree_) return false; 
   if(trueParticlesBranch_ ) {
