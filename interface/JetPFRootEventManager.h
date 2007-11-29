@@ -75,6 +75,9 @@ class JetPFRootEventManager : public PFRootEventManager {
   std::auto_ptr<std::vector<reco::CaloJet> >  reccalojets_;
   /// Vector to read in CMSSW PFJets
   std::auto_ptr<std::vector<reco::PFJet> >recpfjets_;  
+  /// Vector to build new PFJets
+  //std::auto_ptr<std::vector<reco::PFJet> >pfJets_;  
+  std::auto_ptr<reco::PFJetCollection> pfJets_; 
   std::auto_ptr<reco::CandidateCollection> test_;
   /// options file parser 
   IO*        options_;

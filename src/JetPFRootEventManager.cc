@@ -8,6 +8,7 @@
 #include "RecoJets/JetAlgorithms/interface/JetRecoTypes.h"
 #include "DataFormats/JetReco/interface/CaloJet.h"
 #include "DataFormats/JetReco/interface/GenJet.h"
+#include "DataFormats/JetReco/interface/PFJet.h"
 #include "DataFormats/JetReco/interface/BasicJet.h"
 #include "RecoJets/JetAlgorithms/interface/JetMaker.h"
 #include "RecoJets/JetAlgorithms/interface/JetAlgoHelper.h"
@@ -58,7 +59,8 @@ JetPFRootEventManager::JetPFRootEventManager(const char* file):
 //-----------------------------------------------------------
 void JetPFRootEventManager::reset() {   
   reccalojets_->clear();
-  recpfjets_->clear();  
+  recpfjets_->clear(); 
+  pfJets_->clear(); 
   caloTowersCand_->clear();
   particleFlowCand_->clear();   
 }
@@ -79,6 +81,35 @@ void JetPFRootEventManager::print() {
 bool JetPFRootEventManager::processEntry(int entry) {
   cout<<"JetPFRootEventManager :processEntry" <<endl;  
   PFRootEventManager::processEntry(entry);
+   cout<<"JKetPFRootEventManager: Print Particle Flow Candidates? "<<endl;
+   cout<<pfAlgo_<<endl;
+    for(unsigned i=0; i<pfCandidates_->size(); i++) {
+	//(*particleFlowCand_)[i] = (*pfCandidates_)[i];//   does not work!
+      cout<<(*pfCandidates_)[i]<<endl;
+    }    
+    cout<<endl;
+	/// build particleFlowCandidates 
+
+  // Copy PFCandidates into edm::OwnVector<Candidate> format 
+  // as input for jet algorithms
+  for( std::vector<PFCandidate>::const_iterator it = 
+	(*pfCandidates_).begin (); it != (*pfCandidates_).end(); ++it) {
+    particleFlowCand_->push_back( it->clone() );
+	}
+	makePFJets();
+	// print new PFJets
+    for ( unsigned i = 0; i < pfJets_->size(); i++) {
+	const reco::PFJet& pfj = (*pfJets_)[i];
+    if ( jetsDebugCMSSW_) {
+      cout  << "FWLite PFlow jet " << i
+	        << " ET   " <<pfj.et() 
+	        << " eta  " << pfj.eta() 
+	        << " phi  " << pfj.phi()<< endl;
+	cout << pfj.print (); // PFJet print default
+    }//debug
+	} //pfJet loop		
+
+
                 
   if(! readFromSimulation(entry) ) return false;
   {
@@ -89,7 +120,7 @@ bool JetPFRootEventManager::processEntry(int entry) {
        cout<<"PF Jets : "<<recpfjets_->size()<<endl;
        } 
     */                  
-    readCMSSWJets();
+	readCMSSWJets();
     return false;
   }
 }
@@ -109,17 +140,18 @@ void JetPFRootEventManager::readSpecificOptions(const char* file,
   catch( const string& err ) {
     cout<<err<<endl;
   }
-        
-  string trueParticlesbranchname;
-  options_->GetOpt("root","trueParticles_branch", trueParticlesbranchname);
-  trueParticlesBranch_ = tree_->GetBranch(trueParticlesbranchname.c_str());
-  if(!trueParticlesBranch_) {
-    cerr<<"JetPFRootEventManager::ReadOptions : trueParticles_branch not found : "
-        <<trueParticlesbranchname<< endl;
-  }
-  else {
-    trueParticlesBranch_->SetAddress(&trueParticles_);   
-  } 
+  // true particles already there from PFRootEventManager     
+  
+  //string trueParticlesbranchname;
+  //options_->GetOpt("root","trueParticles_branch", trueParticlesbranchname);
+  //trueParticlesBranch_ = tree_->GetBranch(trueParticlesbranchname.c_str());
+  //if(!trueParticlesBranch_) {
+  //  cerr<<"JetPFRootEventManager::ReadOptions : trueParticles_branch not found : "
+   //     <<trueParticlesbranchname<< endl;
+ // }
+  //else {
+ //   trueParticlesBranch_->SetAddress(&trueParticles_);   
+ // } 
 
   // GenParticlesCand   
   string genParticleCandBranchName;
@@ -244,9 +276,10 @@ bool  JetPFRootEventManager::readFromSimulation(int entry) {
   
   reset();
   if(!tree_) return false; 
-  if(trueParticlesBranch_ ) {
-    trueParticlesBranch_->GetEntry(entry);
-  }
+  // true particles already there from PFRootEventManager
+ // if(trueParticlesBranch_ ) {
+ //   trueParticlesBranch_->GetEntry(entry);
+ // }
   if(recCaloJetsBranch_) {
     recCaloJetsBranch_->GetEntry(entry);
   }
@@ -295,12 +328,19 @@ void JetPFRootEventManager::makeFWLiteJets(const reco::CandidateCollection& Cand
     cout<<"Unknown Jet Algo ! " <<algoType_ << endl;
   }
   if (jetsDebugCMSSW_)cout<<"Proto Jet Size " <<output.size()<<endl;
+  // try reset?
+  pfJets_.reset(new PFJetCollection);
   vector <ProtoJet>::const_iterator protojet = output.begin ();
+  JetMaker mjet;
   if (jetsDebugCMSSW_){ 
     for  (; protojet != output.end (); protojet++) {
       cout<<"Protojet ET " <<protojet->et()<<endl;
+	  // first attemppt to build PFJets from protojets
+      pfJets_->push_back(mjet.makePFJet(*protojet));  
+//	  cout << protojet->print(); print method does not exist for protojets
+//  	  cout << pfJets_.print(); //print method does exist forPFjets
     }
-  }     
+  } 
 }
 //-----------------------------------------------------------
 void JetPFRootEventManager::makeGenJets(){
@@ -391,13 +431,16 @@ void JetPFRootEventManager::readCMSSWJets(){
   } 
   for ( unsigned i = 0; i < recpfjets_->size(); i++) {
     //   TLorentzVector jetmom = (*recpfjets_)[i]. momentum();
-    //  double jetpf_pt = (*recpfjets_)[i].pt();
-    double jetpf_et = (*recpfjets_)[i].et();
+    //	double jetpf_pt = (*recpfjets_)[i].pt();
+	const reco::PFJet& pfj = (*recpfjets_)[i];
+    double jetpf_et = pfj.et();
     if ( jetsDebugCMSSW_) {
-      cout  << "CMSSW PFlow jet " << (*recpfjets_)[i].px() << " " 
-            << " " << (*recpfjets_)[i].pz() 
-            << " ET=" << jetpf_et<< endl;
-    }//debug            
+      cout  << "CMSSW PFlow jet " << i
+	        << " ET   " <<pfj.et() 
+	        << " eta  " << pfj.eta() 
+	        << " phi  " << pfj.phi()<< endl;
+	cout << pfj.print (); // PFJet print default
+    }//debug		
     if (jetpf_et >= JetPFETmax) 
       JetPFETmax = jetpf_et;
   }//loop MCjets
