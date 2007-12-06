@@ -40,6 +40,7 @@
 #include "RecoParticleFlow/PFRootEvent/interface/FWLiteJetProducer.h"
 #include "DataFormats/JetReco/interface/BasicJetfwd.h"
 #include "DataFormats/JetReco/interface/PFJetfwd.h"
+#include "DataFormats/JetReco/interface/PFJet.h"
 #include "DataFormats/JetReco/interface/CaloJetfwd.h"
 
 #include <TObject.h>
