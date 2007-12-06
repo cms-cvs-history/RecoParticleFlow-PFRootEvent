@@ -178,14 +178,14 @@ void DialogFrame::doModifyPtThreshold(unsigned objNb,long pt)
 void DialogFrame::doNextEvent()
 {
   display_->displayNext();
-  int eventNumber = evMan_->eventNumber();
+  //   int eventNumber = evMan_->eventNumber();
   //TODOLIST:display new value of eventNumber in the futur reserve field
 } 
 //_________________________________________________________________________________
 void DialogFrame::doPreviousEvent()
 {
   display_->displayPrevious();
-  int eventNumber = evMan_->eventNumber();
+  //   int eventNumber = evMan_->eventNumber();
   //TODOLIST:display new value of eventNumber in the futur reserve field
 }
 //__________________________________________________________________________________

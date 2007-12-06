@@ -8,6 +8,7 @@ colin	mode 1
 
 root file ../../PFBlockProducer/test/blocks_famos.root
 
+
 // filter ------------------------------------------------------------
 
 // filter   nparticles  1
@@ -47,13 +48,34 @@ root stdTracks_branch      recoTracks_gsWithMaterialTracks__PROD.obj
 
 root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__PROD.obj
 
-// display parameters ----------------------------------------------------
 
+// jet branches:
+
+// PFIC5Jets
+root pfjet_branch	recoPFJets_iterativeCone5PFJets__PROD.obj
+
+// CaloIC5Jets
+root calojet_branch	recoCaloJets_iterativeCone5CaloJets__PROD.obj
+
+// GenParticleCandidates
+root genParticleBaseCandidates_branch	recoCandidatesOwned_genParticlesAllStableNoNuBSM__PROD.obj
+
+// CaloTowersCandidates
+root caloTowerBaseCandidates_branch  recoCandidatesOwned_caloTowers__PROD.obj
+
+// Particle Flow Candidates
+root ParticleFlowCandbranch    recoCandidatesOwned_particleFlowJetCandidates__PROD.obj
+
+
+//---------------
+
+
+
+// display parameters ----------------------------------------------------
 
 // display clusters of type 2 (particle flow clusters)
 display  cluster_algos 2
 display  cluster_lines 0
-
 
 // size of the eta/phi canvas 
 display  viewsize_etaphi 400 200
@@ -69,6 +91,7 @@ display  color_clusters		1
 // display/zoom_factor roughly gives the size of the view around this rechit
 // in number of ecal cells	
 display  zoom_factor		5
+
 
 //display reconstructed hits  yes/no
 display rechits                 1
@@ -226,6 +249,10 @@ particle_flow multilink 1
 particle_flow   nsigma_ECAL    3
 particle_flow   nsigma_HCAL    1.7
 
+//Alogrithm to recover the clusters 
+//that belong to charged hadrons
+particle_flow   clusterRecovery 1 
+
 particle_flow   mergedPhotons_mvaCut 		0.5
 particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt
 particle_flow   mergedPhotons_PSCut  0.001   
@@ -252,22 +279,48 @@ print true_particles 1
 print MC_truth 0
 // print reconstructed particles yes/no
 print PFCandidates  1
+// print jets yes/no
+print jets 1
+
 
 // verbosity 
 print verbosity 0
 
-//Jet Algorithm options ---------------------------------------------------
-//making jets from PF objects yes/no
-jets dojets 1
+//tau benchmark options ---------------------------------------------------
 
-//cone size
-jets cone_angle 0.5
-
-//Et threshold
-jets seed_et 0.4
-
-//distance threshold for merging jets
-jets cone_merge 100
+tau_benchmark	on/off	0
 
 //debug yes/no
-jets jets_debug 0	
+tau_benchmark debug 1	
+	
+//cone size
+tau_benchmark cone_angle 0.5
+
+//Et threshold
+tau_benchmark seed_et 0.4
+
+//distance threshold for merging jets
+tau_benchmark cone_merge 100
+
+
+// FWLITE CMSSW Jet Algorithm options --------------------------------------
+
+jets 	on/off 1
+jets 	debug 0
+
+// Jet Algo : 1= ICone; 2=MCone; 3=FastJet
+jets  Algo 3
+//Eta cuts
+jets  EtInputCut 0.2
+jets  EInputCut 0.
+// IC parameter
+jets  seedThreshold 1.0
+jets  coneRadius 0.5
+// MidPointCone
+jets  coneAreaFraction 2
+jets  maxPairSize 2
+jets  maxIterations 100
+jets  overlapThreshold 0.75
+//FastJet
+jets  ptMin 10.
+jets  rParam 1.0

@@ -595,7 +595,7 @@ void DisplayManager::createGTrack( reco::PFRecTrack &tr,
                                    int linestyle) 
 {
       
-  bool inside = false; 
+  //   bool inside = false; 
   //TCutG* cutg = (TCutG*) gROOT->FindObject("CUTG");
   
   for (int viewType=0;viewType<4;++viewType) {
@@ -1019,7 +1019,7 @@ void DisplayManager::loadGPFBlocks()
 {
   int size = em_->pfBlocks_->size();
   for (int ibl=0;ibl<size;ibl++) {
-    int elemNb=((*(em_->pfBlocks_))[ibl].elements()).size();
+    //     int elemNb=((*(em_->pfBlocks_))[ibl].elements()).size();
     //std::cout<<"block "<<ibl<<":"<<elemNb<<" elements"<<std::flush<<std::endl;
     edm::OwnVector< reco::PFBlockElement >::const_iterator iter;
     for( iter =((*(em_->pfBlocks_))[ibl].elements()).begin();

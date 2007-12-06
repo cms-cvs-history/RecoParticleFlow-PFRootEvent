@@ -25,6 +25,8 @@
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h"
 
+#include "DataFormats/Candidate/interface/CandidateFwd.h"
+
 #include "DataFormats/EgammaReco/interface/BasicCluster.h"
 #include "DataFormats/CaloTowers/interface/CaloTower.h"
 #include "DataFormats/CaloTowers/interface/CaloTowerFwd.h"
@@ -34,6 +36,11 @@
 #include "RecoParticleFlow/PFAlgo/interface/PFAlgo.h"
 
 #include "RecoParticleFlow/PFRootEvent/interface/PFJetAlgorithm.h"
+
+#include "RecoParticleFlow/PFRootEvent/interface/FWLiteJetProducer.h"
+#include "DataFormats/JetReco/interface/BasicJetfwd.h"
+#include "DataFormats/JetReco/interface/PFJetfwd.h"
+#include "DataFormats/JetReco/interface/CaloJetfwd.h"
 
 #include <TObject.h>
 #include "TEllipse.h"
@@ -195,6 +202,28 @@ class PFRootEventManager {
   /// performs clustering 
   void clustering();
 
+  /// performs particle flow
+  void particleFlow();
+
+  /// reconstruct gen jets
+  void reconstructGenJets();   
+
+  /// reconstruct calo jets
+  void reconstructCaloJets();   
+  
+  /// reconstruct pf jets
+  void reconstructPFJets();
+  
+
+  /// used by the reconstruct*Jets functions
+  void reconstructFWLiteJets(const reco::CandidateCollection& Candidates,
+			     std::vector<ProtoJet>& output);
+
+
+  /// performs the tau benchmark 
+  double tauBenchmark( const reco::PFCandidateCollection& candidates);
+
+
   /// fills OutEvent with clusters
   void fillOutEventWithClusters(const reco::PFClusterCollection& clusters);
 
@@ -210,12 +239,6 @@ class PFRootEventManager {
   /// fills outEvent with blocks
   void fillOutEventWithBlocks(const reco::PFBlockCollection& blocks);
   
-  /// performs particle flow
-  void particleFlow();
-
-  //performs the jets reconstructions
-  double makeJets( const reco::PFCandidateCollection& candidates);
-
 
 
   /// print information
@@ -273,7 +296,7 @@ class PFRootEventManager {
   const  reco::PFBlockCollection& blocks() const { return *pfBlocks_; }
 
   
-  int         eventNumber()             {return iEvent_;}
+  int eventNumber()   {return iEvent_;}
 
   /*   std::vector<int> getViewSizeEtaPhi() {return viewSizeEtaPhi_;} */
   /*   std::vector<int> getViewSize()       {return viewSize_;} */
@@ -348,6 +371,12 @@ class PFRootEventManager {
   /// MCtruth branch
   TBranch*   MCTruthBranch_;          
 
+  /// Gen Particles base Candidates branch
+  TBranch*   genParticleBaseCandidatesBranch_;
+
+  /// Calo Tower base Candidates branch
+  TBranch*   caloTowerBaseCandidatesBranch_;
+
   /// rechits ECAL
   reco::PFRecHitCollection rechitsECAL_;
 
@@ -389,6 +418,21 @@ class PFRootEventManager {
   /// reconstructed pfCandidates 
   std::auto_ptr< reco::PFCandidateCollection > pfCandidates_;
 
+  /// gen particle base candidates (input for gen jets)
+  reco::CandidateCollection genParticleBaseCandidates_;
+
+  /// calo tower base candidates (input for calo jets)
+  reco::CandidateCollection caloTowerBaseCandidates_;
+
+  /// PF Jets
+  reco::PFJetCollection pfJets_;
+
+  /// gen Jets
+  reco::GenJetCollection genJets_;
+
+  /// calo Jets
+  std::vector<ProtoJet> caloJets_;
+
   /// input file
   TFile*     file_; 
 
@@ -423,10 +467,12 @@ class PFRootEventManager {
   /// other particle flow algorithm, for comparisons
   /*   PFAlgo          pfAlgoOther_; */
 
-  /// jet algorithm 
+  /// native jet algorithm 
   /// \todo make concrete
   PFJetAlgorithm  jetAlgo_;
   
+  /// wrapper to official jet algorithms
+  FWLiteJetProducer jetMaker_;
 
 
   //----------------- print flags --------------------------------
@@ -443,6 +489,9 @@ class PFRootEventManager {
   /// print PFCandidates yes/no
   bool                     printPFCandidates_; 
 
+  /// print PFJets yes/no
+  bool                     printPFJets_;
+  
   /// print true particles yes/no
   bool                     printTrueParticles_;
 
@@ -460,15 +509,26 @@ class PFRootEventManager {
 
   std::vector<int>         filterTaus_;
 
-  //----------------- clustering parameters ---------------------
+  // --------
 
   /// clustering on/off. If on, rechits from tree are used to form 
   /// clusters. If off, clusters from tree are used.
-  bool   clusteringIsOn_;
+  bool   doClustering_;
 
-  /// clustering mode. 
-  // int    clusteringMode_;
+  /// particle flow on/off
+  bool   doParticleFlow_;
 
+  /// jets on/off
+  bool   doJets_;
+  
+  /// jet algo type
+  int    jetAlgoType_;
+
+  /// tau benchmark on/off
+  bool   doTauBenchmark_;
+
+  /// tau benchmark debug
+  bool   tauBenchmarkDebug_;
 
   /// debug printouts for this PFRootEventManager on/off
   bool   debug_;  
@@ -476,12 +536,6 @@ class PFRootEventManager {
   /// find rechit neighbours ? 
   bool   findRecHitNeighbours_;
 
-
-  // jets parameters             ----------------------------------------
-
-  /// jet reconstruction (for taus) on/off 
-  /// \todo make jet reconstruction more general.
-  bool   doJets_;
   
   /// debug printouts for jet algo on/off
   bool   jetsDebug_;
