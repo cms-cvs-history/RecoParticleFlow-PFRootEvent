@@ -46,12 +46,9 @@
 #include <stdlib.h>
 
 using namespace std;
+using namespace boost;
 
-
-PFRootEventManager::PFRootEventManager() {
-  //   energyCalibration_ = new PFEnergyCalibration();
-  //   energyResolution_ = new PFEnergyResolution();
-}
+PFRootEventManager::PFRootEventManager() {}
 
 
 
@@ -80,6 +77,11 @@ PFRootEventManager::PFRootEventManager(const char* file)
                ,500,-50,50);
 
   readOptions(file, true, true);
+ 
+       
+  //   maxERecHitEcal_ = -1;
+  //   maxERecHitHcal_ = -1;
+
 }
 
 void PFRootEventManager::reset() { 
@@ -432,18 +434,38 @@ void PFRootEventManager::readOptions(const char* file,
   options_->GetOpt("PFAlgo", "debug",  AlgoDebug);  
   pfAlgo_.setDebug( AlgoDebug );
 
-  double eCalibP0 = 0;
-  double eCalibP1 = 1;
-  vector<double> ecalib;
-  options_->GetOpt("particle_flow", "ecalib", ecalib);
-  if(ecalib.size() == 2) {
-    eCalibP0 = ecalib[0];
-    eCalibP1 = ecalib[1]; 
-  }
-  else {
-    cerr<<"PFRootEventManager::readOptions : WARNING : "
-        <<"wrong calibration coefficients for ECAL"<<endl;
-  }
+  // read PFCluster calibration parameters
+  
+
+  double e_slope = 1;
+  options_->GetOpt("particle_flow","calib_ECAL_slope", e_slope);
+  double e_offset = 0;
+  options_->GetOpt("particle_flow","calib_ECAL_offset", e_offset);
+  
+  double eh_eslope = 1.05;
+  options_->GetOpt("particle_flow","calib_ECAL_HCAL_eslope", eh_eslope);
+  double eh_hslope = 1.06;
+  options_->GetOpt("particle_flow","calib_ECAL_HCAL_hslope", eh_hslope);
+  double eh_offset = 6.11;
+  options_->GetOpt("particle_flow","calib_ECAL_HCAL_offset", eh_offset);
+  
+  double h_slope = 2.17;
+  options_->GetOpt("particle_flow","calib_HCAL_slope", h_slope);
+  double h_offset = 1.73;
+  options_->GetOpt("particle_flow","calib_HCAL_offset", h_offset);
+  double h_damping = 2.49;
+  options_->GetOpt("particle_flow","calib_HCAL_damping", h_damping);
+  
+
+  shared_ptr<PFEnergyCalibration> 
+    calibration( new PFEnergyCalibration( e_slope,
+					  e_offset, 
+					  eh_eslope,
+					  eh_hslope,
+					  eh_offset,
+					  h_slope,
+					  h_offset,
+					  h_damping ) );
 
 
   double nSigmaECAL = 99999;
@@ -470,7 +492,8 @@ void PFRootEventManager::readOptions(const char* file,
   try {
 //     pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
 //                            PSCut, mvaCut, mvaWeightFile.c_str() );
-    pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
+    pfAlgo_.setParameters( nSigmaECAL, nSigmaHCAL, 
+			   calibration,
 			   clusterRecoveryAlgo,
                            PSCut, mvaCut, mvaWeightFile.c_str() );
   }
@@ -950,15 +973,12 @@ bool PFRootEventManager::processEntry(int entry) {
 
   
   
-  //   if( deltaEt>0.1 && deltaEt<0.2 ) {
-  //     cout<<deltaEt<<endl;
-  //     return true;
-  //   }  
-  //   else return false;
-  //   //  if(trueParticles_.size() != 1 ) return false;
-  //   else 
-  //     return false;
-  
+//   if( deltaEt>0.4 ) {
+//     cout<<deltaEt<<endl;
+//     return true;
+//   }  
+//   else return false;
+
   return goodevent;
 
 }

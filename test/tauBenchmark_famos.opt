@@ -288,10 +288,10 @@ print verbosity 0
 
 //tau benchmark options ---------------------------------------------------
 
-tau_benchmark	on/off	0
+tau_benchmark	on/off	1
 
 //debug yes/no
-tau_benchmark debug 1	
+tau_benchmark debug 0
 	
 //cone size
 tau_benchmark cone_angle 0.5
@@ -305,7 +305,7 @@ tau_benchmark cone_merge 100
 
 // FWLITE CMSSW Jet Algorithm options --------------------------------------
 
-jets 	on/off 1
+jets 	on/off 0
 jets 	debug 0
 
 // Jet Algo : 1= ICone; 2=MCone; 3=FastJet
