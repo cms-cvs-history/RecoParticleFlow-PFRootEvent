@@ -1,12 +1,13 @@
 
-root outfile tauBenchmark.root
-root outtree 1
+//root outfile tauBenchmark.root
+//root outtree 1
 
 
-colin	mode 1
+//colin	mode 1
 
 
-root file ../../PFBlockProducer/test/blocks_famos.root
+root file /afs/cern.ch/user/d/dellaneg/public/taus50_famos.root
+//root file /afs/cern.ch/user/d/dellaneg/public/jets380-470_famos.root
 
 
 // filter ------------------------------------------------------------
@@ -280,11 +281,11 @@ print MC_truth 0
 // print reconstructed particles yes/no
 print PFCandidates  1
 // print jets yes/no
-print jets 1
+print jets 0
 
 
 // verbosity 
-print verbosity 0
+print verbosity 1
 
 //tau benchmark options ---------------------------------------------------
 
@@ -301,6 +302,22 @@ tau_benchmark seed_et 0.4
 
 //distance threshold for merging jets
 tau_benchmark cone_merge 100
+
+//PFJet benchmark options ---------------------------------------------------
+
+pfjet_benchmark	on/off	1
+
+//debug yes/no
+pfjet_benchmark debug 1	
+	
+//pfjet benchmark outputfile
+//pfjet_benchmark outjetfile pfjetBenchmark.root
+
+//PlotagainstReco  yes/no
+pfjet_benchmark PlotAgainstReco 0
+
+//minimum deltaR distance for matching pfjets/genjets
+pfjet_benchmark deltaRMax 0.1
 
 
 // FWLITE CMSSW Jet Algorithm options --------------------------------------

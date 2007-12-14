@@ -36,6 +36,7 @@
 #include "RecoParticleFlow/PFAlgo/interface/PFAlgo.h"
 
 #include "RecoParticleFlow/PFRootEvent/interface/PFJetAlgorithm.h"
+#include "RecoParticleFlow/Benchmark/interface/PFJetBenchmark.h"
 
 #include "RecoParticleFlow/PFRootEvent/interface/FWLiteJetProducer.h"
 #include "DataFormats/JetReco/interface/BasicJetfwd.h"
@@ -465,8 +466,8 @@ class PFRootEventManager {
   /// particle flow algorithm
   PFAlgo          pfAlgo_;
 
-  /// other particle flow algorithm, for comparisons
-  /*   PFAlgo          pfAlgoOther_; */
+  /// PFJet Benchmark
+  PFJetBenchmark PFJetBenchmark_;
 
   /// native jet algorithm 
   /// \todo make concrete
@@ -530,6 +531,9 @@ class PFRootEventManager {
 
   /// tau benchmark debug
   bool   tauBenchmarkDebug_;
+  
+  /// PFJet benchmark on/off
+  bool   doPFJetBenchmark_;
 
   /// debug printouts for this PFRootEventManager on/off
   bool   debug_;  

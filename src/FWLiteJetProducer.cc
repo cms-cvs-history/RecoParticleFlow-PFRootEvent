@@ -18,7 +18,7 @@ using namespace reco;
 using namespace std;
 using namespace JetReco;
 
-//-----------------------------------------------------------
+//--------------test Mac/afs------------------
 
 FWLiteJetProducer::FWLiteJetProducer(){ 
 

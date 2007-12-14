@@ -71,10 +71,10 @@ PFRootEventManager::PFRootEventManager(const char* file)
   //   iEvent_=0;
   h_deltaETvisible_MCEHT_ 
     = new TH1F("h_deltaETvisible_MCEHT","Jet Et difference CaloTowers-MC"
-               ,500,-50,50);
+	       ,100,-100,100);
   h_deltaETvisible_MCPF_  
     = new TH1F("h_deltaETvisible_MCPF" ,"Jet Et difference ParticleFlow-MC"
-               ,500,-50,50);
+	       ,100,-100,100);
 
   readOptions(file, true, true);
  
@@ -149,6 +149,29 @@ void PFRootEventManager::readOptions(const char* file,
       // cout<<"don't do tree"<<endl;
     }
   }
+// PFJet benchmark options and output jetfile to be open before input file!!!--
+
+  doPFJetBenchmark_ = false;
+  options_->GetOpt("pfjet_benchmark", "on/off", doPFJetBenchmark_);
+  
+  if (doPFJetBenchmark_) {
+    string outjetfilename;
+    options_->GetOpt("pfjet_benchmark", "outjetfile", outjetfilename);
+	
+	bool pfjBenchmarkDebug;
+    options_->GetOpt("pfjet_benchmark", "debug", pfjBenchmarkDebug);
+    
+    bool PlotAgainstReco;
+    options_->GetOpt("pfjet_benchmark", "PlotAgainstReco", PlotAgainstReco);
+    
+    double deltaRMax=0.1;
+	options_->GetOpt("pfjet_benchmark", "deltaRMax", deltaRMax);
+    PFJetBenchmark_.setup(
+	            outjetfilename, 
+				pfjBenchmarkDebug,
+				PlotAgainstReco,
+				deltaRMax);
+	}
 
 
   // input root file --------------------------------------------
@@ -601,6 +624,7 @@ void PFRootEventManager::readOptions(const char* file,
   }
 
 
+
   // print flags -------------
 
   printRecHits_ = false;
@@ -616,7 +640,7 @@ void PFRootEventManager::readOptions(const char* file,
   options_->GetOpt("print", "PFCandidates", printPFCandidates_ );
   
   printPFJets_ = true;
-  options_->GetOpt("print", "PFJets", printPFJets_ );
+  options_->GetOpt("print", "jets", printPFJets_ );
 
   printTrueParticles_ = false;
   options_->GetOpt("print", "true_particles", printTrueParticles_ );
@@ -893,6 +917,7 @@ PFRootEventManager::~PFRootEventManager() {
 
 
 void PFRootEventManager::write() {
+if(doPFJetBenchmark_) PFJetBenchmark_.write();
   if(!outFile_) return;
   else {
     outFile_->cd(); 
@@ -952,33 +977,50 @@ bool PFRootEventManager::processEntry(int entry) {
     reconstructCaloJets();
     reconstructPFJets();
   }
-
+  
   // call print() in verbose mode
   if( verbosity_ == VERBOSE ) print();
+  
+  // evaluate PFJet Benchmark 
+  
+	if(doPFJetBenchmark_) { // start PFJet Benchmark
+	double deltaEt=0;
+	double deltaChargedEnergy = 0.;
+	double deltaEmEnergy = 0.;
+	PFJetBenchmark_.process(pfJets_, genJets_);
+	deltaEt = PFJetBenchmark_.deltaEtMax_;
+	deltaChargedEnergy = PFJetBenchmark_.deltaChargedEnergyMax_;
+	deltaEmEnergy = PFJetBenchmark_.deltaEmEnergyMax_;
+	if( verbosity_ == VERBOSE ){ //start debug print
+	cout << " =====================PFJetBenchmark =================" << endl;
+	cout<<"delta Et max "<<deltaEt
+	    <<" deltaChargedEnergy Max " << deltaChargedEnergy
+	    << " deltaEmEnergy Max "<< deltaEmEnergy << endl;
+	 } // end debug print
+	//if (deltaEmEnergy>10.) return true;
+	//else return false;
+	}// end PFJet Benchmark
+  
+  // evaluate tau Benchmark 
+  
+	if( goodevent && doTauBenchmark_) { // start tau Benchmark
+	double deltaEt = 0.;
+	deltaEt  = tauBenchmark( *pfCandidates_ ); 
+	if( verbosity_ == VERBOSE ) cout<<"delta E_t ="<<deltaEt <<endl;
+  //      cout<<"delta E_t ="<<deltaEt<<" delta E_t Other ="<<deltaEt1<<endl;
 
-  double deltaEt=0;
-  // double deltaEt1=0;
+  //   if( deltaEt>0.4 ) {
+  //     cout<<deltaEt<<endl;
+  //     return true;
+  //   }  
+  //   else return false;
 
-  if( goodevent && doTauBenchmark_) { 
-    deltaEt  = tauBenchmark( *pfCandidates_ ); 
-  }
+  
+  } // end tau Benchmark
   
   if(goodevent && outTree_) 
     outTree_->Fill();
   
- 
-  if( verbosity_ == VERBOSE )
-    cout<<"delta E_t ="<<deltaEt<<endl;
-  //      cout<<"delta E_t ="<<deltaEt<<" delta E_t Other ="<<deltaEt1<<endl;
-
-  
-  
-//   if( deltaEt>0.4 ) {
-//     cout<<deltaEt<<endl;
-//     return true;
-//   }  
-//   else return false;
-
   return goodevent;
 
 }
@@ -2101,7 +2143,7 @@ void  PFRootEventManager::print(ostream& out) const {
     out<<"Particle Flow Candidates =================================="<<endl;
     out<<pfAlgo_<<endl;
     for(unsigned i=0; i<pfCandidates_->size(); i++) {
-      out<<(*pfCandidates_)[i]<<endl;
+      out<<i<<" " <<(*pfCandidates_)[i]<<endl;
     }    
     out<<endl;
   }
@@ -2109,13 +2151,13 @@ void  PFRootEventManager::print(ostream& out) const {
     out<<"Jets  ====================================================="<<endl;
     out<<"Particle Flow: "<<endl;
     for(unsigned i=0; i<pfJets_.size(); i++) {      
-      out<<"pt = "<<pfJets_[i].pt()<<endl;
+      out<<i<<pfJets_[i].print()<<endl;
     }    
     out<<endl;
     out<<"Generated: "<<endl;
     for(unsigned i=0; i<genJets_.size(); i++) {      
-      out<<"pt = "<<genJets_[i].pt()
-	 <<" invisible energy = "<<genJets_[i].invisibleEnergy()<<endl;
+      out<<i<<genJets_[i].print()<<endl;
+	// <<" invisible energy = "<<genJets_[i].invisibleEnergy()<<endl;
     }        
     out<<endl;
     out<<"Calo: "<<endl;
