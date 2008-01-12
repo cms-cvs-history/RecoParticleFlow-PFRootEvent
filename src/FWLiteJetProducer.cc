@@ -34,6 +34,7 @@ FWLiteJetProducer::FWLiteJetProducer(){
   rparam_=1.;
   algoIC_=0;
   algoMC_=0;
+  debug_=0;
 }
 
 
@@ -91,7 +92,8 @@ void FWLiteJetProducer::applyCuts(const reco::CandidateCollection& Candidates, J
 
     if ((mEtInputCut_ <= 0 || constituent->et() > mEtInputCut_) &&
         (mEInputCut_ <= 0 || constituent->energy() > mEInputCut_)) {                    
-      input->push_back (InputItem(CandidateHandle,i));                  
+      input->push_back (InputItem(CandidateHandle,i));  
+     if (debug_) std::cout<<" FWLiteJetProducer: Jet Candidate ET " << constituent->et() << std::endl;	                
     }
   }
 }
