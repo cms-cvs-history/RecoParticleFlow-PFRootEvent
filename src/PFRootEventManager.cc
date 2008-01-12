@@ -591,8 +591,13 @@ void PFRootEventManager::readOptions(const char* file,
   jetMaker_.setOverlapThreshold(overlapThreshold) ;
   jetMaker_.setPtMin (ptMin);
   jetMaker_.setRParam (rparam);
+  jetMaker_.setDebug(jetsDebug_);
   jetMaker_.updateParameter();
-  
+  cout <<"Opt: jetsDebug " << jetsDebug_  <<endl; 
+  cout <<"Opt: algoType " << jetAlgoType_  <<endl; 
+  cout <<"----------------------------------" << endl;
+
+
   // tau benchmark options ---------------------------------
 
   doTauBenchmark_ = false;
@@ -867,10 +872,39 @@ void PFRootEventManager::connect( const char* infilename ) {
     }  
   }
 
+      
+  string genJetBranchName; 
+  options_->GetOpt("root","genJetBranchName", genJetBranchName);
+  if(!genJetBranchName.empty() ) {
+    genJetBranch_= tree_->GetBranch(genJetBranchName.c_str()); 
+    if(!genJetBranch_) {
+      cerr<<"PFRootEventManager::ReadOptions :genJetBranch_ not found : "
+          <<genJetBranchName<< endl;
+    }
+  }
   
+  string recCaloBranchName;
+  options_->GetOpt("root","recCaloJetBranchName", recCaloBranchName);
+  if(!recCaloBranchName.empty() ) {
+    recCaloBranch_= tree_->GetBranch(recCaloBranchName.c_str()); 
+    if(!recCaloBranch_) {
+      cerr<<"PFRootEventManager::ReadOptions :recCaloBranch_ not found : "
+          <<recCaloBranchName<< endl;
+    }
+  }
+  string recPFBranchName; 
+  options_->GetOpt("root","recPFJetBranchName", recPFBranchName);
+  if(!recPFBranchName.empty() ) {
+    recPFBranch_= tree_->GetBranch(recPFBranchName.c_str()); 
+    if(!recPFBranch_) {
+      cerr<<"PFRootEventManager::ReadOptions :recPFBranch_ not found : "
+          <<recPFBranchName<< endl;
+    }
+  }
+ setAddresses();
 
-  setAddresses();
-} 
+}
+
 
 
 
@@ -895,6 +929,9 @@ void PFRootEventManager::setAddresses() {
   if( caloTowerBaseCandidatesBranch_ ) {
     caloTowerBaseCandidatesBranch_->SetAddress(&caloTowerBaseCandidates_);
   }
+  if (genJetBranch_) genJetBranch_->SetAddress(&genJetsCMSSW_);
+  if (recCaloBranch_) recCaloBranch_->SetAddress(&caloJetsCMSSW_);
+  if (recPFBranch_) recPFBranch_->SetAddress(&pfJetsCMSSW_); 
 }
 
 
@@ -1080,7 +1117,15 @@ bool PFRootEventManager::readFromSimulation(int entry) {
   if(caloTowerBaseCandidatesBranch_) {
     caloTowerBaseCandidatesBranch_->GetEntry(entry);
   }
-  
+  if(genJetBranch_) {
+    genJetBranch_->GetEntry(entry);
+  }
+  if(recCaloBranch_) {
+    recCaloBranch_->GetEntry(entry);
+  }
+  if(recPFBranch_) {
+    recPFBranch_->GetEntry(entry);
+    }
 
   tree_->GetEntry( entry, 0 );
 
@@ -2535,3 +2580,20 @@ PFRootEventManager::closestParticle( reco::PFTrajectoryPoint::LayerType layer,
 
 
 
+//-----------------------------------------------------------
+void 
+PFRootEventManager::readCMSSWJets() {
+
+  cout<<"CMSSW Gen jets : size = " <<  genJetsCMSSW_.size() << endl;
+  for ( unsigned i = 0; i < genJetsCMSSW_.size(); i++) {
+     cout<<"Gen jet Et : " <<  genJetsCMSSW_[i].et() << endl;
+  }
+  cout<<"CMSSW PF jets : size = " <<  pfJetsCMSSW_.size() << endl;
+  for ( unsigned i = 0; i < pfJetsCMSSW_.size(); i++) {
+     cout<<"PF jet Et : " <<  pfJetsCMSSW_[i].et() << endl;
+  }
+  cout<<"CMSSW Calo jets : size = " <<  caloJetsCMSSW_.size() << endl;
+  for ( unsigned i = 0; i < caloJetsCMSSW_.size(); i++) {
+     cout<<"Calo jet Et : " << caloJetsCMSSW_[i].et() << endl;
+  }
+}

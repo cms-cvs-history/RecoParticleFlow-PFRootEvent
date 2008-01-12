@@ -303,7 +303,7 @@ class PFRootEventManager {
   /*   std::vector<int> getViewSizeEtaPhi() {return viewSizeEtaPhi_;} */
   /*   std::vector<int> getViewSize()       {return viewSize_;} */
   
-  
+  void readCMSSWJets();
   
   
   
@@ -378,7 +378,18 @@ class PFRootEventManager {
 
   /// Calo Tower base Candidates branch
   TBranch*   caloTowerBaseCandidatesBranch_;
+  
+  ///CMSSW Gen Jet branch
+  TBranch*   genJetBranch_;
+  
+  ///CMSSW Calo Jet branch
+  TBranch*   recCaloBranch_;
+  
+  ///CMSSW  PF Jet branch
+  TBranch*   recPFBranch_;
 
+  
+  
   /// rechits ECAL
   reco::PFRecHitCollection rechitsECAL_;
 
@@ -435,6 +446,14 @@ class PFRootEventManager {
   /// calo Jets
   std::vector<ProtoJet> caloJets_;
 
+  /// CMSSW PF Jets
+  reco::PFJetCollection pfJetsCMSSW_;
+
+  /// CMSSW  gen Jets
+  reco::GenJetCollection genJetsCMSSW_;
+
+  /// calo Jets
+  std::vector<CaloJet> caloJetsCMSSW_;
   /// input file
   TFile*     file_; 
 
