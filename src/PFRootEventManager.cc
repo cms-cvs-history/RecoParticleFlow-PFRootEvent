@@ -2422,8 +2422,8 @@ void  PFRootEventManager::printRecHit(const reco::PFRecHit& rh,
 
   if(!out) return;
   
-  double eta = rh.positionREP().Eta();
-  double phi = rh.positionREP().Phi();
+  double eta = rh.positionXYZ().Eta();
+  double phi = rh.positionXYZ().Phi();
 
   
   TCutG* cutg = (TCutG*) gROOT->FindObject("CUTG");
@@ -2436,8 +2436,8 @@ void  PFRootEventManager::printCluster(const reco::PFCluster& cluster,
   
   if(!out) return;
 
-  double eta = cluster.positionREP().Eta();
-  double phi = cluster.positionREP().Phi();
+  double eta = cluster.positionXYZ().Eta();
+  double phi = cluster.positionXYZ().Phi();
 
   TCutG* cutg = (TCutG*) gROOT->FindObject("CUTG");
   if( !cutg || cutg->IsInside( eta, phi ) ) 
@@ -2479,8 +2479,8 @@ PFRootEventManager::fillRecHitMask( vector<bool>& mask,
   mask.reserve( rechits.size() );
   for(unsigned i=0; i<rechits.size(); i++) {
     
-    double eta = rechits[i].positionREP().Eta();
-    double phi = rechits[i].positionREP().Phi();
+    double eta = rechits[i].positionXYZ().Eta();
+    double phi = rechits[i].positionXYZ().Phi();
 
     if( cutg->IsInside( eta, phi ) )
       mask.push_back( true );
@@ -2501,8 +2501,8 @@ PFRootEventManager::fillClusterMask(vector<bool>& mask,
   mask.reserve( clusters.size() );
   for(unsigned i=0; i<clusters.size(); i++) {
     
-    double eta = clusters[i].positionREP().Eta();
-    double phi = clusters[i].positionREP().Phi();
+    double eta = clusters[i].positionXYZ().Eta();
+    double phi = clusters[i].positionXYZ().Phi();
 
     if( cutg->IsInside( eta, phi ) )
       mask.push_back( true );

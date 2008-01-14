@@ -281,11 +281,11 @@ print MC_truth 0
 // print reconstructed particles yes/no
 print PFCandidates  1
 // print jets yes/no
-print jets 0
+print jets 1
 
 
 // verbosity 
-print verbosity 0
+print verbosity 1
 
 //tau benchmark options ---------------------------------------------------
 

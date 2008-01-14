@@ -412,8 +412,8 @@ void DisplayManager::createGRecHit(reco::PFRecHit& rh,int ident, double maxe, do
           layer == PFLayer::HCAL_ENDCAP ) ) {
       continue;
     }
-    double rheta = rh.positionREP().Eta();
-    double rhphi = rh.positionREP().Phi();
+    double rheta = rh.positionXYZ().Eta();
+    double rhphi = rh.positionXYZ().Phi();
 
     double sign = 1.;
     if (cos(phi0 - rhphi) < 0.) sign = -1.;
@@ -438,13 +438,17 @@ void DisplayManager::createGRecHit(reco::PFRecHit& rh,int ident, double maxe, do
     double propfact = 0.95; // so that the cells don't overlap ? 
     double ampl=0;
     if(me>0) ampl = (log(rh.energy() + 1.)/log(me + 1.));
-     
+    
+    // cout<<"rechit "<<rheta<<" "<<rhphi<<endl;
     for ( unsigned jc=0; jc<4; ++jc ) { 
-      // cout<<"corner "<<jc<<" "<<corners[jc].Eta()<<" "<<corners[jc].Phi()<<endl;
-      phiSize[jc] = rhphi-corners[jc].Phi();
-      etaSize[jc] = rheta-corners[jc].Eta();
+
       if ( phiSize[jc] > 1. ) phiSize[jc] -= 2.*TMath::Pi();  // this is strange...
       if ( phiSize[jc] < -1. ) phiSize[jc]+= 2.*TMath::Pi();
+      // cout<<"\tcorner "<<jc<<" "<<corners[jc].Eta()<<" "<<corners[jc].Phi()
+      // 	  <<" "<<phiSize[jc]<<" "<<etaSize[jc]<<endl;
+ 
+      phiSize[jc] = rhphi-corners[jc].Phi();
+      etaSize[jc] = rheta-corners[jc].Eta();
       phiSize[jc] *= propfact;
       etaSize[jc] *= propfact;
 
@@ -1269,8 +1273,8 @@ void DisplayManager::lookForMaxRecHit(bool ecal)
   double etagate = zoomFactor_ * etasize;
   double phigate = zoomFactor_ * phisize;
   
-  double eta =  maxrh->positionREP().Eta();
-  double phi =  maxrh->positionREP().Phi();
+  double eta =  maxrh->positionXYZ().Eta();
+  double phi =  maxrh->positionXYZ().Phi();
   
   if(displayHist_[EPE]) {
     displayHist_[EPE]->GetXaxis()->SetRangeUser(eta-etagate, eta+etagate);
