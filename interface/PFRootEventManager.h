@@ -514,10 +514,10 @@ class PFRootEventManager {
   bool                     printPFJets_;
   
   /// print true particles yes/no
-  bool                     printTrueParticles_;
+  bool                     printSimParticles_;
 
   /// print MC truth  yes/no
-  bool                     printMCtruth_;
+  bool                     printGenParticles_;
 
   /// verbosity
   int                      verbosity_;

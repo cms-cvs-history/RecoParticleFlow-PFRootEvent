@@ -646,12 +646,12 @@ void PFRootEventManager::readOptions(const char* file,
   
   printPFJets_ = true;
   options_->GetOpt("print", "jets", printPFJets_ );
+ 
+  printSimParticles_ = true;
+  options_->GetOpt("print", "simParticles", printSimParticles_ );
 
-  printTrueParticles_ = false;
-  options_->GetOpt("print", "true_particles", printTrueParticles_ );
-  
-  printMCtruth_ = true;
-  options_->GetOpt("print", "MC_truth", printMCtruth_ );
+  printGenParticles_ = true;
+  options_->GetOpt("print", "GenParticles", printGenParticles_ );
   
   verbosity_ = VERBOSE;
   options_->GetOpt("print", "verbosity", verbosity_ );
@@ -2211,9 +2211,9 @@ void  PFRootEventManager::print(ostream& out) const {
     }        
     out<<endl;  
   }
+  if( printSimParticles_ ) {
+    out<<"Sim Particles  ==========================================="<<endl;
 
-  if( printTrueParticles_ ) {
-    out<<"True Particles  ==========================================="<<endl;
     for(unsigned i=0; i<trueParticles_.size(); i++) {
       if( trackInsideGCut( trueParticles_[i]) ) 
         out<<"\t"<<trueParticles_[i]<<endl;
@@ -2222,8 +2222,8 @@ void  PFRootEventManager::print(ostream& out) const {
   }
 
   
-  if ( printMCtruth_ ) { 
-    out<<"MC truth  ==========================================="<<endl;
+  if ( printGenParticles_ ) { 
+    out<<"GenParticles ==========================================="<<endl;
     printMCTruth(out);
   }
 }
@@ -2232,7 +2232,8 @@ void  PFRootEventManager::print(ostream& out) const {
 void
 PFRootEventManager::printMCTruth(std::ostream& out,
                                  int maxNLines) const {
-
+				 
+				 
   const HepMC::GenEvent* myGenEvent = MCTruth_.GetEvent();
   if(!myGenEvent) return;
 
