@@ -290,7 +290,6 @@ void DialogFrame::doDisplayGenParticle()
 void DialogFrame::doLookForGenParticle()
 {
  int num = particleTypeEntry_->GetIntNumber();
- std::cout<<"display GPFGenParticle nb "<<num<<std::flush<<std::endl;
  display_->lookForGenParticle((unsigned)num);
 }
 
@@ -344,6 +343,7 @@ void DialogFrame::doModifyPtThreshold(unsigned objNb,long pt)
 void DialogFrame::doNextEvent()
 {
   display_->displayNext();
+  doLookForGenParticle();  
   //   int eventNumber = evMan_->eventNumber();
   //TODOLIST:display new value of eventNumber in the futur reserve field
 } 
@@ -351,19 +351,18 @@ void DialogFrame::doNextEvent()
 void DialogFrame::doPreviousEvent()
 {
   display_->displayPrevious();
+  doLookForGenParticle();  
   //   int eventNumber = evMan_->eventNumber();
   //TODOLIST:display new value of eventNumber in the futur reserve field
 }
 //_________________________________________________________________________________
 void DialogFrame::doPrint()
 {
-  std::cout<<"click on Print Button"<<std::endl;
   evMan_->print();
 }
 //_________________________________________________________________________________
 void DialogFrame::doPrintGenParticles()
 {
-  std::cout<<"appel a printMCTruth"<<std::flush<<std::endl; 
   evMan_->printMCTruth(std::cout,maxLineEntry_->GetIntNumber());
 }
 //__________________________________________________________________________________
