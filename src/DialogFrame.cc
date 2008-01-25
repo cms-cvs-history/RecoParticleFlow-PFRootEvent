@@ -25,9 +25,6 @@ DialogFrame::DialogFrame(PFRootEventManager *evman,DisplayManager *dm,const TGWi
 {
   
   mainFrame_= new TGCompositeFrame(this,200,300,kVerticalFrame);
-  //char *action="win->modifyAttr()";
-  //accept_ = new TButton("accept",action,0.2,0.2,0.8,0.3);
-  //maxEvents_=evMan_->tree_->GetEntries();
   createCmdFrame();
   AddFrame(mainFrame_, new TGLayoutHints(kLHintsLeft | kLHintsExpandY));
   
@@ -85,8 +82,6 @@ void DialogFrame::createCanvasAttr()
  tt2->SetTextSize(.08);
  tt2->Draw();
  
- //TButton *accept_ = new TButton("modify",action1,0.2,0.2,0.8,0.3);
- //TButton *cancel_ = new TButton("cancel",action2,0.84,0.2,0.99,0.3);
  accept_->Draw();
  cancel_->Draw();
  attrView_->Update();
@@ -190,18 +185,6 @@ void DialogFrame::createCmdFrame()
   h2->AddFrame(sendPrintButton,new TGLayoutHints(kLHintsLeft|kLHintsCenterY,2,2,2,2));
   
   //printMCTruth stuff
- // TGHorizontalFrame *h3 = new TGHorizontalFrame(optionFrame,10,10);
- // printTrueButton_= new TGCheckButton(h3,"True");
- // printTrueButton_->SetState(kButtonUp);
- // maxLineEntry_= new TGNumberEntryField(h3,MAXL,30);
- // maxLineEntry_->Associate(this);
-//  maxLineEntry_->SetFormat((TGNumberFormat::EStyle)0);
- // maxLineEntry_->Resize(charw*3,maxLineEntry_->GetDefaultHeight());
-  
- // TGTextButton *printMCTruthButton = new TGTextButton(h3,"PrintGenParticles");
- // printMCTruthButton->Connect("Clicked()","DialogFrame",this,"doPrintGenParticles()");
-//----
-  //printMCTruth stuff
   TGGroupFrame *printGroup2 = new TGGroupFrame(optionFrame,"GenParticles",kHorizontalFrame);
   printGroup2->SetLayoutManager(new TGMatrixLayout(printGroup2, 2,3,3));
   TGTextButton *printGenPartButton = new TGTextButton(printGroup2,"  Print  ");
@@ -219,9 +202,7 @@ void DialogFrame::createCmdFrame()
   particleTypeEntry_->Associate(this);
   particleTypeEntry_->SetFormat((TGNumberFormat::EStyle)0);
   particleTypeEntry_->Resize(charw*3,particleTypeEntry_->GetDefaultHeight());
-  //TGTextButton *printEventButton = new TGTextButton(printGroup2,"DisplayGenParticle");
-  //printEventButton->Connect("Clicked()","DialogFrame",this,"doDisplayGenParticle()");
-  
+ 
   printGroup2->AddFrame(printGenPartButton,lo1);
   printGroup2->AddFrame(maxl,lo1),
   printGroup2->AddFrame(maxLineEntry_,lo1);
@@ -233,10 +214,6 @@ void DialogFrame::createCmdFrame()
 //
   optionFrame->AddFrame(h2,lo);
   optionFrame->AddFrame(printGroup2,lo1);
- //h3->AddFrame(printTrueButton_,lo1);
-  //h3->AddFrame(maxLineEntry_,lo1);
-  // h3->AddFrame(printMCTruthButton,lo1);
-  // optionFrame->AddFrame(h3,lo);
   h1Frame1->AddFrame(optionFrame,lo);
 
   
