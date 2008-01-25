@@ -430,7 +430,9 @@ class PFRootEventManager {
 
   /// reconstructed pfCandidates 
   std::auto_ptr< reco::PFCandidateCollection > pfCandidates_;
-
+  
+  /// has to be global to print out pfjets constituents
+  reco::CandidateCollection basePFCandidates_;
   /// gen particle base candidates (input for gen jets)
   reco::CandidateCollection genParticleBaseCandidates_;
 

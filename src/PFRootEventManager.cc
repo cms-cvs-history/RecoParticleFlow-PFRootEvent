@@ -1721,21 +1721,21 @@ void PFRootEventManager::reconstructPFJets() {
   if (verbosity_ == VERBOSE ) {
     cout <<"start reconstruct PFJets"<<endl;
   }
-
+  // Copy PFCandidates into std::vector<Candidate> format
+  // as input for jet algorithms
   reco::CandidateCollection baseCandidates;
   for(unsigned i=0; i<pfCandidates_->size(); i++) {
-    baseCandidates.push_back( (*pfCandidates_)[i].clone() );
+    basePFCandidates_.push_back( (*pfCandidates_)[i].clone() );
   }
 
   vector<ProtoJet> protoJets;
-  reconstructFWLiteJets(baseCandidates, protoJets );
+  reconstructFWLiteJets(basePFCandidates_, protoJets );
 
   JetMaker mjet;
   typedef vector <ProtoJet>::const_iterator IPJ;
   for  (IPJ ipj = protoJets.begin(); ipj != protoJets.end (); ipj++) {
     pfJets_.push_back(mjet.makePFJet(*ipj));  
-    //	  cout << protojet->print(); print method does not exist for protojets
-    //  	  cout << pfJets_.print(); //print method does exist forPFjets
+  if (jetsDebug_)  cout << mjet.makePFJet(*ipj).print();
   } 
 }
 
