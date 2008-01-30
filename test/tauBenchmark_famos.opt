@@ -6,8 +6,8 @@ root outtree 1
 //colin	mode 1
 
 
-//root file ../../PFBlockProducer/test/blocks_famos.root
-root file /afs/cern.ch/user/d/dellaneg/public/tau50_1_8_0_famos.root
+root file ../../PFBlockProducer/test/blocks_famos.root
+// root file /afs/cern.ch/user/d/dellaneg/public/tau50_1_8_0_famos.root
 // filter ------------------------------------------------------------
 
 // filter   nparticles  1
@@ -210,10 +210,10 @@ clustering posCalc_p1_PS                0
 // particle flow parameters ----------------------------------------------
 
 
-particle_flow resolution_map_ECAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
-particle_flow resolution_map_ECAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
-particle_flow resolution_map_HCAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
-particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
+particle_flow resolution_map_ECAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
+particle_flow resolution_map_ECAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
+particle_flow resolution_map_HCAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
+particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
 
 // particle_flow resolution_map_ECAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
 // particle_flow resolution_map_ECAL_phi /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
