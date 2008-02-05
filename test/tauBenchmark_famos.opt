@@ -41,7 +41,7 @@ root caloTowers_branch     CaloTowersSorted_towerMaker__PROD.obj
 // reconstructed tracks branch
 
 root recTracks_branch      recoPFRecTracks_elecpreid__PROD.obj
-root stdTracks_branch      recoTracks_gsWithMaterialTracks__PROD.obj
+root stdTracks_branch      recoTracks_iterativeGSWithMaterialTracks__PROD.obj
 
 // true particles branch
 
