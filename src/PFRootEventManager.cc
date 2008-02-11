@@ -1723,7 +1723,9 @@ void PFRootEventManager::reconstructPFJets() {
   }
   // Copy PFCandidates into std::vector<Candidate> format
   // as input for jet algorithms
-  reco::CandidateCollection baseCandidates;
+  // reco::CandidateCollection baseCandidates;
+
+  basePFCandidates_.clear();
   for(unsigned i=0; i<pfCandidates_->size(); i++) {
     basePFCandidates_.push_back( (*pfCandidates_)[i].clone() );
   }
