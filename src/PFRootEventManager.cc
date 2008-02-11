@@ -1035,8 +1035,8 @@ bool PFRootEventManager::processEntry(int entry) {
 		<<" resNeutralHadEnergy Max " << resNeutralHadEnergy
 	    << " resNeutralEmEnergy Max "<< resNeutralEmEnergy << endl;
 	 } // end debug print
-	 if (resNeutralEmEnergy>0.5) return true;
-	 else return false;
+//	 if (resNeutralEmEnergy>0.5) return true;
+//	 else return false;
 	}// end PFJet Benchmark
   
   // evaluate tau Benchmark 
