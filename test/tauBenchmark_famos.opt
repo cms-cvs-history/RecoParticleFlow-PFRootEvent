@@ -286,7 +286,7 @@ print jets 1
 
 
 // verbosity 
-print verbosity 1
+print verbosity 0
 
 //tau benchmark options ---------------------------------------------------
 

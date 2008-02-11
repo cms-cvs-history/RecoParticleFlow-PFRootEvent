@@ -441,7 +441,7 @@ class PFRootEventManager {
 
   /// PF Jets
   reco::PFJetCollection pfJets_;
-
+    
   /// gen Jets
   reco::GenJetCollection genJets_;
 

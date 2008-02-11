@@ -65,6 +65,7 @@ PFRootEventManager::PFRootEventManager(const char* file)
   clustersPS_(new reco::PFClusterCollection),
   pfBlocks_(new reco::PFBlockCollection),
   pfCandidates_(new reco::PFCandidateCollection),
+  //pfJets_(new reco::PFJetCollection),
   outFile_(0) {
   
   
@@ -161,7 +162,7 @@ void PFRootEventManager::readOptions(const char* file,
 	bool pfjBenchmarkDebug;
     options_->GetOpt("pfjet_benchmark", "debug", pfjBenchmarkDebug);
     
-    bool PlotAgainstReco;
+    bool PlotAgainstReco=0;
     options_->GetOpt("pfjet_benchmark", "PlotAgainstReco", PlotAgainstReco);
     
     double deltaRMax=0.1;
@@ -1013,29 +1014,29 @@ bool PFRootEventManager::processEntry(int entry) {
     reconstructGenJets();
     reconstructCaloJets();
     reconstructPFJets();
-  }
-  
+  }    
+	
   // call print() in verbose mode
   if( verbosity_ == VERBOSE ) print();
   
   // evaluate PFJet Benchmark 
   
 	if(doPFJetBenchmark_) { // start PFJet Benchmark
-	double deltaEt=0;
-	double deltaChargedEnergy = 0.;
-	double deltaEmEnergy = 0.;
+	
 	PFJetBenchmark_.process(pfJets_, genJets_);
-	deltaEt = PFJetBenchmark_.deltaEtMax_;
-	deltaChargedEnergy = PFJetBenchmark_.deltaChargedEnergyMax_;
-	deltaEmEnergy = PFJetBenchmark_.deltaEmEnergyMax_;
+	double resPt = PFJetBenchmark_.resPtMax();
+	double resChargedHadEnergy = PFJetBenchmark_.resChargedHadEnergyMax();
+	double resNeutralHadEnergy = PFJetBenchmark_.resNeutralHadEnergyMax();
+	double resNeutralEmEnergy = PFJetBenchmark_.resNeutralEmEnergyMax();
 	if( verbosity_ == VERBOSE ){ //start debug print
 	cout << " =====================PFJetBenchmark =================" << endl;
-	cout<<"delta Et max "<<deltaEt
-	    <<" deltaChargedEnergy Max " << deltaChargedEnergy
-	    << " deltaEmEnergy Max "<< deltaEmEnergy << endl;
+	cout<<"Resol Pt max "<<resPt
+	    <<" resChargedHadEnergy Max " << resChargedHadEnergy
+		<<" resNeutralHadEnergy Max " << resNeutralHadEnergy
+	    << " resNeutralEmEnergy Max "<< resNeutralEmEnergy << endl;
 	 } // end debug print
-	//if (deltaEmEnergy>10.) return true;
-	//else return false;
+	 if (resNeutralEmEnergy>0.5) return true;
+	 else return false;
 	}// end PFJet Benchmark
   
   // evaluate tau Benchmark 
@@ -1716,29 +1717,32 @@ void PFRootEventManager::reconstructCaloJets() {
 
 
 void PFRootEventManager::reconstructPFJets() {
-
   pfJets_.clear();
+  basePFCandidates_.clear();
+  /// basePFCandidates to be declared in PFRootEventManager.h
+  //reco::CandidateCollection basePFCandidates_;
   if (verbosity_ == VERBOSE ) {
     cout <<"start reconstruct PFJets"<<endl;
   }
   // Copy PFCandidates into std::vector<Candidate> format
   // as input for jet algorithms
   // reco::CandidateCollection baseCandidates;
-
-  basePFCandidates_.clear();
-  for(unsigned i=0; i<pfCandidates_->size(); i++) {
-    basePFCandidates_.push_back( (*pfCandidates_)[i].clone() );
+  // Warning:
+  // basePFCandidates_ Collection lifetime ==  pfJets_ Collection lifetime
+  for(unsigned i=0; i<pfCandidates_->size(); i++) { 
+	basePFCandidates_.push_back( (*pfCandidates_)[i].clone() );
   }
-
+ 
   vector<ProtoJet> protoJets;
   reconstructFWLiteJets(basePFCandidates_, protoJets );
 
   JetMaker mjet;
   typedef vector <ProtoJet>::const_iterator IPJ;
   for  (IPJ ipj = protoJets.begin(); ipj != protoJets.end (); ipj++) {
-    pfJets_.push_back(mjet.makePFJet(*ipj));  
-  if (jetsDebug_)  cout << mjet.makePFJet(*ipj).print();
-  } 
+    reco::PFJet pfj = mjet.makePFJet(*ipj);
+	pfJets_.push_back(pfj);  
+  } // loop on protojets IPJ
+
 }
 
 
@@ -1748,9 +1752,10 @@ void PFRootEventManager::reconstructFWLiteJets(const reco::CandidateCollection& 
   // cout<<"!!! Make FWLite Jets  "<<endl;  
   JetReco::InputCollection input;
   // vector<ProtoJet> output;
-  jetMaker_.applyCuts (Candidates, &input);     
+  jetMaker_.applyCuts (Candidates, &input); 
   if (jetAlgoType_==1) {// ICone 
-    /// Produce jet collection using CMS Iterative Cone Algorithm       
+    /// Produce jet collection using CMS Iterative Cone Algorithm  
+	     
     jetMaker_.makeIterativeConeJets(input, &output);
   }
   if (jetAlgoType_==2) {// MCone
@@ -1763,9 +1768,6 @@ void PFRootEventManager::reconstructFWLiteJets(const reco::CandidateCollection& 
     cout<<"Unknown Jet Algo ! " <<jetAlgoType_ << endl;
   }
   if (jetsDebug_) cout<<"Proto Jet Size " <<output.size()<<endl;
-  
-  // try reset?
-  // pfJets_.reset(new PFJetCollection);
 
 }
 
