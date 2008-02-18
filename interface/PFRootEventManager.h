@@ -244,7 +244,8 @@ class PFRootEventManager {
 
 
   /// print information
-  void   print(  std::ostream& out = std::cout ) const;
+  void   print(  std::ostream& out = std::cout,
+                 int maxNLines = -1 ) const;
 
 
   /// get tree
@@ -267,8 +268,8 @@ class PFRootEventManager {
   
 
   /// print the HepMC truth
-  void printMCTruth(std::ostream& out = std::cout,
-                    int maxNLines = -1) const;
+  void printGenParticles(std::ostream& out = std::cout,
+                         int maxNLines = -1) const;
   
   /*   /// is inside cut G?  */
   /*   bool   insideGCut(double eta, double phi) const; */

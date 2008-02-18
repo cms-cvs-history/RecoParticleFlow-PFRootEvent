@@ -652,7 +652,7 @@ void PFRootEventManager::readOptions(const char* file,
   options_->GetOpt("print", "simParticles", printSimParticles_ );
 
   printGenParticles_ = true;
-  options_->GetOpt("print", "GenParticles", printGenParticles_ );
+  options_->GetOpt("print", "genParticles", printGenParticles_ );
   
   verbosity_ = VERBOSE;
   options_->GetOpt("print", "verbosity", verbosity_ );
@@ -2130,7 +2130,7 @@ string PFRootEventManager::expand(const string& oldString) const {
   return newString;
 }
 
-void  PFRootEventManager::print(ostream& out) const {
+void  PFRootEventManager::print(ostream& out,int maxNLines ) const {
 
   if(!out) return;
 
@@ -2227,20 +2227,21 @@ void  PFRootEventManager::print(ostream& out) const {
 
   
   if ( printGenParticles_ ) { 
-    out<<"GenParticles ==========================================="<<endl;
-    printMCTruth(out);
+    //out<<"GenParticles ==========================================="<<endl;
+    printGenParticles(out);
   }
 }
 
 
 void
-PFRootEventManager::printMCTruth(std::ostream& out,
+PFRootEventManager::printGenParticles(std::ostream& out,
                                  int maxNLines) const {
 				 
 				 
   const HepMC::GenEvent* myGenEvent = MCTruth_.GetEvent();
   if(!myGenEvent) return;
 
+  out<<"GenParticles ==========================================="<<endl;
 
   std::cout << "Id  Gen Name       eta    phi     pT     E    Vtx1   " 
             << " x      y      z   " 
