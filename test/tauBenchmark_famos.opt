@@ -281,7 +281,10 @@ print MC_truth 0
 // print reconstructed particles yes/no
 print PFCandidates  1
 // print jets yes/no
-print jets 0
+print jets 1
+//print gen Particles yes/no
+print genParticles 1
+
 
 
 // verbosity 
@@ -312,6 +315,36 @@ pfjet_benchmark debug 0
 	
 //pfjet benchmark outputfile
 pfjet_benchmark outjetfile pfjetBenchmark.root
+
+//PlotagainstReco  yes/no
+pfjet_benchmark PlotAgainstReco 0
+
+//minimum deltaR distance for matching pfjets/genjets
+pfjet_benchmark deltaRMax 0.1
+
+
+// FWLITE CMSSW Jet Algorithm options --------------------------------------
+
+jets 	on/off 1
+jets 	debug 0
+
+// Jet Algo : 1= ICone; 2=MCone; 3=FastJet
+jets  algo 3
+//Eta cuts
+jets  EtInputCut 0.2
+jets  EInputCut 0.
+// IC parameter
+jets  seedThreshold 1.0
+jets  coneRadius 0.5
+// MidPointCone
+jets  coneAreaFraction 2
+jets  maxPairSize 2
+jets  maxIterations 100
+jets  overlapThreshold 0.75
+//FastJet
+jets  ptMin 10.
+jets  rParam 1.0
+
 
 //PlotagainstReco  yes/no
 pfjet_benchmark PlotAgainstReco 0
