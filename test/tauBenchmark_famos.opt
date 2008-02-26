@@ -18,18 +18,18 @@ root file ../../PFBlockProducer/test/blocks_famos.root
 // name of the branches of the input TTree. 
 
 // ECAL rechits branch
-root rechits_ECAL_branch  recoPFRecHits_particleFlowCluster_ECAL_PROD.obj
+root rechits_ECAL_branch  recoPFRecHits_particleFlowRecHitECAL__PROD.obj
 // HCAL rechits branch
-root rechits_HCAL_branch  recoPFRecHits_particleFlowCluster_HCAL_PROD.obj
+root rechits_HCAL_branch  recoPFRecHits_particleFlowRecHitHCAL__PROD.obj
 // PS rechits branch
-root rechits_PS_branch    recoPFRecHits_particleFlowCluster_PS_PROD.obj
+root rechits_PS_branch    recoPFRecHits_particleFlowRecHitPS__PROD.obj
 
 // ECAL clusters branch
-root clusters_ECAL_branch  recoPFClusters_particleFlowCluster_ECAL_PROD.obj
+root clusters_ECAL_branch  recoPFClusters_particleFlowClusterECAL__PROD.obj
 // HCAL clusters branch
-root clusters_HCAL_branch  recoPFClusters_particleFlowCluster_HCAL_PROD.obj
+root clusters_HCAL_branch  recoPFClusters_particleFlowClusterHCAL__PROD.obj
 // PS clusters branch
-root clusters_PS_branch    recoPFClusters_particleFlowCluster_PS_PROD.obj
+root clusters_PS_branch    recoPFClusters_particleFlowClusterPS__PROD.obj
 // HepMCProduct branch
 root MCTruth_branch  edmHepMCProduct_source__PROD.obj
 
@@ -123,6 +123,10 @@ display  eta/phi  1
 // display r/z view yes/no
 display  r/z      1
 
+display cluster_attributes 2 5 20 10
+display track_attributes 103 1 8 8
+display simPart_attributes 4 2 8 
+display drawPFBlock 0
 
 // clustering parameters ---------------------------------------------------
 
