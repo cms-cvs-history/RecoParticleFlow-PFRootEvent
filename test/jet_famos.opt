@@ -7,7 +7,7 @@ root outtree 1
 
 
 root file ../../PFBlockProducer/test/blocks_famos.root
-
+// root file /afs/cern.ch/user/d/dellaneg/public/tau50_1_8_0_famos.root
 // filter ------------------------------------------------------------
 
 // filter   nparticles  1
@@ -228,7 +228,7 @@ particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//
 // Debug blockAlgo
 blockAlgo debug 0
 // Debug PFAlgo
-PFAlgo debug 0
+PFAlgo debug 1
 
 // Track Quality Cut: Tracks are kept if DPt/Pt < Cut
 particle_flow DPtoverPt_Cut   999.9
@@ -275,7 +275,7 @@ print rechits  0
 // print clusters yes/no
 print clusters 0
 // print particle flow blocks yes/no
-print PFBlocks     0
+print PFBlocks     1
 // print true particles yes/no
 print true_particles 1
 // print MC Truth
@@ -290,7 +290,7 @@ print genParticles 1
 
 
 // verbosity 
-print verbosity 0
+print verbosity 1
 
 //tau benchmark options ---------------------------------------------------
 
@@ -310,10 +310,10 @@ tau_benchmark cone_merge 100
 
 //PFJet benchmark options ---------------------------------------------------
 
-pfjet_benchmark	on/off	0
+pfjet_benchmark	on/off	1
 
 //debug yes/no
-pfjet_benchmark debug 0
+pfjet_benchmark debug 1
 	
 //pfjet benchmark outputfile
 pfjet_benchmark outjetfile pfjetBenchmark.root
@@ -327,8 +327,8 @@ pfjet_benchmark deltaRMax 0.1
 
 // FWLITE CMSSW Jet Algorithm options --------------------------------------
 
-jets 	on/off 0
-jets 	debug  0
+jets 	on/off 1
+jets 	debug 0
 
 // Jet Algo : 1= ICone; 2=MCone; 3=FastJet
 jets  algo 1
