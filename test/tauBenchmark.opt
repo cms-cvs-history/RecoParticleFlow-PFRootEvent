@@ -249,16 +249,14 @@ print rechits  0
 print clusters 0
 // print particle flow blocks yes/no
 print PFBlocks     0
-// print sim particles yes/no
-print simparticles 1
-// print MC Truth
-print MC_truth 0
-// print reconstructed particles yes/no
-print PFCandidates  1
+// print reconstructed particles (PFCandidates) yes/no
+print PFCandidates  0
 // print jets yes/no
-print jets 1
-//print gen Particles yes/no
-print genParticles 1
+print jets 0
+//print Sim Particles yes/no
+print simParticles 0
+// print Gen particles yes/no
+print genParticles 0
 
 // verbosity 
 print verbosity 0

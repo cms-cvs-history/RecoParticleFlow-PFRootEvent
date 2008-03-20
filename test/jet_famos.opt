@@ -6,8 +6,8 @@ root outtree 1
 //colin	mode 1
 
 
-root file ../../PFBlockProducer/test/blocks_famos.root
-// root file /afs/cern.ch/user/d/dellaneg/public/tau50_1_8_0_famos.root
+root file ../../PFBlockProducer/test/QCD20_famos.root
+
 // filter ------------------------------------------------------------
 
 // filter   nparticles  1
@@ -228,7 +228,7 @@ particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//
 // Debug blockAlgo
 blockAlgo debug 0
 // Debug PFAlgo
-PFAlgo debug 1
+PFAlgo debug 0
 
 // Track Quality Cut: Tracks are kept if DPt/Pt < Cut
 particle_flow DPtoverPt_Cut   999.9
@@ -275,18 +275,15 @@ print rechits  0
 // print clusters yes/no
 print clusters 0
 // print particle flow blocks yes/no
-print PFBlocks     1
-// print true particles yes/no
-print true_particles 1
-// print MC Truth
-print MC_truth 0
-// print reconstructed particles yes/no
-print PFCandidates  1
+print PFBlocks     0
+// print reconstructed particles (PFCandidates) yes/no
+print PFCandidates  0
 // print jets yes/no
-print jets 1
-//print gen Particles yes/no
-print genParticles 1
-
+print jets 0
+//print Sim Particles yes/no
+print simParticles 0
+// print Gen particles yes/no
+print genParticles 0
 
 
 // verbosity 
@@ -294,7 +291,7 @@ print verbosity 1
 
 //tau benchmark options ---------------------------------------------------
 
-tau_benchmark	on/off	1
+tau_benchmark	on/off	0
 
 //debug yes/no
 tau_benchmark debug 0
