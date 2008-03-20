@@ -125,7 +125,7 @@ display  eta/phi  1
 display  r/z      1
 
 display cluster_attributes 2 5 20 10
-display track_attributes   5 1 8 8
+display track_attributes   8 1 8 8
 display simPart_attributes 4 2 8 
 display drawPFBlock 0
 
