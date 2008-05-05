@@ -165,8 +165,8 @@ bool PFRootEventManagerColin::processNeutral() {
   double minDist2 = 9999999;
   // int iClosest = -1;
   for( unsigned i=0; i<(*clustersECAL_).size(); ++i) {
-    double deta = (*clustersECAL_)[i].position().Eta() - eta;
-    double dphi = (*clustersECAL_)[i].position().Phi() - phi;
+    double deta = (*clustersECAL_)[i].positionXYZ().Eta() - eta;
+    double dphi = (*clustersECAL_)[i].positionXYZ().Phi() - phi;
     double dist2 = deta*deta + dphi*dphi;
     if(dist2 < minDist2) {
       minDist2 = dist2;
@@ -310,7 +310,7 @@ bool PFRootEventManagerColin::processHIGH_E_TAUS() {
     
     if(nTracks!=1) continue; // no track, or too many tracks in the block
     
-    std::multimap<double, unsigned> sortedElems;
+    std::map<double, unsigned> sortedElems;
     block.associatedElements( iTrack, 
 			      block.linkData(),
 			      sortedElems );
@@ -318,7 +318,7 @@ bool PFRootEventManagerColin::processHIGH_E_TAUS() {
     tauEvent_->nECAL=0;
     tauEvent_->nHCAL=0;
     
-    typedef std::multimap<double, unsigned>::iterator IE;
+    typedef std::map<double, unsigned>::iterator IE;
     for(IE ie = sortedElems.begin(); ie != sortedElems.end(); ++ie ) {
       
       
@@ -336,7 +336,7 @@ bool PFRootEventManagerColin::processHIGH_E_TAUS() {
 	if(!tauEvent_->nECAL ) { // closest ecal
 	  assert( !clusterRef.isNull() );
 	  tauEvent_->eECAL = clusterRef->energy();
-	  tauEvent_->etaECAL = clusterRef->position().Eta();
+	  tauEvent_->etaECAL = clusterRef->positionXYZ().Eta();
 	  tauEvent_->chi2ECAL = chi2;
 	  tauEvent_->nECAL++;
 	}
@@ -347,7 +347,7 @@ bool PFRootEventManagerColin::processHIGH_E_TAUS() {
 	if(!tauEvent_->nHCAL ) { // closest hcal
 	  assert( !clusterRef.isNull() );
 	  tauEvent_->eHCAL = clusterRef->energy();
-	  tauEvent_->etaHCAL = clusterRef->position().Eta();
+	  tauEvent_->etaHCAL = clusterRef->positionXYZ().Eta();
 	  tauEvent_->nHCAL++;
 	}
       } 
