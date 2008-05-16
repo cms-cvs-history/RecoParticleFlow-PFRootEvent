@@ -665,11 +665,13 @@ void PFRootEventManager::connect( const char* infilename ) {
   
 
 
-  try {
+  try
+  {
     AutoLibraryLoader::enable();
   }
-  catch(string& err) {
-    cout<<err<<endl;
+  catch(cms::Exception& err)
+  {
+    cout << err.explainSelf() << endl;
   }
 
 
