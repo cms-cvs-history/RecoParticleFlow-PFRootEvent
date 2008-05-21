@@ -2510,13 +2510,6 @@ PFRootEventManager::printGenParticles(std::ostream& out,
 
     int vertexId1 = 0;
 
-    if ( !p->production_vertex() ) continue;
-
-    math::XYZVector vertex1 (p->production_vertex()->position().x()/10.,
-                             p->production_vertex()->position().y()/10.,
-                             p->production_vertex()->position().z()/10.);
-    vertexId1 = p->production_vertex()->barcode();
-    
     out.setf(std::ios::fixed, std::ios::floatfield);
     out.setf(std::ios::right, std::ios::adjustfield);
     
@@ -2532,8 +2525,20 @@ PFRootEventManager::printGenParticles(std::ostream& out,
     out << std::setw(6) << std::setprecision(2) << eta << " " 
 	<< std::setw(6) << std::setprecision(2) << momentum1.phi() << " " 
 	<< std::setw(7) << std::setprecision(2) << momentum1.pt() << " " 
-	<< std::setw(7) << std::setprecision(2) << momentum1.e() << " " 
-	<< std::setw(4) << vertexId1 << " " 
+	<< std::setw(7) << std::setprecision(2) << momentum1.e();
+    
+    if ( !p->production_vertex() )
+    {
+	    out << std::endl;
+	    continue;
+    }
+
+    math::XYZVector vertex1 (p->production_vertex()->position().x()/10.,
+                             p->production_vertex()->position().y()/10.,
+                             p->production_vertex()->position().z()/10.);
+    vertexId1 = p->production_vertex()->barcode();
+    
+    out << " " << std::setw(4) << vertexId1 << " " 
 	<< std::setw(6) << std::setprecision(1) << vertex1.x() << " " 
 	<< std::setw(6) << std::setprecision(1) << vertex1.y() << " " 
 	<< std::setw(6) << std::setprecision(1) << vertex1.z() << " ";
