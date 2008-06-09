@@ -6,7 +6,7 @@ root outtree 1
 //colin	mode 1
 
 
-root file ../../PFBlockProducer/test/blocks_famos.root
+root file ../../Configuration/test/display.root
 
 // filter ------------------------------------------------------------
 
