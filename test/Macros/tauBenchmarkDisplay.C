@@ -7,21 +7,20 @@ gSystem->Load("libRecoParticleFlowPFRootEvent.so");
 gSystem->Load("libCintex.so");
 ROOT::Cintex::Cintex::Enable();
 
+string opt = "tauBenchmark.opt";
+
 // create a PFRootEventManager
-string opt = "tauBenchmark_famos.opt";
-PFRootEventManager em(opt.c_str() );
+PFRootEventManager em( opt.c_str() );
+
 // create a DisplayManager
 DisplayManager dm(&em, opt.c_str() );
 
 // display entry number 2
 int i=0;
 dm.display(i++);
+dm.lookForGenParticle(1);
 
-// look for ECAL rechit with maximum energy
-dm.lookForMaxRecHit(true);
-
-// create a dialogFrame:
-// DialogFrame *win = new DialogFrame(&em,&dm,gClient->GetRoot(), 200,220);
-
+//if you want a dialogFrame:
+DialogFrame *win = new DialogFrame(&em,&dm,gClient->GetRoot(), 200,220);
 
 }

@@ -6,7 +6,7 @@ root outtree 1
 colin	mode 1
 
 
-root file  /castor/cern.ch/user/c/cbern/CMSSW/CMSSW_1_5_0/Taus_2/Blocks/out_singletau_fevt_5.root
+root file ../../PFBlockProducer/test/singletau_full.root
 
 // filter ------------------------------------------------------------
 
@@ -41,11 +41,10 @@ root caloTowers_branch     CaloTowersSorted_towerMaker__Rec.obj
 // reconstructed tracks branch
 
 root recTracks_branch      recoPFRecTracks_elecpreid__BLOCK.obj
-root stdTracks_branch      recoTracks_trackRefitter__BLOCK.obj
-
+root stdTracks_branch      recoTracks_rsWithMaterialTracks__Rec.obj
 // true particles branch
 
-root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__PROD.obj
+root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__BLOCK.obj
 
 // display parameters ----------------------------------------------------
 
@@ -97,6 +96,11 @@ display  x/y      1
 display  eta/phi  1
 // display r/z view yes/no
 display  r/z      1
+
+display cluster_attributes 2 5 20 10
+display track_attributes   8 1 8 8
+display simPart_attributes 4 2 8 
+display drawPFBlock 0
 
 
 // clustering parameters ---------------------------------------------------
@@ -185,11 +189,10 @@ clustering posCalc_p1_PS                0
 // particle flow parameters ----------------------------------------------
 
 
-particle_flow resolution_map_ECAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
-particle_flow resolution_map_ECAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
-particle_flow resolution_map_HCAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
-particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/1/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
-
+particle_flow resolution_map_ECAL_eta ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
+particle_flow resolution_map_ECAL_phi ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
+particle_flow resolution_map_HCAL_eta ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
+particle_flow resolution_map_HCAL_phi ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
 // particle_flow resolution_map_ECAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
 // particle_flow resolution_map_ECAL_phi /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
 // particle_flow resolution_map_HCAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
@@ -249,32 +252,98 @@ print rechits  0
 print clusters 0
 // print particle flow blocks yes/no
 print PFBlocks     0
+<<<<<<< tauBenchmark.opt
 // print sim particles yes/no
 print simparticles 1
 // print MC Truth
 print MC_truth 0
 // print reconstructed particles yes/no
-print PFCandidates  1
+print PFCandidates  0
+=======
+// print reconstructed particles (PFCandidates) yes/no
+print PFCandidates  0
+>>>>>>> 1.25
 // print jets yes/no
-print jets 1
+<<<<<<< tauBenchmark.opt
+print jets 0
 //print gen Particles yes/no
-print genParticles 1
+print genParticles 0
+=======
+print jets 0
+//print Sim Particles yes/no
+print simParticles 0
+// print Gen particles yes/no
+print genParticles 0
+>>>>>>> 1.25
 
 // verbosity 
-print verbosity 0
+print verbosity 1
 
-//Jet Algorithm options ---------------------------------------------------
-//making jets from PF objects yes/no
-jets dojets 1
+//tau benchmark options ---------------------------------------------------
 
-//cone size
-jets cone_angle 0.5
-
-//Et threshold
-jets seed_et 0.4
-
-//distance threshold for merging jets
-jets cone_merge 100
+tau_benchmark	on/off	1
 
 //debug yes/no
-jets jets_debug 0	
+tau_benchmark debug 0
+	
+//cone size
+tau_benchmark cone_angle 0.5
+
+//Et threshold
+tau_benchmark seed_et 0.4
+
+//distance threshold for merging jets
+tau_benchmark cone_merge 100
+
+//PFJet benchmark options ---------------------------------------------------
+
+pfjet_benchmark	on/off	0
+
+//debug yes/no
+pfjet_benchmark debug 0
+	
+//pfjet benchmark outputfile
+pfjet_benchmark outjetfile pfjetBenchmark.root
+
+//PlotagainstReco  yes/no
+pfjet_benchmark PlotAgainstReco 0
+
+//minimum deltaR distance for matching pfjets/genjets
+pfjet_benchmark deltaRMax 0.1
+
+
+// FWLITE CMSSW Jet Algorithm options --------------------------------------
+
+jets 	on/off 1
+jets 	debug 0
+
+// Jet Algo : 1= ICone; 2=MCone; 3=FastJet
+jets  algo 3
+//Eta cuts
+jets  EtInputCut 0.2
+jets  EInputCut 0.
+// IC parameter
+jets  seedThreshold 1.0
+jets  coneRadius 0.5
+// MidPointCone
+jets  coneAreaFraction 2
+jets  maxPairSize 2
+jets  maxIterations 100
+jets  overlapThreshold 0.75
+//FastJet
+jets  ptMin 10.
+jets  rParam 1.0
+
+
+//Attributes of graphic Objects ------------------------------------------
+//cluster: marker color (standard cluster), marker color (preshower cluster),marker style, marker size*10
+display cluster_attributes 2 5 20 10 
+
+//recTrack: Line color, line style, marker style, marker size *10
+display track_attributes 103 1 8 8
+
+//simParticle: Line color, line style, marker size *10
+//display simPart_attributes 4 2 8 
+
+//PFBlock visible (when clicking on a track or a cluster, display of PFblocks it belongs to)
+display drawPFBlock 0
