@@ -2264,7 +2264,7 @@ PFRootEventManager::printGenParticles(std::ostream& out,
 
     // We have here a subset of particles only. 
     // To be filled according to the needs.
-    switch(partId) {
+	switch(partId) {
 		case    1: { name = "d"; break; } 
 		case    2: { name = "u"; break; } 
 		case    3: { name = "s"; break; } 
@@ -2304,12 +2304,15 @@ PFRootEventManager::printGenParticles(std::ostream& out,
 		case  130: { name = "K0L"; break; }
 		case  211: { name = "pi+"; break; }
 		case -211: { name = "pi-"; break; }
+		case  213: { name = "rho+"; break; }
+		case -213: { name = "rho-"; break; }
 		case  221: { name = "eta"; break; }
 		case  331: { name = "eta'"; break; }
 		case  441: { name = "etac"; break; }
 		case  551: { name = "etab"; break; }
-		case -213: { name = "rho-"; break; }
 		case  310: { name = "K0S"; break; }
+		case  311: { name = "K0"; break; }
+		case -311: { name = "Kbar0"; break; }
 		case  321: { name = "K+"; break; }
 		case -321: { name = "K-"; break; }
 		case  411: { name = "D+"; break; }
@@ -2324,6 +2327,7 @@ PFRootEventManager::printGenParticles(std::ostream& out,
 		case  541: { name = "Bc_+"; break; }
 		case -541: { name = "Bc_+"; break; }
 		case  313: { name = "K*0"; break; }
+		case -313: { name = "K*bar0"; break; }
 		case  323: { name = "K*+"; break; }
 		case -323: { name = "K*-"; break; }
 		case  413: { name = "D*+"; break; }
@@ -2335,18 +2339,29 @@ PFRootEventManager::printGenParticles(std::ostream& out,
 		case  533: { name = "B*_s0"; break; }
 		case  543: { name = "B*_c+"; break; }
 		case -543: { name = "B*_c-"; break; }
+		case -2112: { name = "nbar0"; break; }
 		case  2112: { name = "n"; break; }
+		case  2114: { name = "Delta0"; break; }
+		case -2114: { name = "Deltabar0"; break; }
 		case  3122: { name = "Lambda0"; break; }
+		case -3122: { name = "Lambdabar0"; break; }
 		case  3112: { name = "Sigma-"; break; }
-		case -3112: { name = "Sigma+"; break; }
+		case -3112: { name = "Sigmabar+"; break; }
 		case  3212: { name = "Sigma0"; break; }
+		case -3212: { name = "Sigmabar0"; break; }
+		case  3222: { name = "Sigma+"; break; }
+		case -3222: { name = "Sigmabar-"; break; }
 		case  2212: { name = "p"; break; }
 		case -2212: { name = "~p"; break; }
+		case -2214: { name = "Delta-"; break; }
+		case  2214: { name = "Delta+"; break; }
+		case -2224: { name = "Deltabar--"; break; }
+		case  2224: { name = "Delta++"; break; }
 		default: { 
 			name = "unknown"; 
 			cout << "Unknown code : " << partId << endl;
 		}   
-    }
+	}
 	
     math::XYZTLorentzVector momentum1(p->momentum().px(),
                                       p->momentum().py(),

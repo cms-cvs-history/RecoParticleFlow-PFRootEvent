@@ -376,8 +376,8 @@ void DisplayManager::createGPart( const reco::PFSimParticle &ptc,
 {
 	//bool inside = false; 
 	//TCutG* cutg = (TCutG*) gROOT->FindObject("CUTG");
-//	bool debug_createGpart = false;
-	bool debug_createGpart = true;
+ 	bool debug_createGpart = false;
+//	bool debug_createGpart = true;
 	for (int viewType=0;viewType<4;++viewType) {
 		// reserving space. nb not all trajectory points are valid
 		vector<double> xPos;
@@ -1324,8 +1324,8 @@ void DisplayManager::loadGRecTracks()
 void DisplayManager::loadGSimParticles()
 {
 	double phi0=0;
-//	bool debug_loadGSim = false;
-	bool debug_loadGSim = true;
+ 	bool debug_loadGSim = false;
+//	bool debug_loadGSim = true;
 	unsigned simParticlesVSize = em_->trueParticles_.size();
 	
 	for(unsigned i=0; i<simParticlesVSize; i++) {
