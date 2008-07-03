@@ -5,7 +5,7 @@ root outtree 1
 
 //colin	mode 1
 
-root file ../../PFBlockProducer/test/blocks_full.root
+root file ../../Configuration/test/blocks_full.root
 // root file /afs/cern.ch/user/d/dellaneg/public/tau50_1_8_0_famos.root
 // filter ------------------------------------------------------------
 
@@ -17,54 +17,54 @@ root file ../../PFBlockProducer/test/blocks_full.root
 // name of the branches of the input TTree. 
 
 // ECAL rechits branch
-root rechits_ECAL_branch  recoPFRecHits_particleFlowRecHitECAL__Rec.obj
+root rechits_ECAL_branch  recoPFRecHits_particleFlowRecHitECAL__PROD.obj
 // HCAL rechits branch
-root rechits_HCAL_branch  recoPFRecHits_particleFlowRecHitHCAL__Rec.obj
+root rechits_HCAL_branch  recoPFRecHits_particleFlowRecHitHCAL__PROD.obj
 // PS rechits branch
-root rechits_PS_branch    recoPFRecHits_particleFlowRecHitPS__Rec.obj
+root rechits_PS_branch    recoPFRecHits_particleFlowRecHitPS__PROD.obj
 
 // ECAL clusters branch
-root clusters_ECAL_branch  recoPFClusters_particleFlowClusterECAL__Rec.obj
+root clusters_ECAL_branch  recoPFClusters_particleFlowClusterECAL__PROD.obj
 // HCAL clusters branch
-root clusters_HCAL_branch  recoPFClusters_particleFlowClusterHCAL__Rec.obj
+root clusters_HCAL_branch  recoPFClusters_particleFlowClusterHCAL__PROD.obj
 // PS clusters branch
-root clusters_PS_branch    recoPFClusters_particleFlowClusterPS__Rec.obj
+root clusters_PS_branch    recoPFClusters_particleFlowClusterPS__PROD.obj
 // HepMCProduct branch
-root MCTruth_branch  edmHepMCProduct_source__Rec.obj
+root MCTruth_branch  edmHepMCProduct_source__PROD.obj
 
 
-// root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_Rec.obj
+// root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_PROD.obj
 
-root caloTowers_branch     CaloTowersSorted_towerMaker__Rec.obj
+root caloTowers_branch     CaloTowersSorted_towerMaker__PROD.obj
 
 // reconstructed tracks branch
 
-root recTracks_branch      recoPFRecTracks_elecpreid__Rec.obj
-root stdTracks_branch      recoTracks_generalTracks__Rec.obj
+root recTracks_branch      recoPFRecTracks_elecpreid__PROD.obj
+root stdTracks_branch      recoTracks_generalTracks__PROD.obj
 
 // true particles branch
 
-root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__Rec.obj
+root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__PROD.obj
 
 
 // jet branches:
 
 // Gen Jets read from root file
-root genJetBranchName 	recoPFJets_iterativeCone5PFJets__Rec.obj
+root genJetBranchName 	recoPFJets_iterativeCone5PFJets__PROD.obj
 // PF Jets read from root file
-root recPFJetBranchName 	recoPFJets_iterativeCone5PFJets__Rec.obj
+root recPFJetBranchName 	recoPFJets_iterativeCone5PFJets__PROD.obj
 // Calo Jets read from root file
-root recCaloJetBranchName	recoCaloJets_iterativeCone5CaloJets__Rec.obj
+root recCaloJetBranchName	recoCaloJets_iterativeCone5CaloJets__PROD.obj
 
 
 // GenParticleCandidates
-root genParticleBaseCandidates_branch	recoCandidatesOwned_genParticlesAllStableNoNuBSM__Rec.obj
+root genParticleBaseCandidates_branch	recoCandidatesOwned_genParticlesAllStableNoNuBSM__PROD.obj
 
 // CaloTowersCandidates
-root caloTowerBaseCandidates_branch  recoCandidatesOwned_caloTowers__Rec.obj
+root caloTowerBaseCandidates_branch  recoCandidatesOwned_caloTowers__PROD.obj
 
 // Particle Flow Candidates
-root ParticleFlowCandbranch    recoCandidatesOwned_particleFlowJetCandidates__Rec.obj
+root ParticleFlowCandbranch    recoCandidatesOwned_particleFlowJetCandidates__PROD.obj
 
 
 //---------------
