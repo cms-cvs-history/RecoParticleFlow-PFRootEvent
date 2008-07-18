@@ -84,7 +84,7 @@ void FWLiteJetProducer::print() {
 //-----------------------------------------------------------
 void FWLiteJetProducer::applyCuts(const reco::CandidateCollection& Candidates, JetReco::InputCollection* input){
   //!!!!
-edm::OrphanHandle< reco::CandidateCollection >  CandidateHandle(&(Candidates), edm::ProductID(20001) );
+  edm::OrphanHandle< reco::CandidateCollection >  CandidateHandle(&(Candidates), edm::ProductID(20001) );
   input->reserve ( Candidates.size());  
   //cout<<" Candidate " << CandidateHandle->size()<<Candidates.size() << endl;
   for (unsigned i = 0; i <Candidates.size() ; i++) {
@@ -93,7 +93,7 @@ edm::OrphanHandle< reco::CandidateCollection >  CandidateHandle(&(Candidates), e
     if ((mEtInputCut_ <= 0 || constituent->et() > mEtInputCut_) &&
         (mEInputCut_ <= 0 || constituent->energy() > mEInputCut_)) {                    
       input->push_back (InputItem(CandidateHandle,i));  
-     if (debug_) std::cout<<" FWLiteJetProducer: Jet Candidate ET " << constituent->et() << std::endl;	                
+      if (debug_) std::cout<<" FWLiteJetProducer: Jet Candidate ET " << constituent->et() << std::endl;                 
     }
   }
 }

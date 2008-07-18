@@ -72,10 +72,10 @@ PFRootEventManager::PFRootEventManager(const char* file)
   //   iEvent_=0;
   h_deltaETvisible_MCEHT_ 
     = new TH1F("h_deltaETvisible_MCEHT","Jet Et difference CaloTowers-MC"
-	       ,100,-100,100);
+               ,100,-100,100);
   h_deltaETvisible_MCPF_  
     = new TH1F("h_deltaETvisible_MCPF" ,"Jet Et difference ParticleFlow-MC"
-	       ,100,-100,100);
+               ,100,-100,100);
 
   readOptions(file, true, true);
  
@@ -150,7 +150,7 @@ void PFRootEventManager::readOptions(const char* file,
       // cout<<"don't do tree"<<endl;
     }
   }
-// PFJet benchmark options and output jetfile to be open before input file!!!--
+  // PFJet benchmark options and output jetfile to be open before input file!!!--
 
   doPFJetBenchmark_ = false;
   options_->GetOpt("pfjet_benchmark", "on/off", doPFJetBenchmark_);
@@ -158,21 +158,21 @@ void PFRootEventManager::readOptions(const char* file,
   if (doPFJetBenchmark_) {
     string outjetfilename;
     options_->GetOpt("pfjet_benchmark", "outjetfile", outjetfilename);
-	
-	bool pfjBenchmarkDebug;
+        
+    bool pfjBenchmarkDebug;
     options_->GetOpt("pfjet_benchmark", "debug", pfjBenchmarkDebug);
     
     bool PlotAgainstReco=0;
     options_->GetOpt("pfjet_benchmark", "PlotAgainstReco", PlotAgainstReco);
     
     double deltaRMax=0.1;
-	options_->GetOpt("pfjet_benchmark", "deltaRMax", deltaRMax);
+    options_->GetOpt("pfjet_benchmark", "deltaRMax", deltaRMax);
     PFJetBenchmark_.setup(
-	            outjetfilename, 
-				pfjBenchmarkDebug,
-				PlotAgainstReco,
-				deltaRMax);
-	}
+                          outjetfilename, 
+                          pfjBenchmarkDebug,
+                          PlotAgainstReco,
+                          deltaRMax);
+  }
 
 
   // input root file --------------------------------------------
@@ -483,13 +483,13 @@ void PFRootEventManager::readOptions(const char* file,
 
   shared_ptr<PFEnergyCalibration> 
     calibration( new PFEnergyCalibration( e_slope,
-					  e_offset, 
-					  eh_eslope,
-					  eh_hslope,
-					  eh_offset,
-					  h_slope,
-					  h_offset,
-					  h_damping ) );
+                                          e_offset, 
+                                          eh_eslope,
+                                          eh_hslope,
+                                          eh_offset,
+                                          h_slope,
+                                          h_offset,
+                                          h_damping ) );
 
 
   double nSigmaECAL = 99999;
@@ -514,11 +514,11 @@ void PFRootEventManager::readOptions(const char* file,
   options_->GetOpt("particle_flow", "mergedPhotons_PSCut", PSCut);
 
   try {
-//     pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
-//                            PSCut, mvaCut, mvaWeightFile.c_str() );
+    //     pfAlgo_.setParameters( eCalibP0, eCalibP1, nSigmaECAL, nSigmaHCAL,
+    //                            PSCut, mvaCut, mvaWeightFile.c_str() );
     pfAlgo_.setParameters( nSigmaECAL, nSigmaHCAL, 
-			   calibration,
-			   clusterRecoveryAlgo,
+                           calibration,
+                           clusterRecoveryAlgo,
                            PSCut, mvaCut, mvaWeightFile.c_str() );
   }
   catch( std::exception& err ) {
@@ -847,13 +847,13 @@ void PFRootEventManager::connect( const char* infilename ) {
   string genParticleCandBranchName;
   genParticleBaseCandidatesBranch_ = 0;
   options_->GetOpt("root","genParticleBaseCandidates_branch", 
-		   genParticleCandBranchName);
+                   genParticleCandBranchName);
   if(!genParticleCandBranchName.empty() ){  
     genParticleBaseCandidatesBranch_= 
       tree_->GetBranch(genParticleCandBranchName.c_str()); 
     if(!genParticleBaseCandidatesBranch_) {
       cerr<<"PFRootEventanager::ReadOptions : "
-	  <<"genParticleBaseCandidates_branch not found : "
+          <<"genParticleBaseCandidates_branch not found : "
           <<genParticleCandBranchName<< endl;
     }  
   }
@@ -862,13 +862,13 @@ void PFRootEventManager::connect( const char* infilename ) {
   string caloTowerCandBranchName;
   caloTowerBaseCandidatesBranch_ = 0;
   options_->GetOpt("root","caloTowerBaseCandidates_branch", 
-		   caloTowerCandBranchName);
+                   caloTowerCandBranchName);
   if(!caloTowerCandBranchName.empty() ){  
     caloTowerBaseCandidatesBranch_= 
       tree_->GetBranch(caloTowerCandBranchName.c_str()); 
     if(!caloTowerBaseCandidatesBranch_) {
       cerr<<"PFRootEventanager::ReadOptions : "
-	  <<"caloTowerBaseCandidates_branch not found : "
+          <<"caloTowerBaseCandidates_branch not found : "
           <<caloTowerCandBranchName<< endl;
     }  
   }
@@ -902,7 +902,7 @@ void PFRootEventManager::connect( const char* infilename ) {
           <<recPFBranchName<< endl;
     }
   }
- setAddresses();
+  setAddresses();
 
 }
 
@@ -955,7 +955,7 @@ PFRootEventManager::~PFRootEventManager() {
 
 
 void PFRootEventManager::write() {
-if(doPFJetBenchmark_) PFJetBenchmark_.write();
+  if(doPFJetBenchmark_) PFJetBenchmark_.write();
   if(!outFile_) return;
   else {
     outFile_->cd(); 
@@ -1015,43 +1015,43 @@ bool PFRootEventManager::processEntry(int entry) {
     reconstructCaloJets();
     reconstructPFJets();
   }    
-	
+        
   // call print() in verbose mode
   if( verbosity_ == VERBOSE ) print();
   
   // evaluate PFJet Benchmark 
   
-	if(doPFJetBenchmark_) { // start PFJet Benchmark
-	
-	PFJetBenchmark_.process(pfJets_, genJets_);
-	double resPt = PFJetBenchmark_.resPtMax();
-	double resChargedHadEnergy = PFJetBenchmark_.resChargedHadEnergyMax();
-	double resNeutralHadEnergy = PFJetBenchmark_.resNeutralHadEnergyMax();
-	double resNeutralEmEnergy = PFJetBenchmark_.resNeutralEmEnergyMax();
-	if( verbosity_ == VERBOSE ){ //start debug print
-	cout << " =====================PFJetBenchmark =================" << endl;
-	cout<<"Resol Pt max "<<resPt
-	    <<" resChargedHadEnergy Max " << resChargedHadEnergy
-		<<" resNeutralHadEnergy Max " << resNeutralHadEnergy
-	    << " resNeutralEmEnergy Max "<< resNeutralEmEnergy << endl;
-	 } // end debug print
-//	 if (resNeutralEmEnergy>0.5) return true;
-//	 else return false;
-	}// end PFJet Benchmark
+  if(doPFJetBenchmark_) { // start PFJet Benchmark
+        
+    PFJetBenchmark_.process(pfJets_, genJets_);
+    double resPt = PFJetBenchmark_.resPtMax();
+    double resChargedHadEnergy = PFJetBenchmark_.resChargedHadEnergyMax();
+    double resNeutralHadEnergy = PFJetBenchmark_.resNeutralHadEnergyMax();
+    double resNeutralEmEnergy = PFJetBenchmark_.resNeutralEmEnergyMax();
+    if( verbosity_ == VERBOSE ){ //start debug print
+      cout << " =====================PFJetBenchmark =================" << endl;
+      cout<<"Resol Pt max "<<resPt
+          <<" resChargedHadEnergy Max " << resChargedHadEnergy
+          <<" resNeutralHadEnergy Max " << resNeutralHadEnergy
+          << " resNeutralEmEnergy Max "<< resNeutralEmEnergy << endl;
+    } // end debug print
+    //   if (resNeutralEmEnergy>0.5) return true;
+    //   else return false;
+  }// end PFJet Benchmark
   
   // evaluate tau Benchmark 
   
-	if( goodevent && doTauBenchmark_) { // start tau Benchmark
-	double deltaEt = 0.;
-	deltaEt  = tauBenchmark( *pfCandidates_ ); 
-	if( verbosity_ == VERBOSE ) cout<<"delta E_t ="<<deltaEt <<endl;
-  //      cout<<"delta E_t ="<<deltaEt<<" delta E_t Other ="<<deltaEt1<<endl;
+  if( goodevent && doTauBenchmark_) { // start tau Benchmark
+    double deltaEt = 0.;
+    deltaEt  = tauBenchmark( *pfCandidates_ ); 
+    if( verbosity_ == VERBOSE ) cout<<"delta E_t ="<<deltaEt <<endl;
+    //      cout<<"delta E_t ="<<deltaEt<<" delta E_t Other ="<<deltaEt1<<endl;
 
-  //   if( deltaEt>0.4 ) {
-  //     cout<<deltaEt<<endl;
-  //     return true;
-  //   }  
-  //   else return false;
+    //   if( deltaEt>0.4 ) {
+    //     cout<<deltaEt<<endl;
+    //     return true;
+    //   }  
+    //   else return false;
 
   
   } // end tau Benchmark
@@ -1126,7 +1126,7 @@ bool PFRootEventManager::readFromSimulation(int entry) {
   }
   if(recPFBranch_) {
     recPFBranch_->GetEntry(entry);
-    }
+  }
 
   tree_->GetEntry( entry, 0 );
 
@@ -1164,27 +1164,27 @@ bool PFRootEventManager::readFromSimulation(int entry) {
   //       fillOutEventWithCaloTowers( caloTowers_ );
   //   } 
 
-//   if(rechitsECALBranch_) {
-//     PreprocessRecHits( rechitsECAL_ , findRecHitNeighbours_);
-//   }
-//   if(rechitsHCALBranch_) {
-//     PreprocessRecHits( rechitsHCAL_ , findRecHitNeighbours_);
-//   }
-//   if(rechitsPSBranch_) {
-//     PreprocessRecHits( rechitsPS_ , findRecHitNeighbours_);
-//   }
-//   if(clustersECALBranch_ && !doClustering_) {
-//     for(unsigned i=0; i<clustersECAL_->size(); i++) 
-//       (*clustersECAL_)[i].calculatePositionREP();
-//   }
-//   if(clustersHCALBranch_ && !doClustering_) {
-//     for(unsigned i=0; i<clustersHCAL_->size(); i++) 
-//       (*clustersHCAL_)[i].calculatePositionREP();    
-//   }
-//   if(clustersPSBranch_ && !doClustering_) {
-//     for(unsigned i=0; i<clustersPS_->size(); i++) 
-//       (*clustersPS_)[i].calculatePositionREP();    
-//   }
+  //   if(rechitsECALBranch_) {
+  //     PreprocessRecHits( rechitsECAL_ , findRecHitNeighbours_);
+  //   }
+  //   if(rechitsHCALBranch_) {
+  //     PreprocessRecHits( rechitsHCAL_ , findRecHitNeighbours_);
+  //   }
+  //   if(rechitsPSBranch_) {
+  //     PreprocessRecHits( rechitsPS_ , findRecHitNeighbours_);
+  //   }
+  //   if(clustersECALBranch_ && !doClustering_) {
+  //     for(unsigned i=0; i<clustersECAL_->size(); i++) 
+  //       (*clustersECAL_)[i].calculatePositionREP();
+  //   }
+  //   if(clustersHCALBranch_ && !doClustering_) {
+  //     for(unsigned i=0; i<clustersHCAL_->size(); i++) 
+  //       (*clustersHCAL_)[i].calculatePositionREP();    
+  //   }
+  //   if(clustersPSBranch_ && !doClustering_) {
+  //     for(unsigned i=0; i<clustersPS_->size(); i++) 
+  //       (*clustersPS_)[i].calculatePositionREP();    
+  //   }
 
   return goodevent;
 }
@@ -1730,7 +1730,7 @@ void PFRootEventManager::reconstructPFJets() {
   // Warning:
   // basePFCandidates_ Collection lifetime ==  pfJets_ Collection lifetime
   for(unsigned i=0; i<pfCandidates_->size(); i++) { 
-	basePFCandidates_.push_back( (*pfCandidates_)[i].clone() );
+    basePFCandidates_.push_back( (*pfCandidates_)[i].clone() );
   }
  
   vector<ProtoJet> protoJets;
@@ -1740,7 +1740,7 @@ void PFRootEventManager::reconstructPFJets() {
   typedef vector <ProtoJet>::const_iterator IPJ;
   for  (IPJ ipj = protoJets.begin(); ipj != protoJets.end (); ipj++) {
     reco::PFJet pfj = mjet.makePFJet(*ipj);
-	pfJets_.push_back(pfj);  
+    pfJets_.push_back(pfj);  
   } // loop on protojets IPJ
 
 }
@@ -1755,7 +1755,7 @@ void PFRootEventManager::reconstructFWLiteJets(const reco::CandidateCollection& 
   jetMaker_.applyCuts (Candidates, &input); 
   if (jetAlgoType_==1) {// ICone 
     /// Produce jet collection using CMS Iterative Cone Algorithm  
-	     
+             
     jetMaker_.makeIterativeConeJets(input, &output);
   }
   if (jetAlgoType_==2) {// MCone
@@ -2206,7 +2206,7 @@ void  PFRootEventManager::print(ostream& out,int maxNLines ) const {
     out<<"Generated: "<<endl;
     for(unsigned i=0; i<genJets_.size(); i++) {      
       out<<i<<genJets_[i].print()<<endl;
-	// <<" invisible energy = "<<genJets_[i].invisibleEnergy()<<endl;
+      // <<" invisible energy = "<<genJets_[i].invisibleEnergy()<<endl;
     }        
     out<<endl;
     out<<"Calo: "<<endl;
@@ -2235,9 +2235,9 @@ void  PFRootEventManager::print(ostream& out,int maxNLines ) const {
 
 void
 PFRootEventManager::printGenParticles(std::ostream& out,
-                                 int maxNLines) const {
-				 
-				 
+                                      int maxNLines) const {
+                                 
+                                 
   const HepMC::GenEvent* myGenEvent = MCTruth_.GetEvent();
   if(!myGenEvent) return;
 
@@ -2264,105 +2264,105 @@ PFRootEventManager::printGenParticles(std::ostream& out,
 
     // We have here a subset of particles only. 
     // To be filled according to the needs.
-	switch(partId) {
-		case    1: { name = "d"; break; } 
-		case    2: { name = "u"; break; } 
-		case    3: { name = "s"; break; } 
-		case    4: { name = "c"; break; } 
-		case    5: { name = "b"; break; } 
-		case    6: { name = "t"; break; } 
-		case   -1: { name = "~d"; break; } 
-		case   -2: { name = "~u"; break; } 
-		case   -3: { name = "~s"; break; } 
-		case   -4: { name = "~c"; break; } 
-		case   -5: { name = "~b"; break; } 
-		case   -6: { name = "~t"; break; } 
-		case   11: { name = "e-"; break; }
-		case  -11: { name = "e+"; break; }
-		case   12: { name = "nu_e"; break; }
-		case  -12: { name = "~nu_e"; break; }
-		case   13: { name = "mu-"; break; }
-		case  -13: { name = "mu+"; break; }
-		case   14: { name = "nu_mu"; break; }
-		case  -14: { name = "~nu_mu"; break; }
-		case   15: { name = "tau-"; break; }
-		case  -15: { name = "tau+"; break; }
-		case   16: { name = "nu_tau"; break; }
-		case  -16: { name = "~nu_tau"; break; }
-		case   21: { name = "gluon"; break; }
-		case   22: { name = "gamma"; break; }
-		case   23: { name = "Z0"; break; }
-		case   24: { name = "W+"; break; }
-		case   25: { name = "H0"; break; }
-		case  -24: { name = "W-"; break; }
-		case  111: { name = "pi0"; break; }
-		case  113: { name = "rho0"; break; }
-		case  223: { name = "omega"; break; }
-		case  333: { name = "phi"; break; }
-		case  443: { name = "J/psi"; break; }
-		case  553: { name = "Upsilon"; break; }
-		case  130: { name = "K0L"; break; }
-		case  211: { name = "pi+"; break; }
-		case -211: { name = "pi-"; break; }
-		case  213: { name = "rho+"; break; }
-		case -213: { name = "rho-"; break; }
-		case  221: { name = "eta"; break; }
-		case  331: { name = "eta'"; break; }
-		case  441: { name = "etac"; break; }
-		case  551: { name = "etab"; break; }
-		case  310: { name = "K0S"; break; }
-		case  311: { name = "K0"; break; }
-		case -311: { name = "Kbar0"; break; }
-		case  321: { name = "K+"; break; }
-		case -321: { name = "K-"; break; }
-		case  411: { name = "D+"; break; }
-		case -411: { name = "D-"; break; }
-		case  421: { name = "D0"; break; }
-		case  431: { name = "Ds_+"; break; }
-		case -431: { name = "Ds_-"; break; }
-		case  511: { name = "B0"; break; }
-		case  521: { name = "B+"; break; }
-		case -521: { name = "B-"; break; }
-		case  531: { name = "Bs_0"; break; }
-		case  541: { name = "Bc_+"; break; }
-		case -541: { name = "Bc_+"; break; }
-		case  313: { name = "K*0"; break; }
-		case -313: { name = "K*bar0"; break; }
-		case  323: { name = "K*+"; break; }
-		case -323: { name = "K*-"; break; }
-		case  413: { name = "D*+"; break; }
-		case -413: { name = "D*-"; break; }
-		case  423: { name = "D*0"; break; }
-		case  513: { name = "B*0"; break; }
-		case  523: { name = "B*+"; break; }
-		case -523: { name = "B*-"; break; }
-		case  533: { name = "B*_s0"; break; }
-		case  543: { name = "B*_c+"; break; }
-		case -543: { name = "B*_c-"; break; }
-		case -2112: { name = "nbar0"; break; }
-		case  2112: { name = "n"; break; }
-		case  2114: { name = "Delta0"; break; }
-		case -2114: { name = "Deltabar0"; break; }
-		case  3122: { name = "Lambda0"; break; }
-		case -3122: { name = "Lambdabar0"; break; }
-		case  3112: { name = "Sigma-"; break; }
-		case -3112: { name = "Sigmabar+"; break; }
-		case  3212: { name = "Sigma0"; break; }
-		case -3212: { name = "Sigmabar0"; break; }
-		case  3222: { name = "Sigma+"; break; }
-		case -3222: { name = "Sigmabar-"; break; }
-		case  2212: { name = "p"; break; }
-		case -2212: { name = "~p"; break; }
-		case -2214: { name = "Delta-"; break; }
-		case  2214: { name = "Delta+"; break; }
-		case -2224: { name = "Deltabar--"; break; }
-		case  2224: { name = "Delta++"; break; }
-		default: { 
-			name = "unknown"; 
-			cout << "Unknown code : " << partId << endl;
-		}   
-	}
-	
+    switch(partId) {
+    case    1: { name = "d"; break; } 
+    case    2: { name = "u"; break; } 
+    case    3: { name = "s"; break; } 
+    case    4: { name = "c"; break; } 
+    case    5: { name = "b"; break; } 
+    case    6: { name = "t"; break; } 
+    case   -1: { name = "~d"; break; } 
+    case   -2: { name = "~u"; break; } 
+    case   -3: { name = "~s"; break; } 
+    case   -4: { name = "~c"; break; } 
+    case   -5: { name = "~b"; break; } 
+    case   -6: { name = "~t"; break; } 
+    case   11: { name = "e-"; break; }
+    case  -11: { name = "e+"; break; }
+    case   12: { name = "nu_e"; break; }
+    case  -12: { name = "~nu_e"; break; }
+    case   13: { name = "mu-"; break; }
+    case  -13: { name = "mu+"; break; }
+    case   14: { name = "nu_mu"; break; }
+    case  -14: { name = "~nu_mu"; break; }
+    case   15: { name = "tau-"; break; }
+    case  -15: { name = "tau+"; break; }
+    case   16: { name = "nu_tau"; break; }
+    case  -16: { name = "~nu_tau"; break; }
+    case   21: { name = "gluon"; break; }
+    case   22: { name = "gamma"; break; }
+    case   23: { name = "Z0"; break; }
+    case   24: { name = "W+"; break; }
+    case   25: { name = "H0"; break; }
+    case  -24: { name = "W-"; break; }
+    case  111: { name = "pi0"; break; }
+    case  113: { name = "rho0"; break; }
+    case  223: { name = "omega"; break; }
+    case  333: { name = "phi"; break; }
+    case  443: { name = "J/psi"; break; }
+    case  553: { name = "Upsilon"; break; }
+    case  130: { name = "K0L"; break; }
+    case  211: { name = "pi+"; break; }
+    case -211: { name = "pi-"; break; }
+    case  213: { name = "rho+"; break; }
+    case -213: { name = "rho-"; break; }
+    case  221: { name = "eta"; break; }
+    case  331: { name = "eta'"; break; }
+    case  441: { name = "etac"; break; }
+    case  551: { name = "etab"; break; }
+    case  310: { name = "K0S"; break; }
+    case  311: { name = "K0"; break; }
+    case -311: { name = "Kbar0"; break; }
+    case  321: { name = "K+"; break; }
+    case -321: { name = "K-"; break; }
+    case  411: { name = "D+"; break; }
+    case -411: { name = "D-"; break; }
+    case  421: { name = "D0"; break; }
+    case  431: { name = "Ds_+"; break; }
+    case -431: { name = "Ds_-"; break; }
+    case  511: { name = "B0"; break; }
+    case  521: { name = "B+"; break; }
+    case -521: { name = "B-"; break; }
+    case  531: { name = "Bs_0"; break; }
+    case  541: { name = "Bc_+"; break; }
+    case -541: { name = "Bc_+"; break; }
+    case  313: { name = "K*0"; break; }
+    case -313: { name = "K*bar0"; break; }
+    case  323: { name = "K*+"; break; }
+    case -323: { name = "K*-"; break; }
+    case  413: { name = "D*+"; break; }
+    case -413: { name = "D*-"; break; }
+    case  423: { name = "D*0"; break; }
+    case  513: { name = "B*0"; break; }
+    case  523: { name = "B*+"; break; }
+    case -523: { name = "B*-"; break; }
+    case  533: { name = "B*_s0"; break; }
+    case  543: { name = "B*_c+"; break; }
+    case -543: { name = "B*_c-"; break; }
+    case -2112: { name = "nbar0"; break; }
+    case  2112: { name = "n"; break; }
+    case  2114: { name = "Delta0"; break; }
+    case -2114: { name = "Deltabar0"; break; }
+    case  3122: { name = "Lambda0"; break; }
+    case -3122: { name = "Lambdabar0"; break; }
+    case  3112: { name = "Sigma-"; break; }
+    case -3112: { name = "Sigmabar+"; break; }
+    case  3212: { name = "Sigma0"; break; }
+    case -3212: { name = "Sigmabar0"; break; }
+    case  3222: { name = "Sigma+"; break; }
+    case -3222: { name = "Sigmabar-"; break; }
+    case  2212: { name = "p"; break; }
+    case -2212: { name = "~p"; break; }
+    case -2214: { name = "Delta-"; break; }
+    case  2214: { name = "Delta+"; break; }
+    case -2224: { name = "Deltabar--"; break; }
+    case  2224: { name = "Delta++"; break; }
+    default: { 
+      name = "unknown"; 
+      cout << "Unknown code : " << partId << endl;
+    }   
+    }
+        
     math::XYZTLorentzVector momentum1(p->momentum().px(),
                                       p->momentum().py(),
                                       p->momentum().pz(),
@@ -2381,7 +2381,7 @@ PFRootEventManager::printGenParticles(std::ostream& out,
     out.setf(std::ios::right, std::ios::adjustfield);
     
     out << std::setw(4) << p->barcode() << " " 
-              << name;
+        << name;
     
     for(unsigned int k=0;k<11-name.length() && k<12; k++) out << " ";  
     
@@ -2390,13 +2390,13 @@ PFRootEventManager::printGenParticles(std::ostream& out,
     if ( eta < -10. ) eta = -10.;
     
     out << std::setw(6) << std::setprecision(2) << eta << " " 
-	<< std::setw(6) << std::setprecision(2) << momentum1.phi() << " " 
-	<< std::setw(7) << std::setprecision(2) << momentum1.pt() << " " 
-	<< std::setw(7) << std::setprecision(2) << momentum1.e() << " " 
-	<< std::setw(4) << vertexId1 << " " 
-	<< std::setw(6) << std::setprecision(1) << vertex1.x() << " " 
-	<< std::setw(6) << std::setprecision(1) << vertex1.y() << " " 
-	<< std::setw(6) << std::setprecision(1) << vertex1.z() << " ";
+        << std::setw(6) << std::setprecision(2) << momentum1.phi() << " " 
+        << std::setw(7) << std::setprecision(2) << momentum1.pt() << " " 
+        << std::setw(7) << std::setprecision(2) << momentum1.e() << " " 
+        << std::setw(4) << vertexId1 << " " 
+        << std::setw(6) << std::setprecision(1) << vertex1.x() << " " 
+        << std::setw(6) << std::setprecision(1) << vertex1.y() << " " 
+        << std::setw(6) << std::setprecision(1) << vertex1.z() << " ";
 
 
     const HepMC::GenParticle* mother = 
@@ -2424,10 +2424,10 @@ PFRootEventManager::printGenParticles(std::ostream& out,
       }      
 
       out << std::setw(4) << vertexId2 << " "
-	  << std::setw(6) << std::setprecision(2) << vertex2.eta() << " " 
-	  << std::setw(6) << std::setprecision(2) << vertex2.phi() << " " 
-	  << std::setw(5) << std::setprecision(1) << vertex2.pt() << " " 
-	  << std::setw(6) << std::setprecision(1) << vertex2.z() << " ";
+          << std::setw(6) << std::setprecision(2) << vertex2.eta() << " " 
+          << std::setw(6) << std::setprecision(2) << vertex2.phi() << " " 
+          << std::setw(5) << std::setprecision(1) << vertex2.pt() << " " 
+          << std::setw(6) << std::setprecision(1) << vertex2.z() << " ";
 
       for ( unsigned id=0; id<children.size(); ++id )
         out << std::setw(4) << children[id]->barcode() << " ";
@@ -2607,14 +2607,14 @@ PFRootEventManager::readCMSSWJets() {
 
   cout<<"CMSSW Gen jets : size = " <<  genJetsCMSSW_.size() << endl;
   for ( unsigned i = 0; i < genJetsCMSSW_.size(); i++) {
-     cout<<"Gen jet Et : " <<  genJetsCMSSW_[i].et() << endl;
+    cout<<"Gen jet Et : " <<  genJetsCMSSW_[i].et() << endl;
   }
   cout<<"CMSSW PF jets : size = " <<  pfJetsCMSSW_.size() << endl;
   for ( unsigned i = 0; i < pfJetsCMSSW_.size(); i++) {
-     cout<<"PF jet Et : " <<  pfJetsCMSSW_[i].et() << endl;
+    cout<<"PF jet Et : " <<  pfJetsCMSSW_[i].et() << endl;
   }
   cout<<"CMSSW Calo jets : size = " <<  caloJetsCMSSW_.size() << endl;
   for ( unsigned i = 0; i < caloJetsCMSSW_.size(); i++) {
-     cout<<"Calo jet Et : " << caloJetsCMSSW_[i].et() << endl;
+    cout<<"Calo jet Et : " << caloJetsCMSSW_[i].et() << endl;
   }
 }

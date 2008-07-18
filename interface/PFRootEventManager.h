@@ -219,7 +219,7 @@ class PFRootEventManager {
 
   /// used by the reconstruct*Jets functions
   void reconstructFWLiteJets(const reco::CandidateCollection& Candidates,
-			     std::vector<ProtoJet>& output);
+                             std::vector<ProtoJet>& output);
 
 
   /// performs the tau benchmark 
