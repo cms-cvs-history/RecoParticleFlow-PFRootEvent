@@ -303,7 +303,7 @@ tau_benchmark cone_merge 100
 
 //PFJet benchmark options ---------------------------------------------------
 
-pfjet_benchmark	on/off	0
+pfjet_benchmark	on/off	1
 
 //debug yes/no
 pfjet_benchmark debug 0
@@ -320,7 +320,7 @@ pfjet_benchmark deltaRMax 0.1
 
 // FWLITE CMSSW Jet Algorithm options --------------------------------------
 
-jets 	on/off 0
+jets 	on/off 1
 jets 	debug  0
 
 // Jet Algo : 1= ICone; 2=MCone; 3=FastJet

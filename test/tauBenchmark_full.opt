@@ -58,7 +58,7 @@ root recCaloJetBranchName	recoCaloJets_iterativeCone5CaloJets__PROD.obj
 
 
 // GenParticleCandidates
-root genParticleBaseCandidates_branch	recoCandidatesOwned_genParticlesAllStableNoNuBSM__PROD.obj
+root genParticlesPtrVector_branch	recoCandidatesOwned_genParticlesAllStableNoNuBSM__PROD.obj
 
 // CaloTowersCandidates
 root caloTowerBaseCandidates_branch  recoCandidatesOwned_caloTowers__PROD.obj
