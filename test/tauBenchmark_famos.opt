@@ -287,7 +287,7 @@ print verbosity 0
 
 //tau benchmark options ---------------------------------------------------
 
-tau_benchmark	on/off	1
+tau_benchmark	on/off	0
 
 //debug yes/no
 tau_benchmark debug 0
@@ -315,7 +315,7 @@ pfjet_benchmark outjetfile pfjetBenchmark.root
 pfjet_benchmark PlotAgainstReco 0
 
 //minimum deltaR distance for matching pfjets/genjets
-pfjet_benchmark deltaRMax 0.1
+pfjet_benchmark deltaRMax 5.0
 
 
 // FWLITE CMSSW Jet Algorithm options --------------------------------------
@@ -330,7 +330,7 @@ jets  EtInputCut 0.2
 jets  EInputCut 0.
 // IC parameter
 jets  seedThreshold 1.0
-jets  coneRadius 0.5
+jets  coneRadius 5.0
 // MidPointCone
 jets  coneAreaFraction 2
 jets  maxPairSize 2
