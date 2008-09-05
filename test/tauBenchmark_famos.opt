@@ -2,7 +2,6 @@
 root outfile tauBenchmark.root
 root outtree 1
 
-
 //colin	mode 1
 
 
@@ -248,11 +247,11 @@ particle_flow multilink 1
 
 // number of sigmas for neutral energy detection
 particle_flow   nsigma_ECAL    3
-particle_flow   nsigma_HCAL    1.7
+particle_flow   nsigma_HCAL    1.0
 
 //Alogrithm to recover the clusters 
 //that belong to charged hadrons
-particle_flow   clusterRecovery 1 
+particle_flow   clusterRecovery 1
 
 particle_flow   mergedPhotons_mvaCut 		0.5
 particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_RELEASE_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt
@@ -286,8 +285,8 @@ print genParticles 0
 print verbosity 0
 
 //tau benchmark options ---------------------------------------------------
-
-tau_benchmark	on/off	0
+`
+tau_benchmark	on/off	1
 
 //debug yes/no
 tau_benchmark debug 0
