@@ -5,7 +5,8 @@ root outtree 1
 
 //colin	mode 1
 
-root file ../../Configuration/test/blocks_full.root
+root file ../../../blocks_full.root
+//root file ../../../solosim.root
 // root file /afs/cern.ch/user/d/dellaneg/public/tau50_1_8_0_famos.root
 // filter ------------------------------------------------------------
 
@@ -33,7 +34,7 @@ root clusters_PS_branch    recoPFClusters_particleFlowClusterPS__PROD.obj
 root MCTruth_branch  edmHepMCProduct_source__PROD.obj
 
 
-// root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_PROD.obj
+ root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_PROD.obj
 
 root caloTowers_branch     CaloTowersSorted_towerMaker__PROD.obj
 
@@ -44,8 +45,8 @@ root stdTracks_branch      recoTracks_generalTracks__PROD.obj
 
 // true particles branch
 
+//root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__PROD.obj
 root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__PROD.obj
-
 
 // jet branches:
 
@@ -260,6 +261,22 @@ particle_flow   clusterRecovery 1
 particle_flow   mergedPhotons_mvaCut 		0.5
 particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt
 particle_flow   mergedPhotons_PSCut  0.001   
+
+
+
+//MICHELE for FULL SIMULATION
+Simulation Fast 0
+
+// PFElectrons
+particle_flow 	final_chi2cut_gsfecal  900.
+particle_flow   final_chi2cut_bremecal  25.
+particle_flow 	final_chi2cut_gsfhcal  100.
+particle_flow   final_chi2cut_bremhcal  25.
+particle_flow 	final_chi2cut_gsfps  100.
+particle_flow   final_chi2cut_bremps  25.
+particle_flow   electron_mvaCut     -0.4
+particle_flow   usePFElectrons      1
+particle_flow   electronID_mvaWeightFile    ${CMSSW_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_BDT.weights_finalID_hzz-pions.txt
 
 //calibration
 // particle_flow   ecalib 0.108 1.050
