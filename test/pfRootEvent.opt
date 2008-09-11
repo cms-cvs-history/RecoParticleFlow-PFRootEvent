@@ -43,6 +43,8 @@ root caloTowers_branch     CaloTowersSorted_towerMaker__Rec.obj
 root recTracks_branch      recoPFRecTracks_elecpreid__BLOCK.obj
 //root stdTracks_branch      recoTracks_trackRefitter__BLOCK.obj
 
+root gsfrecTracks_branch   recoGsfPFRecTracks_pfTrackElec__BLOCK.obj
+
 // true particles branch
 
 root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__BLOCK.obj

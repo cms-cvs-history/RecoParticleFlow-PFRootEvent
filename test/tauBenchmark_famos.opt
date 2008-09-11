@@ -5,7 +5,7 @@ root outtree 1
 //colin	mode 1
 
 
-root file ../../Configuration/test/display.root
+root file ../../Configuration/test/all.root
 
 // filter ------------------------------------------------------------
 
@@ -32,6 +32,7 @@ root clusters_PS_branch    recoPFClusters_particleFlowClusterPS__PROD.obj
 // HepMCProduct branch
 root MCTruth_branch  edmHepMCProduct_source__PROD.obj
 
+root gsfrecTracks_branch   recoGsfPFRecTracks_pfTrackElec__PROD.obj
 
 // root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_PROD.obj
 
