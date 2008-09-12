@@ -5,7 +5,10 @@ root outtree 1
 
 //colin	mode 1
 
-root file ../../../blocks_full.root
+//root file ../../../blocks_full.root
+
+//root file ../../../blocks_full_conversion.root
+root file ../../../blocks_full_nuclear.root
 //root file ../../../solosim.root
 // root file /afs/cern.ch/user/d/dellaneg/public/tau50_1_8_0_famos.root
 // filter ------------------------------------------------------------
@@ -68,6 +71,15 @@ root caloTowerBaseCandidates_branch  recoCandidatesOwned_caloTowers__PROD.obj
 // Particle Flow Candidates
 root ParticleFlowCandbranch    recoCandidatesOwned_particleFlowJetCandidates__PROD.obj
 
+
+//Nuclear Interactions
+root  nuclear_branch  recoPFNuclearInteractions_pfNuclear__PROD.obj
+
+// PF Conversion
+root conversion_branch recoPFConversions_pfConversions__PROD.obj
+
+// MUON
+root muon_branch recoMuons_muons__PROD.obj
 
 //---------------
 
