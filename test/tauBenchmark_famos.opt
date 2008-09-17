@@ -5,7 +5,7 @@ root outtree 1
 //colin	mode 1
 
 
-root file ../../Configuration/test/all.root
+root file ../../Configuration/test/display.root
 
 // filter ------------------------------------------------------------
 
