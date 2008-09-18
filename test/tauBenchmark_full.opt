@@ -8,7 +8,7 @@ root outtree 1
 //root file ../../../blocks_full.root
 
 //root file ../../../blocks_full_conversion.root
-root file ../../../blocks_full_nuclear.root
+root file /home/pioppi/work/nuclear/CMSSW_2_1_6/src/blocks_full_nuclear.root
 //root file ../../../solosim.root
 // root file /afs/cern.ch/user/d/dellaneg/public/tau50_1_8_0_famos.root
 // filter ------------------------------------------------------------
@@ -241,6 +241,13 @@ particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//
 blockAlgo debug 0
 // Debug PFAlgo
 PFAlgo debug 0
+
+
+//CONVERSION,NUCLEAR, V0
+
+particle_flow useConversion 0
+particle_flow useNuclear 1
+
 
 // Track Quality Cut: Tracks are kept if DPt/Pt < Cut
 particle_flow DPtoverPt_Cut   999.9
