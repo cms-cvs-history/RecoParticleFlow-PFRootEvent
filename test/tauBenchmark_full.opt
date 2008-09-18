@@ -245,7 +245,9 @@ PFAlgo debug 0
 
 //CONVERSION,NUCLEAR, V0
 
-particle_flow useConversion 0
+// This sets on or off the use of conversions in PFAlgo
+particle_flow usePFConversions 0
+
 particle_flow useNuclear 1
 
 
