@@ -266,9 +266,11 @@ particle_flow   final_chi2cut_bremhcal  25.
 particle_flow 	final_chi2cut_gsfps  100.
 particle_flow   final_chi2cut_bremps  25.
 particle_flow   electron_mvaCut     -0.4
-particle_flow   usePFElectrons      1
+particle_flow   usePFElectrons      0
 particle_flow   electronID_mvaWeightFile    ${CMSSW_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_BDT.weights_finalID_hzz-pions.txt
 
+// PFConversions
+particle_flow   usePFConversions      0
 
 //calibration
 // particle_flow   ecalib 0.108 1.050
