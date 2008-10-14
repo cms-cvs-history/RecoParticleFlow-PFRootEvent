@@ -245,6 +245,8 @@ particle_flow   ecalib 0 1
 // particle_flow   algorithm 2
 particle_flow   debug 0
 
+particle_flow  newCalib 0
+
 // print flags ------------------------------------------------------------
 // for PFRootEventManager::print()
 
