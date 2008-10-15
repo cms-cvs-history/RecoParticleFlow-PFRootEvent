@@ -5,8 +5,8 @@ root outtree 1
 
 //colin	mode 1
 
-
-root file ../../PFBlockProducer/test/QCD20_famos.root
+root file ../../Configuration/test/display.root
+//root file ../../PFBlockProducer/test/QCD20_famos.root
 
 // filter ------------------------------------------------------------
 
@@ -33,6 +33,7 @@ root clusters_PS_branch    recoPFClusters_particleFlowClusterPS__PROD.obj
 // HepMCProduct branch
 root MCTruth_branch  edmHepMCProduct_source__PROD.obj
 
+root gsfrecTracks_branch   recoGsfPFRecTracks_pfTrackElec__PROD.obj
 
 // root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_PROD.obj
 
@@ -214,16 +215,10 @@ clustering posCalc_p1_PS                0
 
 // particle flow parameters ----------------------------------------------
 
-
-particle_flow resolution_map_ECAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
-particle_flow resolution_map_ECAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
-particle_flow resolution_map_HCAL_eta /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
-particle_flow resolution_map_HCAL_phi /afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms//data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
-
-// particle_flow resolution_map_ECAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
-// particle_flow resolution_map_ECAL_phi /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
-// particle_flow resolution_map_HCAL_eta /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
-// particle_flow resolution_map_HCAL_phi /opt/exp_soft/cmss/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
+particle_flow resolution_map_ECAL_eta ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_eta.dat
+particle_flow resolution_map_ECAL_phi ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_ECAL_phi.dat
+particle_flow resolution_map_HCAL_eta ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_eta.dat
+particle_flow resolution_map_HCAL_phi ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFBlockProducer/2/RecoParticleFlow/PFBlockProducer/data/resmap_HCAL_phi.dat
 
 // Debug blockAlgo
 blockAlgo debug 0
@@ -253,19 +248,69 @@ particle_flow multilink 1
 
 // number of sigmas for neutral energy detection
 particle_flow   nsigma_ECAL    3
-particle_flow   nsigma_HCAL    1.7
+particle_flow   nsigma_HCAL    1.0
 
 //Alogrithm to recover the clusters 
 //that belong to charged hadrons
-particle_flow   clusterRecovery 1 
+particle_flow   clusterRecovery 0
 
 particle_flow   mergedPhotons_mvaCut 		0.5
-particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt
+particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_RELEASE_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt 
 particle_flow   mergedPhotons_PSCut  0.001   
 
-//calibration
+// PFElectrons
+particle_flow 	final_chi2cut_gsfecal  900.
+particle_flow   final_chi2cut_bremecal  25.
+particle_flow 	final_chi2cut_gsfhcal  100.
+particle_flow   final_chi2cut_bremhcal  25.
+particle_flow 	final_chi2cut_gsfps  100.
+particle_flow   final_chi2cut_bremps  25.
+particle_flow   electron_mvaCut     -0.4
+particle_flow   usePFElectrons      0
+particle_flow   electronID_mvaWeightFile    ${CMSSW_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_BDT.weights_finalID_hzz-pions.txt
+
+// PFConversions
+particle_flow   usePFConversions      0
+
+// Naive calibration
 // particle_flow   ecalib 0.108 1.050
 particle_flow   ecalib 0 1
+particle_flow 	calib_ECAL_HCAL_eslope  1.05
+particle_flow  	calib_ECAL_HCAL_hslope  1.06
+particle_flow   calib_ECAL_HCAL_offset  6.11
+  
+particle_flow	calib_HCAL_slope    2.17
+particle_flow 	calib_HCAL_offset   1.73
+particle_flow 	calib_HCAL_damping  2.49
+
+particle_flow  newCalib 0
+
+// Brand-new calibration parameters
+//Apply corrections?
+correction	doCorrection	1
+correction	doEtaCorrection	1
+//Bulk correction parameters
+correction	globalP0 	-2.315
+correction	globalP1 	1.05
+correction	globalP2 	0.0
+//Low energy correction parameters
+correction	correctionLowLimit	10.0232
+correction	lowEP0			5.906466e-01
+correction	lowEP1			4.608835e-01
+correction	allowNegativeEnergy	0
+
+//How to split between ecalOnly, hcalOnly and ecalHcal
+evolution	ecalECut		0.0
+evolution	hcalECut		0.0
+evolution	barrelEndcapEtaDiv	1.4
+
+//Use hand fitted parameters specified below
+evolution 	ecalHcalEcalBarrel 	    0.0    0.0     1.15   0.90   -0.035   1.1
+evolution 	ecalHcalEcalEndcap 	    0.280  5.0     1.10   0.40   -0.020   1.1
+evolution 	ecalHcalHcalBarrel 	    0.260  5.0     1.15   0.30   -0.020   1.1
+evolution	ecalHcalHcalEndcap  	    0.260  5.0     1.10   0.30   -0.020   1.1
+
+evolution  	etaCorrection              0.0127 0.0479  1.40    -0.50   1.00    1.50   -0.0132 0.009507
 
 // print flags ------------------------------------------------------------
 // for PFRootEventManager::print()
@@ -288,6 +333,10 @@ print genParticles 0
 
 // verbosity 
 print verbosity 1
+
+//mc Truth Matching
+//! Only works with FastSim
+print mctruthmatching 1
 
 //tau benchmark options ---------------------------------------------------
 
