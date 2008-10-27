@@ -336,7 +336,7 @@ print verbosity 1
 
 //mc Truth Matching
 //! Only works with FastSim
-print mctruthmatching 1
+print mctruthmatching 0
 
 //tau benchmark options ---------------------------------------------------
 
