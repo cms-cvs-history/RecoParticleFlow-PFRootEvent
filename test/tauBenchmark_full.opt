@@ -281,7 +281,7 @@ particle_flow   nsigma_HCAL    1.7
 particle_flow   clusterRecovery 1 
 
 particle_flow   mergedPhotons_mvaCut 		0.5
-particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt
+particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_RELEASE_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt
 particle_flow   mergedPhotons_PSCut  0.001   
 
 
@@ -298,7 +298,7 @@ particle_flow 	final_chi2cut_gsfps  100.
 particle_flow   final_chi2cut_bremps  25.
 particle_flow   electron_mvaCut     -0.4
 particle_flow   usePFElectrons      1
-particle_flow   electronID_mvaWeightFile    ${CMSSW_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_BDT.weights_finalID_hzz-pions.txt
+particle_flow   electronID_mvaWeightFile    ${CMSSW_RELEASE_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_BDT.weights_finalID_hzz-pions.txt
 
 //calibration
 // particle_flow   ecalib 0.108 1.050
