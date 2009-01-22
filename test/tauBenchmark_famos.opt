@@ -225,8 +225,10 @@ blockAlgo debug 0
 // Debug PFAlgo
 PFAlgo debug 0
 
-// Track Quality Cut: Tracks are kept if DPt/Pt < Cut
-particle_flow DPtoverPt_Cut   999.9
+// Track Quality Cut: Tracks are kept if DPt/Pt < Cut * sigma(Had) 
+// and if nHit >= nHitCut
+particle_flow DPtoverPt_Cut  1. 1. 0.8 0.5
+particle_flow NHit_Cut 3 3 3 6
 
 // chi2 maximum limit for ECAL/Track association
 particle_flow chi2_ECAL_Track  100
