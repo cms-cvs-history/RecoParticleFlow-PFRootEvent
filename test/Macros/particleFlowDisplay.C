@@ -7,7 +7,7 @@ gSystem->Load("libRecoParticleFlowPFRootEvent.so");
 gSystem->Load("libCintex.so");
 ROOT::Cintex::Cintex::Enable();
 
-string opt = "tauBenchmark_famos.opt";
+string opt = "particleFlow.opt";
 
 // create a PFRootEventManager
 PFRootEventManager em( opt.c_str() );
