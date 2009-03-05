@@ -2315,7 +2315,7 @@ PFRootEventManager::tauBenchmark( const reco::PFCandidateCollection& candidates)
   vector<TLorentzVector> allcalotowers;
   //   vector<double>         allemenergy;
   //   vector<double>         allhadenergy;
-  double threshCaloTowers = 0;
+  double threshCaloTowers = 1E-10;
   for ( unsigned int i = 0; i < caloTowers_.size(); ++i) {
     
     if(caloTowers_[i].energy() < threshCaloTowers) {

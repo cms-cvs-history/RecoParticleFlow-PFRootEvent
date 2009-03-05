@@ -4,7 +4,6 @@ root outtree 1
 
 //colin	mode 1
 
-
 root file ../../Configuration/test/display.root
 
 // filter ------------------------------------------------------------
@@ -30,11 +29,13 @@ root clusters_HCAL_branch  recoPFClusters_particleFlowClusterHCAL__PROD.obj
 // PS clusters branch
 root clusters_PS_branch    recoPFClusters_particleFlowClusterPS__PROD.obj
 // HepMCProduct branch
-root MCTruth_branch  edmHepMCProduct_source__PROD.obj
-// Muon branch
-root muon_branch recoMuons_muons__PROD.obj
+root MCTruth_branch        edmHepMCProduct_generator__PROD.obj
 // GSF Track branch
 root gsfrecTracks_branch   recoGsfPFRecTracks_pfTrackElec__PROD.obj
+// Muon branch
+root muon_branch           recoMuons_muons__PROD.obj
+// Conversion branch
+root conversion_branch     recoPFConversions_pfConversions__PROD.obj
 
 // root clusters_island_barrel_branch recoBasicClusters_islandBasicClusters_islandBarrelBasicClusters_PROD.obj
 
@@ -42,7 +43,7 @@ root caloTowers_branch     CaloTowersSorted_towerMaker__PROD.obj
 
 // reconstructed tracks branch
 
-root recTracks_branch      recoPFRecTracks_elecpreid__PROD.obj
+root recTracks_branch      recoPFRecTracks_trackerDrivenElectronSeeds__PROD.obj
 //root stdTracks_branch      recoTracks_iterativeGSWithMaterialTracks__PROD.obj
 root stdTracks_branch      recoTracks_generalTracks__PROD.obj
 
@@ -60,6 +61,12 @@ root recPFJetBranchName 	recoPFJets_iterativeCone5PFJets__PROD.obj
 // Calo Jets read from root file
 root recCaloJetBranchName	recoCaloJets_iterativeCone5CaloJets__PROD.obj
 
+// Gen Jets read from root file
+root genParticlesforMETBranchName 	recoGenParticles_genParticles__PROD.obj
+// PF Jets read from root file
+root recPFMETBranchName 	recoPFMETs_pfMet__PROD.obj
+// Calo Jets read from root file
+root recCaloMETBranchName	recoCaloMETs_met__PROD.obj
 
 // GenParticleCandidates
 root genParticleforJets_branch	recoGenParticlesRefs_genParticlesForJets__PROD.obj
@@ -94,7 +101,7 @@ display  color_clusters		1
 // the eta/phi display zooms to the rechit with maximum energy. 
 // display/zoom_factor roughly gives the size of the view around this rechit
 // in number of ecal cells	
-display  zoom_factor		3
+display  zoom_factor		5
 
 
 //display reconstructed hits  yes/no
@@ -133,6 +140,7 @@ display track_attributes   8 1 8 1
 // color, line style, marker size 
 display simPart_attributes 4 2 1
 display drawPFBlock 0
+
 
 // clustering parameters ---------------------------------------------------
 
@@ -230,49 +238,48 @@ blockAlgo debug 0
 // Debug PFAlgo
 PFAlgo debug 0
 
-// Track Quality Cut: Tracks are kept if DPt/Pt < Cut
-particle_flow DPtoverPt_Cut   999.9
+// Track Quality Cut: Tracks are kept if DPt/Pt < Cut * sigma(Had) 
+// and if nHit >= nHitCut
+particle_flow DPtoverPt_Cut  1. 1. 0.8 0.5
+particle_flow NHit_Cut 3 3 3 6
 
 // chi2 maximum limit for ECAL/Track association
-particle_flow chi2_ECAL_Track  100
+particle_flow chi2_ECAL_Track  0
 // chi2 maximum limit for HCAL/Track association
-particle_flow chi2_HCAL_Track  100
+particle_flow chi2_HCAL_Track  0
 // chi2 maximum limit for ECAL/HCAL assoiation
-particle_flow chi2_ECAL_HCAL	10
+particle_flow chi2_ECAL_HCAL   0
 
 // chi2 maximum limit for PS/ECAL association
-particle_flow chi2_PS_ECAL	100
+particle_flow chi2_PS_ECAL	0
 // chi2 maximum limit for PS/Track association
-particle_flow chi2_PS_Track	100
+particle_flow chi2_PS_Track	0
 // chi2 maximum limit for PSH/PSH association
-particle_flow chi2_PSH_PSV	5
+particle_flow chi2_PSH_PSV	0
 
 // if true, using special algorithm to process
 // multiple track associations to the same hcal cluster
 particle_flow multilink 1
 
 // number of sigmas for neutral energy detection
-particle_flow   nsigma_ECAL    3
+particle_flow   nsigma_ECAL    0.0
 particle_flow   nsigma_HCAL    1.0
 
-//Alogrithm to recover the clusters 
-//that belong to charged hadrons
-particle_flow   clusterRecovery 0
-
 particle_flow   mergedPhotons_mvaCut 		0.5
-particle_flow	mergedPhotons_mvaWeightFile	${CMSSW_RELEASE_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt
+particle_flow	mergedPhotons_mvaWeightFile ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFProducer/1/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt
+//particle_flow	mergedPhotons_mvaWeightFile	../../PFProducer/data/MVAnalysis_MLP.weights.txt
 particle_flow   mergedPhotons_PSCut  0.001   
 
 // PFElectrons
 particle_flow 	final_chi2cut_gsfecal  900.
 particle_flow   final_chi2cut_bremecal  25.
 particle_flow 	final_chi2cut_gsfhcal  100.
-particle_flow   final_chi2cut_bremhcal  25.
+particle_flow   final_chi2cut_bremhcal 100.
 particle_flow 	final_chi2cut_gsfps  100.
 particle_flow   final_chi2cut_bremps  25.
-particle_flow   electron_mvaCut     -0.4
-particle_flow   usePFElectrons      0
-particle_flow   electronID_mvaWeightFile    ${CMSSW_RELEASE_BASE}/src/RecoParticleFlow/PFProducer/data/MVAnalysis_BDT.weights_finalID_hzz-pions.txt
+particle_flow   electron_mvaCut     -0.1
+particle_flow   usePFElectrons      1
+particle_flow   electronID_mvaWeightFile    ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFProducer/1/RecoParticleFlow/PFProducer/data/MVAnalysis_BDT.weights_PfElectrons23Jan.txt
 
 // PFConversions
 particle_flow   usePFConversions      0
@@ -288,7 +295,23 @@ particle_flow	calib_HCAL_slope    2.17
 particle_flow 	calib_HCAL_offset   1.73
 particle_flow 	calib_HCAL_damping  2.49
 
-particle_flow  newCalib 0
+
+// Calibration ntuple -BEGIN
+// Uncomment if you want a text file with the inputs needed
+// for calibration, and also comment the corresponding six
+// lines just above
+// calib  outfile  calib_130_100_1000.txt
+// particle_flow 	calib_ECAL_HCAL_eslope  1.0
+// particle_flow  	calib_ECAL_HCAL_hslope  1.0
+// particle_flow   calib_ECAL_HCAL_offset  0.0
+//  
+// particle_flow	calib_HCAL_slope    2.00
+// particle_flow 	calib_HCAL_offset   0.00
+// particle_flow 	calib_HCAL_damping  0.00
+// Calibration ntuple -END
+
+
+particle_flow  newCalib 2
 
 // Brand-new calibration parameters
 //Apply corrections?
@@ -376,6 +399,28 @@ pfjet_benchmark onlyTwoJets 1
 
 //minimum deltaR distance for matching pfjets/genjets
 pfjet_benchmark deltaRMax 0.1
+
+//PFMET benchmark options ---------------------------------------------------
+
+pfmet_benchmark	on/off	0
+
+//debug yes/no
+pfmet_benchmark debug 0
+	
+//pfjet benchmark outputfile
+pfmet_benchmark outmetfile pfmetBenchmark.root
+
+//PlotagainstReco  yes/no
+pfmet_benchmark PlotAgainstReco 0
+
+//MET cut
+pfmet_benchmark truemetcut = 10.0
+
+//MET cut (absolute value)
+pfmet_benchmark deltametcut = 30.0
+
+//phi cut (absolute value)
+pfmet_benchmark deltaphicut = 0.8
 
 // FWLITE CMSSW Jet Algorithm options --------------------------------------
 
