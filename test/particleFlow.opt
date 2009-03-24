@@ -29,7 +29,7 @@ root clusters_HCAL_branch  recoPFClusters_particleFlowClusterHCAL__PROD.obj
 // PS clusters branch
 root clusters_PS_branch    recoPFClusters_particleFlowClusterPS__PROD.obj
 // HepMCProduct branch
-root MCTruth_branch        edmHepMCProduct_generator__PROD.obj
+root MCTruth_branch        edmHepMCProduct_source__PROD.obj
 // GSF Track branch
 root gsfrecTracks_branch   recoGsfPFRecTracks_pfTrackElec__PROD.obj
 // Muon branch
@@ -43,7 +43,7 @@ root caloTowers_branch     CaloTowersSorted_towerMaker__PROD.obj
 
 // reconstructed tracks branch
 
-root recTracks_branch      recoPFRecTracks_trackerDrivenElectronSeeds__PROD.obj
+root recTracks_branch      recoPFRecTracks_elecpreid__PROD.obj
 //root stdTracks_branch      recoTracks_iterativeGSWithMaterialTracks__PROD.obj
 root stdTracks_branch      recoTracks_generalTracks__PROD.obj
 
@@ -266,11 +266,12 @@ particle_flow   nsigma_ECAL    0.0
 particle_flow   nsigma_HCAL    1.0
 
 particle_flow   mergedPhotons_mvaCut 		0.5
-particle_flow	mergedPhotons_mvaWeightFile ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFProducer/1/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt
-//particle_flow	mergedPhotons_mvaWeightFile	../../PFProducer/data/MVAnalysis_MLP.weights.txt
+// particle_flow	mergedPhotons_mvaWeightFile ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFProducer/1/RecoParticleFlow/PFProducer/data/MVAnalysis_MLP.weights.txt
+particle_flow	mergedPhotons_mvaWeightFile	../../PFProducer/data/MVAnalysis_MLP.weights.txt
 particle_flow   mergedPhotons_PSCut  0.001   
 
 // PFElectrons
+particle_flow   usePFElectrons      0
 particle_flow 	final_chi2cut_gsfecal  900.
 particle_flow   final_chi2cut_bremecal  25.
 particle_flow 	final_chi2cut_gsfhcal  100.
@@ -278,7 +279,6 @@ particle_flow   final_chi2cut_bremhcal 100.
 particle_flow 	final_chi2cut_gsfps  100.
 particle_flow   final_chi2cut_bremps  25.
 particle_flow   electron_mvaCut     -0.1
-particle_flow   usePFElectrons      1
 particle_flow   electronID_mvaWeightFile    ${CMSSW_DATA_PATH}/data-RecoParticleFlow-PFProducer/1/RecoParticleFlow/PFProducer/data/MVAnalysis_BDT.weights_PfElectrons23Jan.txt
 
 // PFConversions
