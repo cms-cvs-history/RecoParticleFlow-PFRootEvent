@@ -114,11 +114,14 @@ reco::MET METManager::computeGenMET(const reco::GenParticleCollection *genPartic
       if (vIgnoreParticlesIDs_.size()==0) std::cout << "Warning : METManager: vIgnoreParticlesIDs_.size()==0" << std::endl;
       for (unsigned int idc=0;idc<vIgnoreParticlesIDs_.size();++idc)
       {
-	if(abs((*genParticleList)[i].pdgId()) == vIgnoreParticlesIDs_[idc]) ignoreThisPart=true;
+	if(abs((*genParticleList)[i].pdgId()) == (int)vIgnoreParticlesIDs_[idc]) 
+	  ignoreThisPart=true;
       }
       for (unsigned int specificIdc=0;specificIdc<trueMetSpecificIdCut_.size();++specificIdc)
       {
-        if (abs((*genParticleList)[i].pdgId())==trueMetSpecificIdCut_[specificIdc] && fabs((*genParticleList)[i].eta()) > trueMetSpecificEtaCut_[specificIdc]) ignoreThisPart=true;
+        if (abs((*genParticleList)[i].pdgId())== (int)trueMetSpecificIdCut_[specificIdc] && 
+	    fabs((*genParticleList)[i].eta()) > trueMetSpecificEtaCut_[specificIdc]) 
+	  ignoreThisPart=true;
       }
 
       if (!ignoreThisPart) {
@@ -185,6 +188,15 @@ reco::MET METManager::recomputePFMET(const reco::PFCandidateCollection& pfCandid
   double sum_ex = 0.0;
   double sum_ey = 0.0;
   double sum_ez = 0.0;
+
+  double NeutralEMEt = 0.0;
+  double NeutralHadEt = 0.0;
+  double ChargedEMEt = 0.0;
+  double ChargedHadEt = 0.0;
+  double MuonEt = 0.0;
+  double type6Et = 0.0;
+  double type7Et = 0.0;
+
   for (unsigned int pfc=0;pfc<pfCandidates.size();++pfc) {
     double phi   = pfCandidates[pfc].phi();
     double theta = pfCandidates[pfc].theta();
@@ -194,19 +206,32 @@ reco::MET METManager::recomputePFMET(const reco::PFCandidateCollection& pfCandid
     sum_et += et;
     sum_ex += et*cos(phi);
     sum_ey += et*sin(phi);
+
+    // compute met specific data:
+    if (pfCandidates[pfc].particleId() == 1) ChargedHadEt += et;
+    if (pfCandidates[pfc].particleId() == 2) ChargedEMEt += et;
+    if (pfCandidates[pfc].particleId() == 3) MuonEt += et;
+    if (pfCandidates[pfc].particleId() == 4) NeutralEMEt += et;
+    if (pfCandidates[pfc].particleId() == 5) NeutralHadEt += et;
+    if (pfCandidates[pfc].particleId() == 6) type6Et += et;
+    if (pfCandidates[pfc].particleId() == 7) type7Et += et;
+
   }
+
+  const double Et_total=NeutralEMEt+NeutralHadEt+ChargedEMEt+ChargedHadEt+MuonEt+type6Et+type7Et;
 
   double met = sqrt( sum_ex*sum_ex + sum_ey*sum_ey );
   const LorentzVector p4( -sum_ex, -sum_ey, 0.0, met);
   const Point vtx(0.0,0.0,0.0);
  
   SpecificPFMETData specific;
-  // Initialize the container
-  specific.NeutralEMFraction = 0.0;
-  specific.NeutralHadFraction = 0.0;
-  specific.ChargedEMFraction = 0.0;
-  specific.ChargedHadFraction = 0.0;
-  specific.MuonFraction = 0.0;
+  specific.NeutralEMFraction = NeutralEMEt/Et_total;
+  specific.NeutralHadFraction = NeutralHadEt/Et_total;
+  specific.ChargedEMFraction = ChargedEMEt/Et_total;
+  specific.ChargedHadFraction = ChargedHadEt/Et_total;
+  specific.MuonFraction = MuonEt/Et_total;
+  specific.Type6Fraction = type6Et/Et_total;
+  specific.Type7Fraction = type7Et/Et_total;
 
   reco::PFMET specificPFMET( specific, sum_et, p4, vtx );
   return specificPFMET;
