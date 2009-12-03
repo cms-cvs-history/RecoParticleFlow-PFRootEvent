@@ -4,7 +4,7 @@ root outtree 1
 
 //colin	mode 1
 
-root file ../../Configuration/test/display.root
+root file rfio:///castor/cern.ch/user/b/beaudett/CMSSW_3_3_2/reprocessing/Reprocessing_122318.root
 
 // filter ------------------------------------------------------------
 
@@ -16,80 +16,80 @@ root file ../../Configuration/test/display.root
 // name of the branches of the input TTree. 
 
 // ECAL rechits branch
-root rechits_ECAL_branch  recoPFRecHits_particleFlowRecHitECAL__PROD.obj
+root rechits_ECAL_branch  recoPFRecHits_particleFlowRecHitECAL__REPROD.obj
 // HCAL rechits branch
-root rechits_HCAL_branch  recoPFRecHits_particleFlowRecHitHCAL__PROD.obj
+root rechits_HCAL_branch  recoPFRecHits_particleFlowRecHitHCAL__REPROD.obj
 // HFEM rechits branch
-root rechits_HFEM_branch  recoPFRecHits_particleFlowRecHitHCAL_HFEM_PROD.obj
+root rechits_HFEM_branch  recoPFRecHits_particleFlowRecHitHCAL_HFEM_REPROD.obj
 // HFHAD rechits branch
-root rechits_HFHAD_branch  recoPFRecHits_particleFlowRecHitHCAL_HFHAD_PROD.obj
+root rechits_HFHAD_branch  recoPFRecHits_particleFlowRecHitHCAL_HFHAD_REPROD.obj
 // PS rechits branch
-root rechits_PS_branch    recoPFRecHits_particleFlowRecHitPS__PROD.obj
+root rechits_PS_branch    recoPFRecHits_particleFlowRecHitPS__REPROD.obj
 
 // ECAL clusters branch
-root clusters_ECAL_branch  recoPFClusters_particleFlowClusterECAL__PROD.obj
+root clusters_ECAL_branch  recoPFClusters_particleFlowClusterECAL__REPROD.obj
 // HCAL clusters branch
-root clusters_HCAL_branch  recoPFClusters_particleFlowClusterHCAL__PROD.obj
+root clusters_HCAL_branch  recoPFClusters_particleFlowClusterHCAL__REPROD.obj
 // PS clusters branch
-root clusters_PS_branch    recoPFClusters_particleFlowClusterPS__PROD.obj
+root clusters_PS_branch    recoPFClusters_particleFlowClusterPS__REPROD.obj
 // HepMCProduct branch
-root MCTruth_branch        edmHepMCProduct_generator__PROD.obj
+root MCTruth_branch        edmHepMCProduct_generator__REPROD.obj
 // GSF Track branch
-root gsfrecTracks_branch   recoGsfPFRecTracks_pfTrackElec__PROD.obj
+root gsfrecTracks_branch   recoGsfPFRecTracks_pfTrackElec__REPROD.obj
 // Conversions GSF Track branch
-root convBremGsfrecTracks_branch   recoGsfPFRecTracks_pfTrackElec_Secondary_PROD.obj
+root convBremGsfrecTracks_branch   recoGsfPFRecTracks_pfTrackElec_Secondary_REPROD.obj
 
 // Muon branch
-root muon_branch           recoMuons_muons__PROD.obj
+root muon_branch           recoMuons_muons__REPROD.obj
 // Conversion branch
-root conversion_branch     recoPFConversions_pfConversions__PROD.obj
+root conversion_branch     recoPFConversions_pfConversions__REPROD.obj
 
-root caloTowers_branch     CaloTowersSorted_towerMaker__PROD.obj
+root caloTowers_branch     CaloTowersSorted_towerMaker__REPROD.obj
 
 // reconstructed tracks branch
 
-root recTracks_branch      recoPFRecTracks_trackerDrivenElectronSeeds__PROD.obj
-root stdTracks_branch      recoTracks_generalTracks__PROD.obj
+root recTracks_branch      recoPFRecTracks_trackerDrivenElectronSeeds__REPROD.obj
+root stdTracks_branch      recoTracks_generalTracks__REPROD.obj
 
 // true particles branch
 
-root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__PROD.obj
+root trueParticles_branch  recoPFSimParticles_particleFlowSimParticle__REPROD.obj
 
 
 // jet branches:
 
 // Gen Jets read from root file
-root genJetBranchName 	recoGenJets_iterativeCone5GenJets__PROD.obj
+root genJetBranchName 	recoGenJets_iterativeCone5GenJets__REPROD.obj
 // PF Jets read from root file
-root recPFJetBranchName 	recoPFJets_iterativeCone5PFJets__PROD.obj
+root recPFJetBranchName 	recoPFJets_iterativeCone5PFJets__REPROD.obj
 // Calo Jets read from root file
-root recCaloJetBranchName	recoCaloJets_iterativeCone5CaloJets__PROD.obj
+root recCaloJetBranchName	recoCaloJets_iterativeCone5CaloJets__REPROD.obj
 
 // Corrected calo Jets read from root file
-root reccorrCaloJetBranchName	recoCaloJets_L2L3CorJetIC5Calo__PROD.obj
+root reccorrCaloJetBranchName	recoCaloJets_L2L3CorJetIC5Calo__REPROD.obj
 
 // Gen Jets read from root file
-root genParticlesforMETBranchName 	recoGenParticles_genParticles__PROD.obj
+root genParticlesforMETBranchName 	recoGenParticles_genParticles__REPROD.obj
 // PF MET read from root file
-root recPFMETBranchName 	recoPFMETs_pfMet__PROD.obj
+root recPFMETBranchName 	recoPFMETs_pfMet__REPROD.obj
 // Calo MET read from root file
-root recCaloMETBranchName	recoCaloMETs_met__PROD.obj
+root recCaloMETBranchName	recoCaloMETs_met__REPROD.obj
 // TC MET read from root file
-root recTCMETBranchName		recoMETs_tcMet__PROD.obj
+root recTCMETBranchName		recoMETs_tcMet__REPROD.obj
 
 // GenParticleCandidates
-root genParticleforJets_branch	recoGenParticlesRefs_genParticlesForJets__PROD.obj
+root genParticleforJets_branch	recoGenParticlesRefs_genParticlesForJets__REPROD.obj
 
 // CaloTowersCandidates
-root caloTowerBaseCandidates_branch  recoCandidatesOwned_caloTowers__PROD.obj
+root caloTowerBaseCandidates_branch  recoCandidatesOwned_caloTowers__REPROD.obj
 
 // Particle Flow Candidates
-root particleFlowCand_branch    recoPFCandidates_particleFlow__PROD.obj
+root particleFlowCand_branch    recoPFCandidates_particleFlow__REPROD.obj
 
 
 
 // Primary vertices
-root primaryVertex_branch    recoVertexs_offlinePrimaryVertices__PROD.obj
+root primaryVertex_branch    recoVertexs_offlinePrimaryVertices__REPROD.obj
 
 
 //---------------
@@ -444,7 +444,7 @@ particle_flow   comparison  0
 
 //tau benchmark options ---------------------------------------------------
 
-tau_benchmark	on/off	1
+tau_benchmark	on/off	0
 
 //debug yes/no
 tau_benchmark debug 0
@@ -460,7 +460,7 @@ tau_benchmark cone_merge 0.0
 
 //PFJet benchmark options ---------------------------------------------------
 
-pfjet_benchmark	on/off	1
+pfjet_benchmark	on/off	0
 
 //debug yes/no
 pfjet_benchmark debug 0
@@ -479,7 +479,7 @@ pfjet_benchmark deltaRMax 0.1
 
 //PFMET benchmark options ---------------------------------------------------
 
-pfmet_benchmark	on/off	1
+pfmet_benchmark	on/off	0
 
 // propagate the Jet Energy Corrections to the caloMET on/off
 pfmet_benchmark JECinCaloMET 0
@@ -506,7 +506,7 @@ pfmet_benchmark trueMetSpecificEtaCut 2.4
 
 // PFCandidateBenchmark options   ------------------------------------------
 
-pfCandidate_benchmark on/off		1
+pfCandidate_benchmark on/off		0
 pfCandidate_benchmark subdirectory	Currently_not_used
 pfCandidate_benchmark dRMax		0.2
 pfCandidate_benchmark ptMin		2
