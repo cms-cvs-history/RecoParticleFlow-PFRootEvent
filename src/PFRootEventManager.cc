@@ -2161,10 +2161,7 @@ void PFRootEventManager::clustering() {
 
   // HF clustering -------------------------------------------
 
-  cout<<"filling mask hfem "<<endl;
   fillRecHitMask( mask, rechitsHFEM_ );
-  
-  cout<<mask.size()<<" "<<rechitsHFEM_.size()<<endl;
   clusterAlgoHFEM_.setMask( mask );  
   clusterAlgoHFEM_.doClustering( rechitsHFEM_ );
   clustersHFEM_ = clusterAlgoHFEM_.clusters();
