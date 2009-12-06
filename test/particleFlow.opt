@@ -4,7 +4,7 @@ root outtree 1
 
 //colin	mode 1
 
-root file rfio:///castor/cern.ch/user/b/beaudett/CMSSW_3_3_2/reprocessing/Reprocessing_122318.root
+root file ../../../RecoParticleFlow/Configuration/test/display.root
 
 // filter ------------------------------------------------------------
 
