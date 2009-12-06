@@ -2161,9 +2161,16 @@ void PFRootEventManager::clustering() {
 
   // HF clustering -------------------------------------------
 
+  cout<<"filling mask hfem "<<endl;
+  fillRecHitMask( mask, rechitsHFEM_ );
+  
+  cout<<mask.size()<<" "<<rechitsHFEM_.size()<<endl;
+  clusterAlgoHFEM_.setMask( mask );  
   clusterAlgoHFEM_.doClustering( rechitsHFEM_ );
   clustersHFEM_ = clusterAlgoHFEM_.clusters();
   
+  fillRecHitMask( mask, rechitsHFHAD_ );
+  clusterAlgoHFHAD_.setMask( mask );  
   clusterAlgoHFHAD_.doClustering( rechitsHFHAD_ );
   clustersHFHAD_ = clusterAlgoHFHAD_.clusters();
   
@@ -2396,6 +2403,10 @@ void PFRootEventManager::particleFlow() {
   fillClusterMask( ecalMask, *clustersECAL_ );
   vector<bool> hcalMask;
   fillClusterMask( hcalMask, *clustersHCAL_ );
+  vector<bool> hfemMask;
+  fillClusterMask( hfemMask, *clustersHFEM_ );
+  vector<bool> hfhadMask;
+  fillClusterMask( hfhadMask, *clustersHFHAD_ );
   vector<bool> psMask;
   fillClusterMask( psMask, *clustersPS_ );
   
@@ -2403,7 +2414,7 @@ void PFRootEventManager::particleFlow() {
 			 muonh,nuclh,convh,v0,
 			 ecalh, hcalh, hfemh, hfhadh, psh,
 			 trackMask,gsftrackMask,
-			 ecalMask, hcalMask, psMask );
+			 ecalMask, hcalMask, hfemMask, hfhadMask, psMask );
 
   pfBlockAlgo_.findBlocks();
   
@@ -3167,7 +3178,7 @@ void  PFRootEventManager::print(ostream& out,int maxNLines ) const {
       string seedstatus = "    ";
       if(clusterAlgoECAL_.isSeed(i) ) 
         seedstatus = "SEED";
-      printRecHit(rechitsECAL_[i], seedstatus.c_str(), out );
+      printRecHit(rechitsECAL_[i], i, seedstatus.c_str(), out );
     }
     out<<endl;
     out<<"HCAL RecHits =============================================="<<endl;
@@ -3175,7 +3186,7 @@ void  PFRootEventManager::print(ostream& out,int maxNLines ) const {
       string seedstatus = "    ";
       if(clusterAlgoHCAL_.isSeed(i) ) 
         seedstatus = "SEED";
-      printRecHit(rechitsHCAL_[i], seedstatus.c_str(), out);
+      printRecHit(rechitsHCAL_[i], i, seedstatus.c_str(), out);
     }
     out<<endl;
     out<<"HFEM RecHits =============================================="<<endl;
@@ -3183,7 +3194,7 @@ void  PFRootEventManager::print(ostream& out,int maxNLines ) const {
       string seedstatus = "    ";
       if(clusterAlgoHFEM_.isSeed(i) ) 
         seedstatus = "SEED";
-      printRecHit(rechitsHFEM_[i], seedstatus.c_str(), out);
+      printRecHit(rechitsHFEM_[i], i, seedstatus.c_str(), out);
     }
     out<<endl;
     out<<"HFHAD RecHits =============================================="<<endl;
@@ -3191,7 +3202,7 @@ void  PFRootEventManager::print(ostream& out,int maxNLines ) const {
       string seedstatus = "    ";
       if(clusterAlgoHFHAD_.isSeed(i) ) 
         seedstatus = "SEED";
-      printRecHit(rechitsHFHAD_[i], seedstatus.c_str(), out);
+      printRecHit(rechitsHFHAD_[i], i, seedstatus.c_str(), out);
     }
     out<<endl;
     out<<"PS RecHits ================================================"<<endl;
@@ -3199,7 +3210,7 @@ void  PFRootEventManager::print(ostream& out,int maxNLines ) const {
       string seedstatus = "    ";
       if(clusterAlgoPS_.isSeed(i) ) 
         seedstatus = "SEED";
-      printRecHit(rechitsPS_[i], seedstatus.c_str(), out);
+      printRecHit(rechitsPS_[i], i, seedstatus.c_str(), out);
     }
     out<<endl;
   }
@@ -3603,7 +3614,8 @@ PFRootEventManager::printGenParticles(std::ostream& out,
 }
 
 
-void  PFRootEventManager::printRecHit(const reco::PFRecHit& rh, 
+void  PFRootEventManager::printRecHit(const reco::PFRecHit& rh,
+				      unsigned index,  
                                       const char* seedstatus,
                                       ostream& out) const {
 
@@ -3615,7 +3627,7 @@ void  PFRootEventManager::printRecHit(const reco::PFRecHit& rh,
   
   TCutG* cutg = (TCutG*) gROOT->FindObject("CUTG");
   if( !cutg || cutg->IsInside( eta, phi ) ) 
-    out<<seedstatus<<" "<<rh<<endl;;
+    out<<index<<"\t"<<seedstatus<<" "<<rh<<endl;;
 }
 
 void  PFRootEventManager::printCluster(const reco::PFCluster& cluster,

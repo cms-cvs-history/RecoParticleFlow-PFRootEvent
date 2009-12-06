@@ -316,7 +316,7 @@ class PFRootEventManager {
   std::string  expand(const std::string& oldString) const;
 
   /// print a rechit
-  void   printRecHit(const reco::PFRecHit& rh, 
+  void   printRecHit(const reco::PFRecHit& rh, unsigned index, 
                      const char* seed="    ",
                      std::ostream& out = std::cout) const;
   
