@@ -366,10 +366,18 @@ class PFRootEventManager {
   /*   std::vector<int> getViewSizeEtaPhi() {return viewSizeEtaPhi_;} */
   /*   std::vector<int> getViewSize()       {return viewSize_;} */
   
-  void readCMSSWJets();
+  void readCMSSWJets();  
   
-  
-  
+  /// returns true if the event is accepted(have a look at the function implementation)
+  bool eventAccepted() const;
+
+  /// returns true if there is at least one jet with pT>pTmin
+  bool highPtJet( double ptMin ) const; 
+
+  /// returns true if there is a PFCandidate of a given type over a given pT
+  bool highPtPFCandidate( double ptMin, 
+			  reco::PFCandidate::ParticleType type = PFCandidate::X) const;
+
   // data members -------------------------------------------------------
 
   /// current event
@@ -817,5 +825,6 @@ class PFRootEventManager {
   
   std::auto_ptr<METManager>   metManager_; 
   
+
 };
 #endif

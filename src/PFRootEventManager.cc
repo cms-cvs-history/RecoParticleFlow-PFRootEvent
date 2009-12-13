@@ -1046,6 +1046,11 @@ void PFRootEventManager::readOptions(const char* file,
   options_->GetOpt("print", "verbosity", verbosity_ );
   cout<<"verbosity : "<<verbosity_<<endl;
 
+
+  // Filtering parameters ----------------------------------------------
+
+  
+
 }
 
 void PFRootEventManager::connect( const char* infilename ) {
@@ -1609,11 +1614,13 @@ bool PFRootEventManager::processEntry(int entry) {
   // call print() in verbose mode
   if( verbosity_ == VERBOSE ) print();
   
+  goodevent = eventAccepted(); 
+
   //COLIN the PFJet and PFMET benchmarks are very messy. 
   //COLIN    compare with the filling of the PFCandidateBenchmark, which is one line. 
   
   // evaluate PFJet Benchmark 
-  if(doPFJetBenchmark_) { // start PFJet Benchmark
+  if(goodevent && doPFJetBenchmark_) { // start PFJet Benchmark
 
     PFJetBenchmark_.process(pfJets_, genJets_);
     double resPt = PFJetBenchmark_.resPtMax();
@@ -1649,7 +1656,7 @@ bool PFRootEventManager::processEntry(int entry) {
 
   //COLIN would  be nice to move this long code to a separate function. 
   // is it necessary to re-set everything at each event?? 
-  if(doPFMETBenchmark_) { // start PFMet Benchmark
+  if(goodevent && doPFMETBenchmark_) { // start PFMet Benchmark
 
     // Fill here the various met benchmarks
     // pfMET vs GenMET
@@ -1679,7 +1686,7 @@ bool PFRootEventManager::processEntry(int entry) {
     }
   }// end PFMET Benchmark
 
-  if( doPFCandidateBenchmark_ ) {
+  if( goodevent && doPFCandidateBenchmark_ ) {
     pfCandidateManager_.fill( *pfCandidates_, genParticlesCMSSW_);
   }
     
@@ -1699,7 +1706,7 @@ bool PFRootEventManager::processEntry(int entry) {
 
   
   } // end tau Benchmark
-  
+
   if(goodevent && outTree_) 
     outTree_->Fill();
 
@@ -1710,6 +1717,32 @@ bool PFRootEventManager::processEntry(int entry) {
 
 }
 
+
+
+bool PFRootEventManager::eventAccepted() const {
+  // return highPtJet(10); 
+  return highPtPFCandidate( 10, PFCandidate::h ); 
+} 
+
+
+bool PFRootEventManager::highPtJet(double ptMin) const {
+  for( unsigned i=0; i<pfJets_.size(); ++i) {
+    if( pfJets_[i].pt() > ptMin ) return true;
+  }
+  return false;
+}
+
+bool PFRootEventManager::highPtPFCandidate( double ptMin, 
+					    PFCandidate::ParticleType type) const {
+  for( unsigned i=0; i<pfCandidates_->size(); ++i) {
+
+    const PFCandidate& pfc = (*pfCandidates_)[i];
+    if(type!= PFCandidate::X &&  
+       pfc.particleId() != type ) continue;
+    if( pfc.pt() > ptMin ) return true;
+  }
+  return false;
+}
 
 
 bool PFRootEventManager::readFromSimulation(int entry) {
