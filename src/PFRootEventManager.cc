@@ -64,6 +64,7 @@ PFRootEventManager::PFRootEventManager(const char* file)
   outTree_(0),
   outEvent_(0),
   //   clusters_(new reco::PFClusterCollection),
+  eventAuxiliary_( new edm::EventAuxiliary ),
   clustersECAL_(new reco::PFClusterCollection),
   clustersHCAL_(new reco::PFClusterCollection),
   clustersHFEM_(new reco::PFClusterCollection),
@@ -87,22 +88,35 @@ PFRootEventManager::PFRootEventManager(const char* file)
 
   readOptions(file, true, true);
  
+  initializeEventInformation();
        
   //   maxERecHitEcal_ = -1;
   //   maxERecHitHcal_ = -1;
 
 }
 
+
+void PFRootEventManager::initializeEventInformation() {
+
+  for( unsigned entry=0; entry<tree_->GetEntries(); ++entry) {
+    readEventAuxiliary( entry ); 
+    mapEventToEntry_[ eventAuxiliary_->event() ] = entry;
+  }
+
+  cout<<"Number of events: "<<mapEventToEntry_.size()
+      <<" starting with event: "<<mapEventToEntry_.begin()->first<<endl;
+}
+
+
 void PFRootEventManager::reset() { 
 
   if(outEvent_) {
     outEvent_->reset();
     outTree_->GetBranch("event")->SetAddress(&outEvent_);
-  } 
-  
-  
- 
+  }  
 }
+
+
 
 void PFRootEventManager::readOptions(const char* file, 
                                      bool refresh, 
@@ -1047,7 +1061,6 @@ void PFRootEventManager::readOptions(const char* file,
   cout<<"verbosity : "<<verbosity_<<endl;
 
 
-  // Filtering parameters ----------------------------------------------
 
   
 
@@ -1458,6 +1471,9 @@ void PFRootEventManager::connect( const char* infilename ) {
     }
   }
 
+  eventAuxiliaryBranch_ = tree_->GetBranch( "EventAuxiliary" );
+
+
   setAddresses();
 
 }
@@ -1466,6 +1482,7 @@ void PFRootEventManager::connect( const char* infilename ) {
 
 
 void PFRootEventManager::setAddresses() {
+
   if( rechitsECALBranch_ ) rechitsECALBranch_->SetAddress(&rechitsECAL_);
   if( rechitsHCALBranch_ ) rechitsHCALBranch_->SetAddress(&rechitsHCAL_);
   if( rechitsHFEMBranch_ ) rechitsHFEMBranch_->SetAddress(&rechitsHFEM_);
@@ -1541,6 +1558,27 @@ void PFRootEventManager::write() {
 }
 
 
+int PFRootEventManager::eventToEntry(int event) const {
+  
+  map<int, int>::const_iterator iE = mapEventToEntry_.find( event );
+  if( iE != mapEventToEntry_.end() ) 
+    return iE->second; 
+  else 
+    return -1;
+}
+
+bool PFRootEventManager::processEvent(int event) {
+
+  int entry = eventToEntry(event);
+  if( entry < 0 ) {
+    cout<<"event "<<event<<" is not present, sorry."<<endl;
+    return false;
+  }
+  else
+    return processEntry( eventToEntry(event) ); 
+} 
+
+
 bool PFRootEventManager::processEntry(int entry) {
 
   reset();
@@ -1549,13 +1587,17 @@ bool PFRootEventManager::processEntry(int entry) {
  
   if( outEvent_ ) outEvent_->setNumber(entry);
 
+  readEventAuxiliary( entry ); 
+
   if(verbosity_ == VERBOSE  || 
      // entry < 3000 ||
      (entry < 100 && entry%10 == 0) || 
      (entry < 1000 && entry%100 == 0) || 
      entry%1000 == 0 ) 
-    cout<<"process entry "<< entry << endl;
-  
+    cout<<"process entry "<< entry 
+	<<", event:"<<eventAuxiliary_->event()
+	<<", run "<<eventAuxiliary_->run()<< endl;
+
   bool goodevent =  readFromSimulation(entry);
 
   if(verbosity_ == VERBOSE ) {
@@ -1743,6 +1785,13 @@ bool PFRootEventManager::highPtPFCandidate( double ptMin,
   }
   return false;
 }
+
+
+void PFRootEventManager::readEventAuxiliary(int entry) {
+  eventAuxiliaryBranch_->SetAddress( &eventAuxiliary_ );
+  eventAuxiliaryBranch_->GetEntry( entry );
+}
+
 
 
 bool PFRootEventManager::readFromSimulation(int entry) {

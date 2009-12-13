@@ -3,6 +3,8 @@
 
 #include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
 
+#include "DataFormats/Provenance/interface/EventAuxiliary.h"
+
 #include "DataFormats/ParticleFlowReco/interface/PFRecHit.h"
 #include "DataFormats/ParticleFlowReco/interface/PFRecHitFwd.h"
 
@@ -188,6 +190,8 @@ class PFRootEventManager {
   /// destructor
   virtual ~PFRootEventManager();
   
+  void initializeEventInformation();
+
   virtual void write();
   
   /// reset before next event
@@ -211,9 +215,17 @@ class PFRootEventManager {
 
   /// sets addresses for all branches
   void setAddresses();
+
+  int eventToEntry(int event) const;
   
-  /// process one entry 
+  /// process one event (pass the CMS event number)
+  virtual bool processEvent(int event); 
+
+  /// process one entry (pass the TTree entry)
   virtual bool processEntry(int entry);
+
+  /// read event information
+  void readEventAuxiliary( int entry );
 
   /// read data from simulation tree
   bool readFromSimulation(int entry);
@@ -403,8 +415,10 @@ class PFRootEventManager {
   TH1F*            h_deltaETvisible_MCPF_;
  
 
-  // MC branches --------------------------
+  // branches --------------------------
   
+  TBranch*   eventAuxiliaryBranch_;
+
   /// rechits branch  
   TBranch*   hitsBranch_;          
   
@@ -507,6 +521,9 @@ class PFRootEventManager {
   TBranch*   recPFMETBranch_;
   
   
+  /// event auxiliary information
+  edm::EventAuxiliary*      eventAuxiliary_;
+
   /// rechits ECAL
   reco::PFRecHitCollection rechitsECAL_;
 
@@ -825,6 +842,6 @@ class PFRootEventManager {
   
   std::auto_ptr<METManager>   metManager_; 
   
-
+  std::map<int, int>  mapEventToEntry_;
 };
 #endif
