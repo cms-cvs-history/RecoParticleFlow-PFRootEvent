@@ -4,7 +4,7 @@ root outtree 1
 
 //colin	mode 1
 
-root file ../../../RecoParticleFlow/Configuration/test/display.root
+root file display.root
 
 // filter ------------------------------------------------------------
 
@@ -157,7 +157,7 @@ display  r/z      1
 // color, pscolor, style, size
 display cluster_attributes 2 5 20 1
 // color, line style, marker style, marker size 
-display track_attributes   8 1 8 1
+display track_attributes   8 1 8 0.5
 display gsf_attributes   419 2 23 1
 display brem_attributes   921 3 22 1
 // color, line style, marker size 
