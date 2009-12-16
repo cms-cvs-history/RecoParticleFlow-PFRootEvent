@@ -100,7 +100,8 @@ void PFRootEventManager::initializeEventInformation() {
 
   for( unsigned entry=0; entry<tree_->GetEntries(); ++entry) {
     readEventAuxiliary( entry ); 
-    mapEventToEntry_[ eventAuxiliary_->event() ] = entry;
+    
+    mapEventToEntry_[ eventAuxiliary_->run()][eventAuxiliary_->luminosityBlock()][eventAuxiliary_->event()] = entry;
   }
 
   cout<<"Number of events: "<<mapEventToEntry_.size()
@@ -1558,24 +1559,39 @@ void PFRootEventManager::write() {
 }
 
 
-int PFRootEventManager::eventToEntry(int event) const {
+int PFRootEventManager::eventToEntry(int run, int lumi, int event) const {
   
-  map<int, int>::const_iterator iE = mapEventToEntry_.find( event );
-  if( iE != mapEventToEntry_.end() ) 
-    return iE->second; 
-  else 
-    return -1;
+  RunsMap::const_iterator iR = mapEventToEntry_.find( run );
+  if( iR != mapEventToEntry_.end() ) {
+    LumisMap::const_iterator iL = iR->second.find( lumi );
+    if( iL != iR->second.end() ) {
+      EventToEntry::const_iterator iE = iL->second.find( event );
+      if( iE != iL->second.end() ) {
+	return iE->second;
+      }  
+      else {
+	cout<<"event "<<event<<" not found in run "<<run<<", lumi "<<lumi<<endl;
+      }
+    }
+    else {
+      cout<<"lumi "<<lumi<<" not found in run "<<run<<endl;
+    }
+  }
+  else{
+    cout<<"run "<<run<<" not found"<<endl;
+  }
+  return -1;    
 }
 
-bool PFRootEventManager::processEvent(int event) {
+bool PFRootEventManager::processEvent(int run, int lumi, int event) {
 
-  int entry = eventToEntry(event);
+  int entry = eventToEntry(run, lumi, event);
   if( entry < 0 ) {
     cout<<"event "<<event<<" is not present, sorry."<<endl;
     return false;
   }
   else
-    return processEntry( eventToEntry(event) ); 
+    return processEntry( entry ); 
 } 
 
 

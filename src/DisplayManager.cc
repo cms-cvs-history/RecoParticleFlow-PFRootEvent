@@ -861,9 +861,9 @@ void DisplayManager::createGTrack( reco::PFRecTrack &tr,
 }
 
 
-void DisplayManager::displayEvent(int event) {
+void DisplayManager::displayEvent(int run, int lumi, int event) {
   reset();
-  em_->processEvent(event);  
+  em_->processEvent(run, lumi, event);  
   eventNumber_= em_->eventNumber();
   loadGraphicObjects();
   isGraphicLoaded_= true;

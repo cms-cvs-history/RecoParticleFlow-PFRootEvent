@@ -216,10 +216,10 @@ class PFRootEventManager {
   /// sets addresses for all branches
   void setAddresses();
 
-  int eventToEntry(int event) const;
+  int eventToEntry(int run, int lumi, int event) const;
   
   /// process one event (pass the CMS event number)
-  virtual bool processEvent(int event); 
+  virtual bool processEvent(int run, int lumi, int event); 
 
   /// process one entry (pass the TTree entry)
   virtual bool processEntry(int entry);
@@ -842,6 +842,9 @@ class PFRootEventManager {
   
   std::auto_ptr<METManager>   metManager_; 
   
-  std::map<int, int>  mapEventToEntry_;
+  typedef std::map<int, int>  EventToEntry;
+  typedef std::map<int, EventToEntry> LumisMap;
+  typedef std::map<int, LumisMap> RunsMap;
+  RunsMap  mapEventToEntry_;
 };
 #endif
