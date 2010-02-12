@@ -84,7 +84,8 @@ class DisplayManager {
   bool drawParticles_;
   bool drawGenParticles_;
   bool drawPFBlocks_;
-     
+  
+  bool rechitSurfacePropToLogPt_; 
      
   //---------------------- new graphic Container ----------------
   //container of all the graphic Objects of one event 
@@ -97,6 +98,12 @@ class DisplayManager {
   std::vector<float>      gsfAttributes_;
   std::vector<float>      bremAttributes_;
   std::vector<float>      clusterAttributes_;
+
+  // rechit colors
+  std::vector<int>        rechitColor_;
+  std::vector<int>        rechitSeedColor_;
+  std::vector<int>        rechitSpecialColor_;
+  
   
   
   TAttMarker *clusPattern_;
@@ -233,12 +240,12 @@ class DisplayManager {
    
 
  
-  // methods
-  double getMaxE(int layer) const;
-  double getMaxEEcal();
-  double getMaxEHcal();
+  // methods to get the maximum energy or pt in a layer
+  double getMaxE(int layer, bool workOnPt=false) const;
+  double getMaxEEcal(bool workOnPt=false);
+  double getMaxEHcal(bool workOnPt=false);
                
-     
+  
      
      
 };

@@ -1936,7 +1936,7 @@ bool PFRootEventManager::processEntry(int entry) {
 
 bool PFRootEventManager::eventAccepted() const {
   // return highPtJet(10); 
-  //return highPtPFCandidate( 10, PFCandidate::h ); 
+  return highPtPFCandidate( 2, PFCandidate::gamma ); 
   return true;
 } 
 
@@ -1955,7 +1955,8 @@ bool PFRootEventManager::highPtPFCandidate( double ptMin,
     const PFCandidate& pfc = (*pfCandidates_)[i];
     if(type!= PFCandidate::X &&  
        pfc.particleId() != type ) continue;
-    if( pfc.pt() > ptMin ) return true;
+    if( pfc.pt() > ptMin && 
+	fabs(pfc.eta()) > 1.8 && fabs(pfc.eta())< 2.8 ) return true;
   }
   return false;
 }

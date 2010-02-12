@@ -245,6 +245,34 @@ void DisplayManager::readOptions( const char* optfile ) {
   zoomFactor_ = 10;  
   options_->GetOpt("display", "zoom_factor", zoomFactor_);
         
+  rechitSurfacePropToLogPt_ = false;
+  options_->GetOpt("display","rechitSurfacePropToLogPt",rechitSurfacePropToLogPt_);
+
+  //COLIN should check that the colors are in the correct range
+  rechitColor_.clear();
+  options_->GetOpt("display","rechitColor",rechitColor_);
+  if( rechitColor_.size()!=3) {
+    rechitColor_.push_back(210);
+    rechitColor_.push_back(210);
+    rechitColor_.push_back(210);
+  }
+  
+  rechitSeedColor_.clear();
+  options_->GetOpt("display","rechitSeedColor",rechitSeedColor_);
+  if( rechitSeedColor_.size()!=3) {
+    rechitSeedColor_.push_back(145);
+    rechitSeedColor_.push_back(145);
+    rechitSeedColor_.push_back(145);
+  }
+  
+  rechitSpecialColor_.clear();
+  options_->GetOpt("display","rechitSpecialColor",rechitSpecialColor_);
+  if( rechitSpecialColor_.size()!=3) {
+    rechitSpecialColor_.push_back(255);
+    rechitSpecialColor_.push_back(140);
+    rechitSpecialColor_.push_back(0);
+  }
+  
 }
 
 //________________________________________________________
@@ -538,7 +566,7 @@ void DisplayManager::createGPart( const reco::PFSimParticle &ptc,
 void DisplayManager::createGRecHit(reco::PFRecHit& rh,int ident, double maxe, double phi0, int color)
 {
         
-  double me = maxe;
+//   double me = maxe;
   double thresh = 0;
   int layer = rh.layer();
         
@@ -567,7 +595,7 @@ void DisplayManager::createGRecHit(reco::PFRecHit& rh,int ident, double maxe, do
     break;           
   case PFLayer::PS1:
   case PFLayer::PS2:
-    me = -1;
+    maxe = -1;
     thresh = em_->clusterAlgoPS_.threshBarrel();
     break;
   default:
@@ -620,7 +648,14 @@ void DisplayManager::createGRecHit(reco::PFRecHit& rh,int ident, double maxe, do
     assert(corners.size() == 4);
     double propfact = 0.95; // so that the cells don't overlap ? 
     double ampl=0;
-    if(me>0) ampl = (log(rh.energy() + 1.)/log(me + 1.));
+    if(maxe>0) {
+      if(rechitSurfacePropToLogPt_)
+	// note that maxe can contain either the max energy in the layer
+	// or the max pt
+	ampl = (log( sqrt(rh.pt2()) + 1.)/log(maxe + 1.));
+      else 
+	ampl = (log( rh.energy() + 1.)/log(maxe + 1.));
+    }
     for ( unsigned jc=0; jc<4; ++jc ) { 
 
       phiSize[jc] = rhphi-corners[jc].Phi();
@@ -1237,7 +1272,7 @@ void DisplayManager::updateDisplay() {
 
 
 //_________________________________________________________________________
-double DisplayManager::getMaxE(int layer) const
+double DisplayManager::getMaxE(int layer, bool workOnPt) const
 {
         
   double maxe = -9999;
@@ -1272,19 +1307,24 @@ double DisplayManager::getMaxE(int layer) const
         
   for( unsigned i=0; i<vec->size(); i++) {
     if( (*vec)[i].layer() != layer ) continue;
-    if( (*vec)[i].energy() > maxe)
-      maxe = (*vec)[i].energy();
+
+    double energy = (*vec)[i].energy();
+    if( workOnPt ) {
+      energy = sqrt( (*vec)[i].pt2() );
+    }
+    if( energy > maxe)
+      maxe = energy;
   }
         
   return maxe;
 }
 //____________________________________________________________________________
-double DisplayManager::getMaxEEcal() {
+double DisplayManager::getMaxEEcal(bool workOnPt) {
         
   if( maxERecHitEcal_<0 ) {
-    double maxeec = getMaxE( PFLayer::ECAL_ENDCAP );
-    double maxeb =  getMaxE( PFLayer::ECAL_BARREL );
-    double maxehf =  getMaxE( PFLayer::HF_EM );
+    double maxeec = getMaxE( PFLayer::ECAL_ENDCAP, workOnPt);
+    double maxeb =  getMaxE( PFLayer::ECAL_BARREL, workOnPt);
+    double maxehf =  getMaxE( PFLayer::HF_EM, workOnPt );
     maxERecHitEcal_ =  maxeec>maxeb  ?  maxeec:maxeb;
     maxERecHitEcal_ = maxERecHitEcal_>maxehf ? maxERecHitEcal_:maxehf;
     // max of both barrel and endcap
@@ -1292,12 +1332,12 @@ double DisplayManager::getMaxEEcal() {
   return  maxERecHitEcal_;
 }
 //_______________________________________________________________________________
-double DisplayManager::getMaxEHcal() {
+double DisplayManager::getMaxEHcal(bool workOnPt) {
         
   if(maxERecHitHcal_ < 0) {
-    double maxehf = getMaxE( PFLayer::HF_HAD );
-    double maxeec = getMaxE( PFLayer::HCAL_ENDCAP );
-    double maxeb =  getMaxE( PFLayer::HCAL_BARREL1 );
+    double maxehf = getMaxE( PFLayer::HF_HAD, workOnPt );
+    double maxeec = getMaxE( PFLayer::HCAL_ENDCAP, workOnPt );
+    double maxeb =  getMaxE( PFLayer::HCAL_BARREL1, workOnPt );
     maxERecHitHcal_ =  maxeec>maxeb  ?  maxeec:maxeb;
     maxERecHitHcal_ = maxERecHitHcal_>maxehf ? maxERecHitHcal_:maxehf;
   }
@@ -1614,13 +1654,20 @@ void DisplayManager::loadGRecHits()
 {
   double phi0=0;
         
-  double maxee = getMaxEEcal();
-  double maxeh = getMaxEHcal();
+  double maxee = getMaxEEcal( rechitSurfacePropToLogPt_ );
+  double maxeh = getMaxEHcal( rechitSurfacePropToLogPt_ );
   double maxe = maxee>maxeh ? maxee : maxeh;
         
-  int color = TColor::GetColor(210,210,210);
-  int seedcolor = TColor::GetColor(145,145,145);
-  int specialcolor = TColor::GetColor(255,140,0);
+  int color = TColor::GetColor( rechitColor_[0], 
+				rechitColor_[1], 
+				rechitColor_[2] );
+  int seedcolor = TColor::GetColor( rechitSeedColor_[0], 
+				    rechitSeedColor_[1], 
+				    rechitSeedColor_[2] );
+  int specialcolor = TColor::GetColor( rechitSpecialColor_[0], 
+				       rechitSpecialColor_[1], 
+				       rechitSpecialColor_[2] );
+
         
   for(unsigned i=0; i<em_->rechitsECAL_.size(); i++) { 
     int rhcolor = color;
@@ -1997,8 +2044,8 @@ void DisplayManager::printDisplay(const char* sdirectory ) const
                 
     cout<<displayView_[iView]->GetName()<<endl;
                 
-    string eps = name; eps += ".eps";
-    displayView_[iView]->SaveAs( eps.c_str() );
+    string pdf = name; pdf += ".pdf";
+    displayView_[iView]->SaveAs( pdf.c_str() );
                 
     string png = name; png += ".png";
     displayView_[iView]->SaveAs( png.c_str() );
