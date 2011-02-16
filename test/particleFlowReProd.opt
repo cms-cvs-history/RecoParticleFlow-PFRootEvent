@@ -317,6 +317,9 @@ particle_flow   electronID_mvaWeightFile    ${CMSSW_DATA_PATH}/data-RecoParticle
 // PFConversions
 particle_flow   usePFConversions      0
 
+// PFPhotons
+particle_floe   usePFPhotons          0
+
 // Naive calibration
 // particle_flow   ecalib 0.108 1.050
 particle_flow   ecalib 0 1
