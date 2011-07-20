@@ -1,11 +1,13 @@
 
-root outfile benchmark.root
-root outtree 0
+root outfile /tmp/chanon/benchmark_1.root
+root outtree /tmp/chanon/benchmark_1.root
 
 //colin	mode 1
 
 //root file display.root
-root file /tmp/rpatel/display_1.root
+
+root file ../../Configuration/test/display.root
+
 // Warning: no cleaning of the HF is done in fast sim, due to the absence of timing simulation and to an unreliable transverse shower shape simulation in the HF. 
 //          Thus you shall switch it off in PFRootEvent also by changing the thresholds to the following values: 
 //                                                             clustering thresh_Clean_HFEM            1E5 
@@ -407,6 +409,8 @@ particle_flow   usePFPhotons      1
 particle_flow   conv_mvaCut	  0.00
 // Daniele and Rishi: To be changed
 particle_flow   convID_mvaWeightFile   /afs/cern.ch/cms/data/CMSSW/RecoParticleFlow/PFProducer/data/MVAnalysis_BDT.weights_pfConversionFeb2311.txt
+particle_flow sumPtTrackIsoForPhoton   2.0
+particle_flow sumPtTrackIsoSlopeForPhoton   0.001
 
 
 // EG photons  Et cut; Track iso (cste;slope), Ecal iso (cste, slope), Hcal iso (cste, slope), H/E
@@ -428,14 +432,14 @@ particle_flow	sumPtTrackIsoForEgammaSC_endcap   4.0
 particle_flow	nTrackIsoForEgammaSC              2
 particle_flow   coneTrackIsoForEgammaSC          0.3
 // Pre-selected electrons
-//particle_flow   egammaElectrons         ecalDrivenGsfElectrons::PROD   
-particle_flow   egammaElectrons         dummy
+particle_flow   egammaElectrons         electronsCiCLoose
+//particle_flow   egammaElectrons         dummy
 
 // PF Converted Bremsstrahlung recovery and EG supercluster
 particle_flow   useConvBremGsfTracks    0
 particle_flow   useConvBremPFRecTracks  1
 particle_flow	useEGammaSupercluster   1
-particle_flow	useEGammaElectrons      0
+particle_flow	useEGammaElectrons      1
 
 //PF Muon Momentum Assignment
 particle_flow   usePFMuonMomAssign      0
