@@ -1045,13 +1045,17 @@ void PFRootEventManager::readOptions(const char* file,
   bool usePFMuonMomAssign = false;
   options_->GetOpt("particle_flow", "usePFMuonMomAssign", usePFMuonMomAssign);
  
+  bool useBestMuonTrack = false;
+  options_->GetOpt("particle_flow", "useBestMuonTrack", useBestMuonTrack);
+
   try { 
     pfAlgo_.setPFMuonAndFakeParameters(muonHCAL,
 				       muonECAL,
 				       nSigmaTRACK,
 				       ptError,
 				       factors45,
-				       usePFMuonMomAssign);
+				       usePFMuonMomAssign,
+				       useBestMuonTrack);
   }
   catch( std::exception& err ) {
     cerr<<"exception setting PFAlgo Muon and Fake parameters: "
@@ -1675,6 +1679,7 @@ bool PFRootEventManager::processEntry(int entry) {
 
   if(verbosity_ == VERBOSE  || 
      //entry < 10000 ||
+     entry < 10 ||
      (entry < 100 && entry%10 == 0) || 
      (entry < 1000 && entry%100 == 0) || 
      entry%1000 == 0 ) 
@@ -2273,6 +2278,7 @@ bool PFRootEventManager::readFromSimulation(int entry) {
     PreprocessRecHits( rechitsPS_ , findRecHitNeighbours_);
   }
 
+  /*
   if ( recTracks_.size() ) { 
     PreprocessRecTracks( recTracks_);
   }
@@ -2290,6 +2296,7 @@ bool PFRootEventManager::readFromSimulation(int entry) {
   if(convBremGsfrecTracks_.size()) {
     PreprocessRecTracks( convBremGsfrecTracks_);
   }
+  */
 
   return goodevent;
 }
@@ -2465,17 +2472,21 @@ int PFRootEventManager::chargeValue(const int& Id) const {
 
 void 
 PFRootEventManager::PreprocessRecTracks(reco::PFRecTrackCollection& recTracks) {  
+  /*
   for( unsigned i=0; i<recTracks.size(); ++i ) {     
     recTracks[i].calculatePositionREP();
   }
+  */
 }
 
 void 
 PFRootEventManager::PreprocessRecTracks(reco::GsfPFRecTrackCollection& recTracks) {  
+  /*
   for( unsigned i=0; i<recTracks.size(); ++i ) {     
     recTracks[i].calculatePositionREP();
     recTracks[i].calculateBremPositionREP();
   }
+  */
 }
 
 
