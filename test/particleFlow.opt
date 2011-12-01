@@ -4,8 +4,6 @@ root outtree 0
 
 //colin	mode 1
 
-//root file display.root
-
 root file ../../Configuration/test/display.root
 
 // Warning: no cleaning of the HF is done in fast sim, due to the absence of timing simulation and to an unreliable transverse shower shape simulation in the HF. 
@@ -61,7 +59,7 @@ root Photon_inputTag         photons
 root caloTowers_inputTag     towerMaker
 
 // Muon branch
-root muon_inputTag           muons
+root muon_inputTag           muons1stStep
 
 // HepMCProduct branch
 root MCTruth_inputTag        generator
@@ -94,7 +92,7 @@ root TCMET_inputTag	       tcMet
 
 
 // Particle Flow Candidates
-root particleFlowCand_inputTag    particleFlow
+root particleFlowCand_inputTag    particleFlowTmp
 
 
 
@@ -353,7 +351,7 @@ particle_flow useKDTreeTrackEcalLinker 1
 
 // Track Quality Cut: Tracks are kept if DPt/Pt < Cut * sigma(Had) 
 // and if nHit >= nHitCut
-particle_flow DPtoverPt_Cut  -1. -1. -1. -1. -1. 
+particle_flow DPtoverPt_Cut  -1. -1. -1. 1. 1. 
 particle_flow NHit_Cut 3 3 3 3 3
 particle_flow useIterTracking 1
 
@@ -410,8 +408,13 @@ particle_flow   calibPFSCEle_endcap  1.153 -16.5975 5.668 -0.1772 16.22 7.326 0.
 // PFPhotons
 particle_flow   usePFPhotons      1
 particle_flow   conv_mvaCut	  0.00
+particle_flow   useReg		  0	
 // Daniele and Rishi: To be changed
-particle_flow   convID_mvaWeightFile   /afs/cern.ch/cms/data/CMSSW/RecoParticleFlow/PFProducer/data/MVAnalysis_BDT.weights_pfConversionFeb2311.txt
+particle_flow   convID_mvaWeightFile    /afs/cern.ch/cms/data/CMSSW/RecoParticleFlow/PFProducer/data/MVAnalysis_BDT.weights_pfConversionAug0411.txt
+particle_flow mvaWeightFileRegLC	/afs/cern.ch/cms/data/CMSSW/RecoParticleFlow/PFProducer/data/TMVARegression_BDTG_PFClusterCorr.root
+particle_flow mvaWeightFileRegGC        /afs/cern.ch/cms/data/CMSSW/RecoParticleFlow/PFProducer/data/TMVARegression_BDTG_PFGlobalCorr.root
+particle_flow mvaWeightFileRegRes        /afs/cern.ch/cms/data/CMSSW/RecoParticleFlow/PFProducer/data/TMVARegression_BDTG_PFRes.root
+X0Map                                  /afs/cern.ch/cms/data/CMSSW/RecoParticleFlow/PFProducer/data/allX0histos.root
 particle_flow sumPtTrackIsoForPhoton   2.0
 particle_flow sumPtTrackIsoSlopeForPhoton   0.001
 
@@ -446,6 +449,7 @@ particle_flow	useEGammaElectrons      1
 
 //PF Muon Momentum Assignment
 particle_flow   usePFMuonMomAssign      0
+particle_flow   useBestMuonTrack	0
 
 //Use tracking at HLT
 particle_flow   useAtHLT                0
@@ -546,7 +550,7 @@ print genParticles_ptmin 0.0
 print verbosity 0
 
 // Perform comparison of pf candidates (CMSSW/PFRootEvent)
-particle_flow   comparison  0
+particle_flow   comparison  1
 
 //tau benchmark options ---------------------------------------------------
 
