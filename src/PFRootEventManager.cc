@@ -909,6 +909,7 @@ void PFRootEventManager::readOptions(const char* file,
 
   useKDTreeTrackEcalLinker_ = true;
   options_->GetOpt("particle_flow", "useKDTreeTrackEcalLinker", useKDTreeTrackEcalLinker_);  
+  std::cout << "Use Track-ECAL link optimization: " << useKDTreeTrackEcalLinker_ << std::endl;
   pfBlockAlgo_.setUseOptimization(useKDTreeTrackEcalLinker_);
 
   std::vector<double> DPtovPtCut;
@@ -1044,13 +1045,17 @@ void PFRootEventManager::readOptions(const char* file,
   bool usePFMuonMomAssign = false;
   options_->GetOpt("particle_flow", "usePFMuonMomAssign", usePFMuonMomAssign);
  
+  bool useBestMuonTrack = false;
+  options_->GetOpt("particle_flow", "useBestMuonTrack", useBestMuonTrack);
+
   try { 
     pfAlgo_.setPFMuonAndFakeParameters(muonHCAL,
 				       muonECAL,
 				       nSigmaTRACK,
 				       ptError,
 				       factors45,
-				       usePFMuonMomAssign);
+				       usePFMuonMomAssign,
+				       useBestMuonTrack);
   }
   catch( std::exception& err ) {
     cerr<<"exception setting PFAlgo Muon and Fake parameters: "
@@ -1143,14 +1148,24 @@ void PFRootEventManager::readOptions(const char* file,
     }
   }
 
-  bool usePFPhotons = true;   
+  bool usePFPhotons = true;
+  bool useReg=false;
   string mvaWeightFileConvID = "";
+  string mvaWeightFileRegLC="";
+  string mvaWeightFileRegGC="";
+  string mvaWeightFileRegRes="";
+  string X0Map="";
   double mvaConvCut=-1.;
   double sumPtTrackIsoForPhoton=2.0;
   double sumPtTrackIsoSlopeForPhoton=0.001;
   options_->GetOpt("particle_flow", "usePFPhotons", usePFPhotons);
   options_->GetOpt("particle_flow", "conv_mvaCut", mvaConvCut);
-  options_->GetOpt("particle_flow", "convID_mvaWeightFile", mvaWeightFileConvID); 
+  options_->GetOpt("particle_flow", "useReg", useReg);
+  options_->GetOpt("particle_flow", "convID_mvaWeightFile", mvaWeightFileConvID);
+  options_->GetOpt("particle_flow", "mvaWeightFileRegLC", mvaWeightFileRegLC);
+  options_->GetOpt("particle_flow", "mvaWeightFileRegGC", mvaWeightFileRegGC);
+  options_->GetOpt("particle_flow", "mvaWeightFileRegRes", mvaWeightFileRegRes);
+  options_->GetOpt("particle_flow", "X0Map", X0Map);
   options_->GetOpt("particle_flow","sumPtTrackIsoForPhoton",sumPtTrackIsoForPhoton);
   options_->GetOpt("particle_flow","sumPtTrackIsoSlopeForPhoton",sumPtTrackIsoSlopeForPhoton);
   // cout<<"use PFPhotons "<<usePFPhotons<<endl;
@@ -1163,6 +1178,11 @@ void PFRootEventManager::readOptions(const char* file,
 (usePFPhotons,
  mvaWeightFileConvID,
  mvaConvCut,
+ useReg,
+ mvaWeightFileRegLC,
+ mvaWeightFileRegGC,
+ mvaWeightFileRegRes,
+ X0Map,
  calibration,
  sumPtTrackIsoForPhoton,
  sumPtTrackIsoSlopeForPhoton
@@ -1674,6 +1694,7 @@ bool PFRootEventManager::processEntry(int entry) {
 
   if(verbosity_ == VERBOSE  || 
      //entry < 10000 ||
+     entry < 10 ||
      (entry < 100 && entry%10 == 0) || 
      (entry < 1000 && entry%100 == 0) || 
      entry%1000 == 0 ) 
@@ -2272,6 +2293,7 @@ bool PFRootEventManager::readFromSimulation(int entry) {
     PreprocessRecHits( rechitsPS_ , findRecHitNeighbours_);
   }
 
+  /*
   if ( recTracks_.size() ) { 
     PreprocessRecTracks( recTracks_);
   }
@@ -2289,6 +2311,7 @@ bool PFRootEventManager::readFromSimulation(int entry) {
   if(convBremGsfrecTracks_.size()) {
     PreprocessRecTracks( convBremGsfrecTracks_);
   }
+  */
 
   return goodevent;
 }
@@ -2464,17 +2487,21 @@ int PFRootEventManager::chargeValue(const int& Id) const {
 
 void 
 PFRootEventManager::PreprocessRecTracks(reco::PFRecTrackCollection& recTracks) {  
+  /*
   for( unsigned i=0; i<recTracks.size(); ++i ) {     
     recTracks[i].calculatePositionREP();
   }
+  */
 }
 
 void 
 PFRootEventManager::PreprocessRecTracks(reco::GsfPFRecTrackCollection& recTracks) {  
+  /*
   for( unsigned i=0; i<recTracks.size(); ++i ) {     
     recTracks[i].calculatePositionREP();
     recTracks[i].calculateBremPositionREP();
   }
+  */
 }
 
 
@@ -2871,7 +2898,7 @@ void PFRootEventManager::pfCandCompare(int entry) {
       double deltaE = (*pfCandidates_)[i].energy()-pfCandCMSSW_[i].energy();
       double deltaEta = (*pfCandidates_)[i].eta()-pfCandCMSSW_[i].eta();
       double deltaPhi = (*pfCandidates_)[i].phi()-pfCandCMSSW_[i].phi();
-      if ( fabs(deltaE) > 1E-5 ||
+      if ( fabs(deltaE) > 2E-5 ||
 	   fabs(deltaEta) > 1E-9 ||
 	   fabs(deltaPhi) > 1E-9 ) { 
 	cout << "+++WARNING+++ PFCandidate " << i 
