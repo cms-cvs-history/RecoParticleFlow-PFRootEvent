@@ -351,7 +351,7 @@ blockAlgo debug 0
 // Debug PFAlgo
 PFAlgo debug 0
 
-hiPU debug 1
+hiPU debug 0
 
 // Re-run particle flow	
 particle_flow	on/off	1
@@ -396,15 +396,12 @@ particle_flow   minDeltaMet 0.4
 // number of sigmas for neutral energy detection
 particle_flow   nsigma_ECAL    0.0
 particle_flow   nsigma_HCAL    1.0
-//particle_flow   nsigma_HCAL1    1.0
-//particle_flow   nsigma_HCAL2    5.0
-//particle_flow   nsigma_HCAL3    5.0
 
 // PFElectrons
 particle_flow   electron_mvaCut     -0.1
 particle_flow   usePFElectrons      1
 particle_flow   electron_crackCorrection 0
-particle_flow   electronID_mvaWeightFile    ./MVAnalysis_BDT.weights_PfElectrons23Jan_IntToFloat.txt
+particle_flow   electronID_mvaWeightFile    ./MVAnalysis_BDT.weights_PFElectrons23Jan_IntToFloat.txt
 particle_flow   usePFSCEleCalib  1
 particle_flow   calibPFSCEle_Fbrem_barrel 0.6 6 -0.0255975 0.0576727 0.975442 -0.000546394 1.26147 25 -0.02025 0.04537 0.9728 -0.0008962 1.172
 particle_flow   calibPFSCEle_Fbrem_endcap 0.9 6.5 -0.0692932 0.101776 0.995338 -0.00236548 0.874998 1.653 -0.0750184 0.147000 0.923165 0.000474665 1.10782
