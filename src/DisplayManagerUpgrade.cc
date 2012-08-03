@@ -1043,9 +1043,49 @@ void DisplayManagerUpgrade::createGCandidate(reco::PFCandidate& rh, int ident,
     double xprop[5];
     double yprop[5];
     */
+    int square = 0;
+    int candcolor = 0;
+    switch(rh.particleId()) {
+    case 0:
+      square = 65;
+      candcolor = TColor::GetColor(102,102,102);
+      break;
+    case 1:
+      square = 100;
+      candcolor = TColor::GetColor(255,0,0);
+      break;
+    case 2:
+      square = 85;
+      candcolor = TColor::GetColor(255,102,0);
+      break;
+    case 3:
+      square = 80;
+      candcolor = TColor::GetColor(102,0,102);
+      break;
+    case 4:
+      square = 90;
+      candcolor = TColor::GetColor(0,102,255);
+      break;
+    case 5:
+      square = 95;
+      candcolor = TColor::GetColor(51,255,0);
+      break;
+    case 6:
+      square = 75;
+      candcolor = TColor::GetColor(51,255,0);
+      break;
+    case 7:
+      square = 70;
+      candcolor = TColor::GetColor(0,102,255);
+      break;
+    default:
+      square = 65;
+      candcolor = TColor::GetColor(102,102,102);
+      break;
+      
+    }
     
-    int square = 5 + rh.particleId();
-    double r = 0.0001 * square * square; //Star radius from center to smaller side
+    double r = 0.0001 * square; //Star radius from center to smaller side
     double c = 2.61803399; //ratio of longer radii to smaller
     
     //Constants used for geometry:
@@ -1228,7 +1268,7 @@ void DisplayManagerUpgrade::createGCandidate(reco::PFCandidate& rh, int ident,
           phiprop[4]=phiprop[0]; // closing the polycell    
 	*/
 	graphicMap_.insert(pair<int,GPFBaseUpgrade *> (ident,new GPFCandidateUpgrade(this, viewType,ident,&rh,npoints,etaprop,phiprop,
-								    TColor::GetColor(255,0,153),"f")));
+								    candcolor,"f")));
 	
       }
       
@@ -1236,7 +1276,7 @@ void DisplayManagerUpgrade::createGCandidate(reco::PFCandidate& rh, int ident,
     case EPH:
       {      
 	graphicMap_.insert(pair<int,GPFBaseUpgrade *> (ident,new GPFCandidateUpgrade(this,viewType,ident,&rh,npoints,etaprop,phiprop,
-								       TColor::GetColor(255,0,153),"f")));
+								       candcolor,"f")));
 	graphicMap_.insert(pair<int,GPFBaseUpgrade *> (ident,new GPFCandidateUpgrade(this, viewType,ident,&rh,npoints,etaprop,phiprop,
 								       TColor::GetColor(0, 0, 0),"l")));
    
